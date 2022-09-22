@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aGHEQTyieckIdNel15H1n8GbHxWK5S+g7zSQhXWlhmH1gXxxitowfmfZOQZGI9XSCTnKDSRI7IfTH2BS7U0Gxw==",
+  "dgSpecHash": "OXL9r1F85OcMhf3AwiV/koL6aJJUWM8zcEqQVBv/skNm7dfK+kDV2WXDR+ktfyYPdGXaeSPaJPqk2+a63YyeEQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\cuddly-sniffle-be\\currus\\currus\\currus.csproj",
+  "projectFilePath": "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\currus\\currus\\currus.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tedas\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
     "C:\\Users\\Tedas\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",

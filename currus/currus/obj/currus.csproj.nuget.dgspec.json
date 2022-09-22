@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\cuddly-sniffle-be\\currus\\currus\\currus.csproj": {}
+    "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\currus\\currus\\currus.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\cuddly-sniffle-be\\currus\\currus\\currus.csproj": {
+    "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\currus\\currus\\currus.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\cuddly-sniffle-be\\currus\\currus\\currus.csproj",
+        "projectUniqueName": "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\currus\\currus\\currus.csproj",
         "projectName": "currus",
-        "projectPath": "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\cuddly-sniffle-be\\currus\\currus\\currus.csproj",
+        "projectPath": "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\currus\\currus\\currus.csproj",
         "packagesPath": "C:\\Users\\Tedas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\cuddly-sniffle-be\\currus\\currus\\obj\\",
+        "outputPath": "C:\\Users\\Tedas\\OneDrive\\Documents\\cuddly-sniffle-be\\currus\\currus\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Tedas\\AppData\\Roaming\\NuGet\\NuGet.Config",
