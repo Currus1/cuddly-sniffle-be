@@ -5,12 +5,12 @@ namespace currus.Models
     public class DriverModel
     {
         public string name { get; set; }
-        private string surname { get; set; }
-        private DateTime birthday { get; set; }
-        private string email { get; set; }
-        private string phoneNumber { get; set; }
-        private string vechileType { get; set; }
-        private string licenseNumber { get; set; }
+        public string surname { get; set; }
+        public DateTime birthday { get; set; }
+        public string email { get; set; }
+        public string phoneNumber { get; set; }
+        public string vechileType { get; set; }
+        public string licenseNumber { get; set; }
 
         public DriverModel(string name, string surname, DateTime birthday, string email, string phoneNumber, string vechileType, string licenseNumber)
         {
