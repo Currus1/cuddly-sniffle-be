@@ -4,7 +4,7 @@ namespace currus.Models
 {
     public class DriverModel
     {
-        private string name { get; set; }
+        public string name { get; set; }
         private string surname { get; set; }
         private DateTime birthday { get; set; }
         private string email { get; set; }
