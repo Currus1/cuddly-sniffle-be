@@ -9,7 +9,7 @@ namespace currus.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Hello, this is asp.net backend";
+            return "Sveiki visi ka jus";
         }
     }
 }
