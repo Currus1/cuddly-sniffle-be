@@ -4,23 +4,23 @@ namespace currus.Models
 {
     public class DriverModel
     {
-        public string name { get; set; }
-        public string surname { get; set; }
-        public DateTime birthday { get; set; }
-        public string email { get; set; }
-        public string phoneNumber { get; set; }
-        public string vechileType { get; set; }
-        public string licenseNumber { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public DateTime Birthday { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string VehicleType { get; set; }
+        public string LicenseNumber { get; set; }
 
-        public DriverModel(string name, string surname, DateTime birthday, string email, string phoneNumber, string vechileType, string licenseNumber)
+        public DriverModel(string name, string surname, DateTime birthday, string email, string phoneNumber, string vehicleType, string licenseNumber)
         {
-            this.name = name;
-            this.surname = surname;
-            this.birthday = birthday;
-            this.email = email;
-            this.phoneNumber = phoneNumber;
-            this.vechileType = vechileType;
-            this.licenseNumber = licenseNumber;
+            Name = name;
+            Surname = surname;
+            Birthday = birthday;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            VehicleType = vehicleType;
+            LicenseNumber = licenseNumber;
         }
     }
 }
