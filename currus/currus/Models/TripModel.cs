@@ -8,7 +8,8 @@ namespace currus.Models
 {
     class TripModel
     {
-        public static DriverModel Driver { get; set; }
+        public static DriverModel Driver { get; set; } 
+
         public static List<UserModel> Commuters = new List<UserModel>();
         public int SeatCount { get; set; }
         public int CurrentSeatCount = 0;

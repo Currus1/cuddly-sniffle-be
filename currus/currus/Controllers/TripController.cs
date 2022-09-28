@@ -10,6 +10,7 @@ namespace currus.Controllers
     public class TripController : Controller
     {
         [HttpGet]
+
         [Route("Trips")]
         public ActionResult<List<TripModel>> GetAllTrips()
         {
