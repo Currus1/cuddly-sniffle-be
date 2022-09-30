@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using currus.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace currus.Models
 {
@@ -9,18 +11,46 @@ namespace currus.Models
         public DateTime birthday { get; set; }
         public string email { get; set; }
         public string phoneNumber { get; set; }
-        public string vechileType { get; set; }
         public string licenseNumber { get; set; }
+        public VehicleTypeEnum Vehicles { get; set; }
+        //public List<SelectListItem> VehicleTypes { get; set; }
 
-        public DriverModel(string name, string surname, DateTime birthday, string email, string phoneNumber, string vechileType, string licenseNumber)
+        public DriverModel()
         {
-            this.name = name;
-            this.surname = surname;
-            this.birthday = birthday;
-            this.email = email;
-            this.phoneNumber = phoneNumber;
-            this.vechileType = vechileType;
-            this.licenseNumber = licenseNumber;
+            /*VehicleTypes = new List<SelectListItem>();
+
+            // <options value="0">name</options> VALUE REPRESENTED BY INTEGERS
+            // HARD CODED, PAKEISIU VELIAU KAD BUTU SU LOOPAIS
+            // 
+            VehicleTypes.Add(new SelectListItem
+            {
+                Value = ((int)VehicleTypeEnum.SEDAN).ToString(),
+                Text = VehicleTypeEnum.SEDAN.ToString()
+            });
+
+            VehicleTypes.Add(new SelectListItem
+            {
+                Value = ((int)VehicleTypeEnum.EV).ToString(),
+                Text = VehicleTypeEnum.EV.ToString()
+            });
+
+            VehicleTypes.Add(new SelectListItem
+            {
+                Value = ((int)VehicleTypeEnum.SUV).ToString(),
+                Text = VehicleTypeEnum.SUV.ToString()
+            });
+
+            VehicleTypes.Add(new SelectListItem
+            {
+                Value = ((int)VehicleTypeEnum.MINIVAN).ToString(),
+                Text = VehicleTypeEnum.MINIVAN.ToString()
+            });
+
+            VehicleTypes.Add(new SelectListItem
+            {
+                Value = ((int)VehicleTypeEnum.VAN).ToString(),
+                Text = VehicleTypeEnum.VAN.ToString()
+            });*/
         }
     }
 }

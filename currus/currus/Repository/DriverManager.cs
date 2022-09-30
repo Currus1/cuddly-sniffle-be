@@ -7,6 +7,5 @@ namespace currus.Repository
         public static List<DriverModel> drivers = new List<DriverModel>();
 
         // skaitymas is failo....
-
     }
 }
