@@ -5,7 +5,7 @@ namespace currus.Repository
 {
     public class TripRepository
     {
-        static public List<OngoingTrip> ongoingTrips = new List<OngoingTrip>();
+        public static List<OngoingTrip> ongoingTrips { get; set; } = new List<OngoingTrip>();
 
     }
 }

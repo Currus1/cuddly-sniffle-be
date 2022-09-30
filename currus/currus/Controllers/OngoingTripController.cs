@@ -9,16 +9,23 @@ namespace currus.Controllers
     [Route("[controller]")]
     public class OngoingTripController : Controller
     {
-        [HttpGet]
-        [Route("trips")]
-        public List<OngoingTrip> Get()
-        {
-            return TripRepository.ongoingTrips;
-        }
 
+        [HttpGet]
+        [Route("All")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<OngoingTrip>> Get()
+        {
+            return Ok(JsonSerializer.Serialize(TripRepository.ongoingTrips));
+        }
         [HttpPost]
-        [Route("adding")]
-        public void AddUser([FromBody] OngoingTrip ongoingTrip)
+        [Route("Adding")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public void Add([FromBody] OngoingTrip ongoingTrip)
         {
             TripRepository.ongoingTrips.Add(ongoingTrip);
         }
