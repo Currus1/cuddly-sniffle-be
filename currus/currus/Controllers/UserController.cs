@@ -14,15 +14,15 @@ namespace currus.Controllers
         [Route("Users")]
         public ActionResult<List<UserModel>> GetAllUsers()
         {
-            return Ok(JsonSerializer.Serialize(UserManager.Users));
+            return Ok(JsonSerializer.Serialize(UserRepository.Users));
         }
 
         [HttpPost]
         [Route("Adding")]
         public string AddUser([FromBody] UserModel user)
         {
-            UserManager.Users.Add(user);
-            return UserManager.Users.Count.ToString();
+            UserRepository.Users.Add(user);
+            return UserRepository.Users.Count.ToString();
         }
     }
 }
