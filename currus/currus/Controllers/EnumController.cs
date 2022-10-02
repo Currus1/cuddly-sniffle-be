@@ -9,7 +9,7 @@ namespace currus.Controllers
 
         [HttpGet]
         [Route("TripStatus")]
-        public TripStatus[] GetEnum()
+        public TripStatus[] GetTripStateEnum()
         {
             return (TripStatus[])Enum.GetValues(typeof(TripStatus)).Cast<TripStatus>();
         }
