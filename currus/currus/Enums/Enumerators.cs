@@ -9,5 +9,13 @@
             Ended,
             Cancelled
         }
+
+        public enum VehicleTypes
+        {
+            Sedan,
+            SUV,
+            EV,
+            Van
+        }
     }
 }
