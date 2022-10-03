@@ -4,23 +4,32 @@ using System;
 namespace currus.Models;
 
     public class TripModel
-{
-    public string StartingPoint { get; set; }
+    { 
+        public int Id { get; set; }
+        public int DriverId { get; set; }
+        public int UserId { get; set; }    
 
-    public string EndingPoint { get; set; }
+        public string StartingPoint { get; set; }
 
-    public int Seats { get; set; } 
+        public string Destination { get; set; }
 
-    public TimeOnly EstimatedTripTime { get; set; }
+        public int Seats { get; set; } 
 
-    public double EstimatedTripPrice { get; set; }
+        public int Hours { get; set; }
+        public int Minutes { get; set; }
 
-    public TripModel(string startingPoint, string endingPoint, string tripRoute, int seats, TimeOnly estimatedTripTime, double estimatedTripPrice)
+        public double EstimatedTripPrice { get; set; }
+
+    public TripModel(int id, int driverId, int userId, string startingPoint, string destination, int seats, int hours, int minutes, double estimatedTripPrice)
     {
+        Id = id;
+        DriverId = driverId;
+        UserId = userId;
         StartingPoint = startingPoint;
-        EndingPoint = endingPoint;
+        Destination = destination;
         Seats = seats;
-        EstimatedTripTime = estimatedTripTime;
+        Hours = hours;
+        Minutes = minutes;
         EstimatedTripPrice = estimatedTripPrice;
     }
 }

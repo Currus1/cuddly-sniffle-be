@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Sockets;
 
 namespace currus.Models
 {
     public class DriverModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime Birthday { get; set; }
@@ -14,8 +16,9 @@ namespace currus.Models
         public string VehicleType { get; set; }
         public string LicenseNumber { get; set; }
 
-        public DriverModel(string name, string surname, DateTime birthday, string email, string phoneNumber, string vehicleType, string licenseNumber)
+        public DriverModel(int id, string name, string surname, DateTime birthday, string email, string phoneNumber, string vehicleType, string licenseNumber)
         {
+            Id = id;
             Name = name;
             Surname = surname;
             Birthday = birthday;
