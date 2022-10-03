@@ -21,6 +21,7 @@ namespace currus.Controllers
         public string AddingDriver([FromBody] DriverModel driverModel)
         {
             DriverRepository.Drivers.Add(driverModel);
+            DriverRepository.Drivers.Sort();
             return DriverRepository.Drivers.Count.ToString();
         }
     }
