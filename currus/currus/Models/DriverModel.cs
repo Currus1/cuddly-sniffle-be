@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace currus.Models
 {
-    public class DriverModel
+    public class DriverModel : IComparable
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -23,6 +23,21 @@ namespace currus.Models
             PhoneNumber = phoneNumber;
             VehicleType = vehicleType;
             LicenseNumber = licenseNumber;
+        }
+
+        public int CompareTo(object? obj)   // Sorting drivers by their name alhapebtically
+        {
+            DriverModel other = (DriverModel)obj;
+            if (string.Compare(Name, other.Name, StringComparison.Ordinal) < 0) 
+            {
+                return -1;
+            }
+            else if (string.Compare(Name, other.Name, StringComparison.Ordinal) > 0)
+            {
+                return 1;
+            }
+            else
+                return 0;
         }
     }
 }
