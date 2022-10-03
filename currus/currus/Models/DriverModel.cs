@@ -27,7 +27,7 @@ namespace currus.Models
 
         public int CompareTo(object? obj)   // Sorting drivers by their name alhapebtically
         {
-            DriverModel other = (DriverModel)obj;
+            DriverModel other = (DriverModel)obj;   // narrowing type conversion
             if (string.Compare(Name, other.Name, StringComparison.Ordinal) < 0) 
             {
                 return -1;
