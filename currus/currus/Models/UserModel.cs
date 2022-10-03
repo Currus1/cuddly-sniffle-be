@@ -12,14 +12,14 @@ public class UserModel
     public string Email { get; set; }
     public string Phone { get; set; }
 
-    public UserModel(int id, string name, string surname, DateTime birthdate, string email, string phone)
+    public UserModel(int id, string name, string surname, DateTime birthdate, string email, string phone = "")
     {
         Id = id;
         Name = name;
         Surname = surname;
+        Birthdate = birthdate;
         Email = email;
         Phone = phone;
-        Birthdate = birthdate;
     }
 
 
