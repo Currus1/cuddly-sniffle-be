@@ -28,6 +28,7 @@ namespace currus.Controllers
         public string AddUser([FromBody] UserModel user)
         {
             UserRepository.Users.Add(user);
+            UserRepository.Users.Sort();
             return UserRepository.Users.Count.ToString();
         }
     }
