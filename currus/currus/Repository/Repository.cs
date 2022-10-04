@@ -28,9 +28,6 @@ public class Repository<T> : IRepository<T> where T : class
         return _inMemoryStore.FirstOrDefault(predicate);
     }
 
-    //repository.Get((e) => e.Name == "A")
-    //bool Check(MyType e) { return e.Name == "A"; }
-    //repository.Get(Check)
     public IEnumerable<T> GetAll()
     {
         return _inMemoryStore;
