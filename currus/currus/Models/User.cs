@@ -2,7 +2,7 @@
 using System.Globalization;
 
 namespace currus.Models;
-public class UserModel : IComparable
+public class User : IComparable
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -12,7 +12,7 @@ public class UserModel : IComparable
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
 
-    public UserModel(int id, string name, string surname, DateTime birthdate, string email, string phoneNumber = "")
+    public User(int id, string name, string surname, DateTime birthdate, string email, string phoneNumber = "")
     {
         Id = id;
         Name = name;
@@ -24,7 +24,7 @@ public class UserModel : IComparable
 
     public int CompareTo(object? obj)   // Sorting users by their name alhapebtically
     {
-        UserModel other = (UserModel)obj;   // narrowing type conversion
+        User other = (User)obj;   // narrowing type conversion
         if (string.Compare(Name, other.Name, StringComparison.Ordinal) < 0)
         {
             return -1;
