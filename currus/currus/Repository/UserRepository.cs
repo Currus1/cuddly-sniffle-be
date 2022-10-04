@@ -4,6 +4,6 @@ namespace currus.Repository
 {
     public class UserRepository
     {
-        public static List<UserModel> Users = new List<UserModel>();
+        public static List<UserModel> Users { get; set; } = new List<UserModel>();
     }
 }

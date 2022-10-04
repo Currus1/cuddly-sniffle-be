@@ -4,6 +4,6 @@ namespace currus.Repository
 {
     public class DriverRepository
     {
-        public static List<DriverModel> drivers = new List<DriverModel>();
+        public static List<DriverModel> Drivers { get; set; } = new List<DriverModel>();
     }
 }
