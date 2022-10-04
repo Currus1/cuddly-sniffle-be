@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace currus.Controllers
+namespace currus.Controllers;
+
+[Route("[controller]")]
+[ApiController]
+public class TestController : Controller
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class TestController : Controller
+    [HttpGet]
+    public string Get()
     {
-        [HttpGet]
-        public string Get()
-        {
-            return "Sveiki visi ka jus";
-        }
+        return "Sveiki visi ka jus";
     }
 }

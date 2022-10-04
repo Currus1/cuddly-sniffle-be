@@ -1,9 +1,10 @@
 ﻿using currus.Models;
 
-namespace currus.Repository
+namespace currus.Repository;
+
+public class UserRepository : Repository<User>, IUserRepository
 {
-    public class UserRepository
+    public UserRepository() : base("users.json")
     {
-        public static List<UserModel> Users = new List<UserModel>();
     }
 }
