@@ -13,15 +13,16 @@ namespace currus.Controllers
         [Route("Drivers")]
         public ActionResult<List<DriverModel>> GetAllDrivers()
         {
-            return Ok(JsonSerializer.Serialize(DriverRepository.drivers));
+            return Ok(JsonSerializer.Serialize(DriverRepository.Drivers));
         }
 
         [Route("Adding")]
         [HttpPost]
         public string AddingDriver([FromBody] DriverModel driverModel)
         {
-            DriverRepository.drivers.Add(driverModel);
-            return DriverRepository.drivers.Count.ToString();
+            DriverRepository.Drivers.Add(driverModel);
+            DriverRepository.Drivers.Sort();
+            return DriverRepository.Drivers.Count.ToString();
         }
     }
 }

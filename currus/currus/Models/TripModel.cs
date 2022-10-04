@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System;
 
 namespace currus.Models;
@@ -7,7 +7,6 @@ namespace currus.Models;
     { 
         public int Id { get; set; }
         public int DriverId { get; set; }
-
         private int[]? _userIds;
         public int[] UserIds
         {
@@ -40,9 +39,10 @@ namespace currus.Models;
         DriverId = driverId;
         UserIds = userIds;
         StartingPoint = startingPoint;
-        EndingPoint = endingPoint;
+        Destination = destination;
         Seats = seats;
-        EstimatedTripTime = estimatedTripTime;
+        Hours = hours;
+        Minutes = minutes;
         EstimatedTripPrice = estimatedTripPrice;
     }
 }
