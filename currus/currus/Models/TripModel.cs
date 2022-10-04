@@ -4,19 +4,41 @@ using System;
 namespace currus.Models;
 
     public class TripModel
-{
-    public string StartingPoint { get; set; }
+    { 
+        public int Id { get; set; }
+        public int DriverId { get; set; }
 
-    public string EndingPoint { get; set; }
+        private int[]? _userIds;
+        public int[] UserIds
+        {
+            get => _userIds;
 
-    public int Seats { get; set; } 
+            set
+            {
+                if (value.IsMoreThanZero(Seats))
+                {
+                    _userIds = value;
+                    return;
+                }
+                else
+                {
+                    _userIds = null;
+                    return;
+                }
+            }
+        }
+        public string StartingPoint { get; set; }
+        public string Destination { get; set; }
+        public int Seats { get; set; } 
+        public int Hours { get; set; }
+        public int Minutes { get; set; }
+        public double EstimatedTripPrice { get; set; }
 
-    public TimeOnly EstimatedTripTime { get; set; }
-
-    public double EstimatedTripPrice { get; set; }
-
-    public TripModel(string startingPoint, string endingPoint, string tripRoute, int seats, TimeOnly estimatedTripTime, double estimatedTripPrice)
+    public TripModel(int id, int driverId, int[] userIds, string startingPoint, string destination, int seats, int hours, int minutes, double estimatedTripPrice)
     {
+        Id = id;
+        DriverId = driverId;
+        UserIds = userIds;
         StartingPoint = startingPoint;
         EndingPoint = endingPoint;
         Seats = seats;
