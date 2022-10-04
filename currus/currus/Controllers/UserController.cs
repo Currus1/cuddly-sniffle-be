@@ -1,35 +1,34 @@
-﻿using currus.Models;
+﻿using System.Text.Json;
+using currus.Models;
 using currus.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace currus.Controllers
+namespace currus.Controllers;
+
+[Route("[controller]")]
+[ApiController]
+public class UserController : Controller
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class UserController : Controller
-    {
-        [HttpGet]
-        [Route("Users")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<UserModel>> GetAllUsers()
-        {
-            return Ok(JsonSerializer.Serialize(UserRepository.Users));
-        }
+    private readonly IUserRepository _userRepository;
 
-        [HttpPost]
-        [Route("Adding")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public string AddUser([FromBody] UserModel user)
-        {
-            UserRepository.Users.Add(user);
-            UserRepository.Users.Sort();
-            return UserRepository.Users.Count.ToString();
-        }
+    public UserController(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
+
+    [HttpGet]
+    [Route("Users")]
+    public ActionResult<List<User>> GetAllUsers()
+    {
+        return Ok(JsonSerializer.Serialize(_userRepository.GetAll()));
+    }
+
+    [HttpPost]
+    [Route("Adding")]
+    public string AddUser([FromBody] User user)
+    {
+        _userRepository.Add(user);
+        _userRepository.Save();
+        return _userRepository.GetAll().Count().ToString();
     }
 }

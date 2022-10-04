@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using currus.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +14,11 @@ builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
-{
-    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-}));
+builder.Services.AddCors(p =>
+    p.AddPolicy("corsapp", builder => { builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader(); }));
+
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

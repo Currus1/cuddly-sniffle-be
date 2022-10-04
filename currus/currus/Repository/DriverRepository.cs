@@ -1,9 +1,10 @@
 ﻿using currus.Models;
 
-namespace currus.Repository
+namespace currus.Repository;
+
+public class DriverRepository : Repository<Driver>, IDriverRepository
 {
-    public class DriverRepository
+    public DriverRepository() : base("drivers.json")
     {
-        public static List<DriverModel> Drivers { get; set; } = new List<DriverModel>();
     }
 }
