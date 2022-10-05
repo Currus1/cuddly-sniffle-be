@@ -9,26 +9,26 @@ namespace currus.Controllers;
 [ApiController]
 public class DriverController : Controller
 {
-    private readonly IDriverRepository _driverRepository;
+    private readonly IDriverFileRepository _driverFileRepository;
 
-    public DriverController(IDriverRepository driverRepository)
+    public DriverController(IDriverFileRepository driverFileRepository)
     {
-        _driverRepository = driverRepository;
+        _driverFileRepository = driverFileRepository;
     }
 
     [HttpGet]
     [Route("Drivers")]
     public ActionResult<List<Driver>> GetAllDrivers()
     {
-        return Ok(_driverRepository.GetAll());
+        return Ok(_driverFileRepository.GetAll());
     }
 
     [Route("Adding")]
     [HttpPost]
     public string AddingDriver([FromBody] Driver driverModel)
     {
-        _driverRepository.Add(driverModel);
-        _driverRepository.Save();
-        return _driverRepository.GetAll().Count().ToString();
+        _driverFileRepository.Add(driverModel);
+        _driverFileRepository.Save();
+        return _driverFileRepository.GetAll().Count().ToString();
     }
 }
