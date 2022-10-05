@@ -2,12 +2,12 @@
 
 namespace currus.Repository;
 
-public class Repository<T> : IRepository<T> where T : class
+public class FileRepository<T> : IFileRepository<T> where T : class
 {
     private readonly string _fileName;
     private readonly List<T>? _inMemoryStore;
 
-    public Repository(string fileName = "default.json")
+    public FileRepository(string fileName = "default.json")
     {
         _fileName = fileName;
         _inMemoryStore = JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(_fileName)) ?? new List<T>();

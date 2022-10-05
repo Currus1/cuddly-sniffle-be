@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using static currus.Enums.Enumerators;
+﻿using currus.Enums;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace currus.Controllers;
 
@@ -7,9 +8,9 @@ public class EnumController : Controller
 {
     [HttpGet]
     [Route("TripStatus")]
-    public TripStatus[] GetTripStateEnum()
+    public TripStatuses[] GetTripStateEnum()
     {
-        return (TripStatus[])Enum.GetValues(typeof(TripStatus)).Cast<TripStatus>();
+        return (TripStatuses[])Enum.GetValues(typeof(TripStatuses)).Cast<TripStatuses>();
     }
 
     [HttpGet]

@@ -17,8 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(p =>
     p.AddPolicy("corsapp", builder => { builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader(); }));
 
-builder.Services.AddScoped<IDriverRepository, DriverRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IDriverFileRepository, DriverFileRepository>();
+builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
 
 var app = builder.Build();
 

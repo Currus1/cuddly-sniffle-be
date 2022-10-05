@@ -9,26 +9,26 @@ namespace currus.Controllers;
 [ApiController]
 public class UserController : Controller
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUserFileRepository _userFileRepository;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(IUserFileRepository userFileRepository)
     {
-        _userRepository = userRepository;
+        _userFileRepository = userFileRepository;
     }
 
     [HttpGet]
     [Route("Users")]
     public ActionResult<List<User>> GetAllUsers()
     {
-        return Ok(JsonSerializer.Serialize(_userRepository.GetAll()));
+        return Ok(JsonSerializer.Serialize(_userFileRepository.GetAll()));
     }
 
     [HttpPost]
     [Route("Adding")]
     public string AddUser([FromBody] User user)
     {
-        _userRepository.Add(user);
-        _userRepository.Save();
-        return _userRepository.GetAll().Count().ToString();
+        _userFileRepository.Add(user);
+        _userFileRepository.Save();
+        return _userFileRepository.GetAll().Count().ToString();
     }
 }
