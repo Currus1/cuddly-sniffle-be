@@ -16,6 +16,7 @@ public class Repository<T> : IRepository<T> where T : class
     public void Add(T entity)
     {
         _inMemoryStore.Add(entity);
+        _inMemoryStore.Sort();
     }
 
     public void Delete(T entity)
