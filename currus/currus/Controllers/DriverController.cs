@@ -1,7 +1,6 @@
 ﻿using currus.Models;
 using currus.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 namespace currus.Controllers;
 
@@ -14,6 +13,13 @@ public class DriverController : Controller
     public DriverController(IDriverFileRepository driverFileRepository)
     {
         _driverFileRepository = driverFileRepository;
+    }
+
+    [HttpGet]
+    [Route("Drivers/{id}")]
+    public ActionResult<Driver> GetSingleDriver(int id)
+    {
+        return Ok(_driverFileRepository.Get(driver => driver.Id == id));
     }
 
     [HttpGet]
