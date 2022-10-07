@@ -17,6 +17,13 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [Route("Users/{id}")]
+    public ActionResult<Driver> GetSingleUser(int id)
+    {
+        return Ok(_userFileRepository.Get(user => user.Id == id));
+    }
+
+    [HttpGet]
     [Route("Users")]
     public ActionResult<List<User>> GetAllUsers()
     {
