@@ -1,12 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using currus.Models;
+using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace currus.Repository;
 
 public class FileRepository<T> : IFileRepository<T> where T : class
 {
-    private readonly string _fileName;
-    private readonly List<T>? _inMemoryStore;
-
+    protected readonly string _fileName;
+    protected readonly List<T>? _inMemoryStore;
+    
     public FileRepository(string fileName = "default.json")
     {
         _fileName = fileName;

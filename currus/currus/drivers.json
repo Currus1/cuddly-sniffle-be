@@ -1,1 +1,22 @@
-[{"Id":0,"Name":"Saba","Surname":"Baker","Birthday":"2000-10-04T00:00:00","Email":"sabab@gmail.com","PhoneNumber":"868686861","VehicleType":"Sedan","LicenseNumber":"NNN999"},{"Id":1,"Name":"Lula","Surname":"Hackett","Birthday":"1999-10-04T00:00:00","Email":"lulas@gmail.com","PhoneNumber":"868686862","VehicleType":"SUV","LicenseNumber":"LDS555"}]
+[
+  {
+    "Id": 0,
+    "Name": "Saba",
+    "Surname": "Baker",
+    "Birthday": "2000-10-04T00:00:00",
+    "Email": "sabab@gmail.com",
+    "PhoneNumber": "868686861",
+    "VehicleType": "Sedan",
+    "LicenseNumber": "NNN999"
+  },
+  {
+    "Id": 1,
+    "Name": "Lula",
+    "Surname": "Hackett",
+    "Birthday": "1999-10-04T00:00:00",
+    "Email": "lulas@gmail.com",
+    "PhoneNumber": "868686862",
+    "VehicleType": "SUV",
+    "LicenseNumber": "LDS555"
+  }
+]
