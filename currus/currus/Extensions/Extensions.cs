@@ -1,4 +1,4 @@
-﻿namespace currus.Models
+﻿namespace currus.Extensions
 {
     public static class Extensions
     {
