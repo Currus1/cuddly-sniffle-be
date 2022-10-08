@@ -33,6 +33,7 @@ public class Trip
 
     public Trip(int id, int driverId, int[] userIds, string startingPoint, string destination, int seats, int hours, int minutes, double estimatedTripPrice)
     {
+        Seats = seats;
         Id = id;
         DriverId = driverId;
         UserIds = userIds;
@@ -40,7 +41,6 @@ public class Trip
         Destination = destination;
         Hours = hours;
         Minutes = minutes;
-        Seats = seats;
         EstimatedTripPrice = estimatedTripPrice;
     }
 }
