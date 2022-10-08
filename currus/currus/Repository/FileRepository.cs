@@ -38,6 +38,6 @@ public class FileRepository<T> : IFileRepository<T> where T : class
 
     public void Save()
     {
-        File.WriteAllText(_fileName, JsonConvert.SerializeObject(_inMemoryStore.ToList()));
+        File.WriteAllText(_fileName, JsonConvert.SerializeObject(_inMemoryStore));
     }
 }
