@@ -41,9 +41,8 @@ public class Trip
         DriverId = driverId;
         UserIds = userIds;
         StartingPoint = startingPoint;
-        EndingPoint = endingPoint;
+        Destination = destination;
         Seats = seats;
-        EstimatedTripTime = estimatedTripTime;
         EstimatedTripPrice = estimatedTripPrice;
     }
 }
