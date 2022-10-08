@@ -25,4 +25,19 @@ public class FileRepository<T> : IFileRepository<T> where T : class
     {
         _inMemoryStore.Remove(entity);
     }
+
+    public T? Get(Func<T, bool> predicate)
+    {
+        return _inMemoryStore.FirstOrDefault(predicate);
+    }
+
+    public IEnumerable<T> GetAll()
+    {
+        return _inMemoryStore;
+    }
+
+    public void Save()
+    {
+        File.WriteAllText(_fileName, JsonConvert.SerializeObject(_inMemoryStore.ToList()));
+    }
 }

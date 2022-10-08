@@ -14,9 +14,12 @@ public class DriverFileRepository : FileRepository<Driver>, IDriverFileRepositor
                      select driver;
     }
 
-    public User? Get(Func<Driver, bool> predicate)
+    public IEnumerable<Driver> Sort()
     {
-        return _inMemoryStore.FirstOrDefault(predicate);
+        _sortQuery = from driver in _inMemoryStore
+                     orderby driver.Id ascending
+                     select driver;
+        return _sortQuery;
     }
 
     public IEnumerable<Driver> GetAll()
@@ -25,13 +28,5 @@ public class DriverFileRepository : FileRepository<Driver>, IDriverFileRepositor
                      orderby driver.Id ascending
                      select driver;
         return _sortQuery;
-    }
-
-    public void Save()
-    {
-        _sortQuery = from driver in _inMemoryStore
-                     orderby driver.Id ascending
-                     select driver;
-        File.WriteAllText(_fileName, JsonConvert.SerializeObject(_sortQuery.ToList()));
     }
 }

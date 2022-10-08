@@ -14,9 +14,12 @@ public class UserFileRepository : FileRepository<User>, IUserFileRepository
                      select user;
     }
 
-    public User? Get(Func<User, bool> predicate)
+    public IEnumerable<User> Sort()
     {
-        return _inMemoryStore.FirstOrDefault(predicate);
+        _sortQuery = from user in _inMemoryStore
+                     orderby user.Id ascending
+                     select user;
+        return _sortQuery;
     }
 
     public IEnumerable<User> GetAll()
@@ -25,13 +28,5 @@ public class UserFileRepository : FileRepository<User>, IUserFileRepository
                      orderby user.Id ascending
                      select user;
         return _sortQuery;
-    }
-
-    public void Save()
-    {
-        _sortQuery = from user in _inMemoryStore
-                     orderby user.Id ascending
-                     select user;
-        File.WriteAllText(_fileName, JsonConvert.SerializeObject(_sortQuery.ToList()));
     }
 }
