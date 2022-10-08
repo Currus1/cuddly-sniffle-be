@@ -21,11 +21,7 @@ public class Trip
                 _userIds = value;
                 return;
             }
-            else
-            {
                 _userIds = null;
-                return;
-            }
         }
     }
     public string StartingPoint { get; set; }
@@ -42,6 +38,8 @@ public class Trip
         UserIds = userIds;
         StartingPoint = startingPoint;
         Destination = destination;
+        Hours = hours;
+        Minutes = minutes;
         Seats = seats;
         EstimatedTripPrice = estimatedTripPrice;
     }
