@@ -19,7 +19,7 @@ public class DriverController : Controller
     [Route("Drivers/{id}")]
     public ActionResult<Driver> GetSingleDriver(int id)
     {
-        return Ok(_driverFileRepository.Get(driver => driver.Id == id));
+        return Ok(_driverFileRepository.Get(predicate: driver => driver.Id == id));
     }
 
     [HttpGet]
@@ -33,7 +33,7 @@ public class DriverController : Controller
     [HttpPost]
     public string AddingDriver([FromBody] Driver driverModel)
     {
-        _driverFileRepository.Add(driverModel);
+        _driverFileRepository.Add(_driverFileRepository.CheckVehicleType(driver:driverModel));
         _driverFileRepository.Save();
         return _driverFileRepository.GetAll().Count().ToString();
     }
