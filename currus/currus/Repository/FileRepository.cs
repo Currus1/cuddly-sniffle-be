@@ -9,7 +9,7 @@ public class FileRepository<T> : IFileRepository<T> where T : class
 {
     protected readonly string _fileName;
     protected readonly List<T>? _inMemoryStore;
-    
+
     public FileRepository(string fileName = "default.json")
     {
         _fileName = fileName;
