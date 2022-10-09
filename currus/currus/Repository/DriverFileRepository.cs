@@ -27,4 +27,3 @@ public class DriverFileRepository : FileRepository<Driver>, IDriverFileRepositor
         File.WriteAllText(_fileName, JsonConvert.SerializeObject(SortedEnumerable().ToList()));
     }
 }
-}
