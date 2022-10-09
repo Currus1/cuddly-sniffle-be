@@ -20,7 +20,7 @@ public class UserController : Controller
     [Route("Users/{id}")]
     public ActionResult<Driver> GetSingleUser(int id)
     {
-        return Ok(_userFileRepository.Get(user => user.Id == id));
+        return Ok(_userFileRepository.Get(predicate: user => user.Id == id));
     }
 
     [HttpGet]

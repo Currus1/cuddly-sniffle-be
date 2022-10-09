@@ -1,4 +1,5 @@
-﻿using currus.Models;
+﻿using currus.Enums;
+using currus.Models;
 using Newtonsoft.Json;
 
 namespace currus.Repository;
@@ -25,5 +26,18 @@ public class DriverFileRepository : FileRepository<Driver>, IDriverFileRepositor
     public void Save()
     {
         File.WriteAllText(_fileName, JsonConvert.SerializeObject(SortedEnumerable().ToList()));
+    }
+
+    public Driver CheckVehicleType(Driver driver, string defaultVehicleType = "Sedan")
+    {
+        foreach (var type in VehicleTypes.GetValues<VehicleTypes>())
+        {
+            if (driver.VehicleType == type.ToString())
+            {
+                return driver;
+            }
+        }
+        driver.VehicleType = defaultVehicleType;
+        return driver;
     }
 }
