@@ -4,5 +4,5 @@ namespace currus.Repository;
 
 public interface IDriverFileRepository : IFileRepository<Driver>
 {
-    public IEnumerable<Driver> Sort();
+    public IEnumerable<Driver> SortedEnumerable();
 }
