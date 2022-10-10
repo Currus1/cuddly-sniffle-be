@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "currus", "currus\currus.csproj", "{D2D434A1-A4C2-46B7-A1A0-75F0FEB6B31C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "currus", "currus\currus.csproj", "{D2D434A1-A4C2-46B7-A1A0-75F0FEB6B31C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "currus.Tests", "currus.Tests\currus.Tests.csproj", "{2F9D0F2D-A0CA-489D-875D-FE8E8233383A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D2D434A1-A4C2-46B7-A1A0-75F0FEB6B31C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2D434A1-A4C2-46B7-A1A0-75F0FEB6B31C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2D434A1-A4C2-46B7-A1A0-75F0FEB6B31C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F9D0F2D-A0CA-489D-875D-FE8E8233383A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F9D0F2D-A0CA-489D-875D-FE8E8233383A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F9D0F2D-A0CA-489D-875D-FE8E8233383A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F9D0F2D-A0CA-489D-875D-FE8E8233383A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
