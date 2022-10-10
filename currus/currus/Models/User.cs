@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace currus.Models;
 
-public class User : IComparable
+public class User : IEquatable<User>, IComparable
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -13,8 +14,13 @@ public class User : IComparable
         @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")]
     public string Email { get; set; }
 
-    [RegularExpression(@"^((86|\+3706)\d{3}\d{4})$")]
+    [RegularExpression(@"^((86|\+3706)\d{7})$")]
     public string PhoneNumber { get; set; }
+
+    public override bool Equals([AllowNull] User other)
+    {
+        return (this.Id == other.Id);
+    }
 
     public User(int id, string name, string surname, DateTime birthdate, string email, string phoneNumber)
     {

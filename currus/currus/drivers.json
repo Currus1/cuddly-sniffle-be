@@ -1,1 +1,22 @@
-[{"VehicleType":"Sedan","LicenseNumber":"NNN999","Id":0,"Name":"Saba","Surname":"Baker","Birthdate":"0001-01-01T00:00:00","Email":"sabab@gmail.com","PhoneNumber":"868686861"},{"VehicleType":"Sedan","LicenseNumber":"LMO770","Id":0,"Name":"string","Surname":"string","Birthdate":"2022-10-09T19:29:55.463Z","Email":"klaidas.sinkevicius@gmail.com","PhoneNumber":"string"},{"VehicleType":"SUV","LicenseNumber":"LDS555","Id":1,"Name":"Lula","Surname":"Hackett","Birthdate":"0001-01-01T00:00:00","Email":"lulas@gmail.com","PhoneNumber":"868686862"}]
+[
+  {
+    "Id": 0,
+    "Name": "Saba",
+    "Surname": "Baker",
+    "Birthday": "2000-10-04T00:00:00",
+    "Email": "sabab@gmail.com",
+    "PhoneNumber": "868686861",
+    "VehicleType": "Sedan",
+    "LicenseNumber": "NNN999"
+  },
+  {
+    "Id": 1,
+    "Name": "Lula",
+    "Surname": "Hackett",
+    "Birthday": "1999-10-04T00:00:00",
+    "Email": "lulas@gmail.com",
+    "PhoneNumber": "868686862",
+    "VehicleType": "SUV",
+    "LicenseNumber": "LDS555"
+  }
+]
