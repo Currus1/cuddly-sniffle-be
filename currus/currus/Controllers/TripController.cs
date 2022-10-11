@@ -13,7 +13,7 @@ public class TripController : Controller
     [Route("Trips")]
     public ActionResult<List<Trip>> GetAllTrips()
     {
-        return Ok(JsonSerializer.Serialize(TripRepository.Trips));
+        return Ok(JsonSerializer.Serialize(TripListRepository.Trips));
     }
 
     [HttpPost]
@@ -22,7 +22,7 @@ public class TripController : Controller
     {
         int basePrice = trip.CalculateBasePrice(trip); 
         trip.EstimatedTripPrice = trip.CalculateTripPrice(trip.Hours, trip.Minutes, trip.Distance, basePrice);
-        TripRepository.Trips.Add(trip);
-        return TripRepository.Trips.Count.ToString();
+        TripListRepository.Trips.Add(trip);
+        return TripListRepository.Trips.Count.ToString();
     }
 }

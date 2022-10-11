@@ -35,7 +35,6 @@ public class Trip
     public int Minutes { get; set; }
     public decimal Distance { get; set; }
     public string VehicleType { get; set; }
-    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public decimal EstimatedTripPrice { get; set; }
 
     public Trip(int seats, int id, int driverId, Coordinates coords, int[] userIds, string startingPoint,
@@ -50,7 +49,7 @@ public class Trip
         Destination = destination;
         Hours = hours;
         Minutes = minutes;
-        EstimatedTripPrice = CalculateTripPrice(hours, minutes, distance);
+        Distance = distance;
     }
 
     public decimal CalculateTripPrice(int hours, int minutes, decimal distance, int basePrice = 2)
