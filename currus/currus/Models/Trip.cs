@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System;
+﻿using System.Text.Json.Serialization;
 using currus.Extensions;
 
 namespace currus.Models;
@@ -8,8 +7,9 @@ public class Trip
 {
     public int Id { get; set; }
     public int DriverId { get; set; }
-
+    public Coordinates Coords { get; set; }
     private int[]? _userIds;
+
     public int[] UserIds
     {
         get => _userIds;
@@ -21,9 +21,11 @@ public class Trip
                 _userIds = value;
                 return;
             }
-                _userIds = null;
+
+            _userIds = null;
         }
     }
+
     public string StartingPoint { get; set; }
     public string Destination { get; set; }
     public int Seats { get; set; }
@@ -31,8 +33,10 @@ public class Trip
     public int Minutes { get; set; }
     public double EstimatedTripPrice { get; set; }
 
-    public Trip(int seats, int id, int driverId, int[] userIds, string startingPoint, string destination, int hours, int minutes, double estimatedTripPrice)
+    public Trip(int seats, int id, int driverId, Coordinates coords, int[] userIds, string startingPoint,
+        string destination, int hours, int minutes, double estimatedTripPrice)
     {
+        Coords = coords;
         Seats = seats;
         Id = id;
         DriverId = driverId;
