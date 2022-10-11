@@ -1,8 +1,12 @@
-﻿namespace currus.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace currus.Models;
 
 public class Driver : User
 {
     public string VehicleType { get; set; }
+
+    [RegularExpression(@"^[A-Z]{3}\d{3}$")]
     public string LicenseNumber { get; set; }
 
     public Driver(int id, string name, string surname, DateTime birthdate, string email, string phoneNumber,
