@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace currus.Models;
 
-public class User : IEquatable<User>, IComparable
+public class User : IComparable
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -16,11 +16,6 @@ public class User : IEquatable<User>, IComparable
 
     [RegularExpression(@"^((86|\+3706)\d{7})$")]
     public string PhoneNumber { get; set; }
-
-    public override bool Equals([AllowNull] User other)
-    {
-        return (this.Id == other.Id);
-    }
 
     public User(int id, string name, string surname, DateTime birthdate, string email, string phoneNumber)
     {
