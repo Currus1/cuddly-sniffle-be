@@ -16,7 +16,7 @@ public class OngoingTripController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<List<OngoingTrip>> Get()
     {
-        return Ok(JsonSerializer.Serialize(TripRepository.ongoingTrips));
+        return Ok(JsonSerializer.Serialize(TripListRepository.ongoingTrips));
     }
 
     [HttpPost]
@@ -27,6 +27,6 @@ public class OngoingTripController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public void Add([FromBody] OngoingTrip ongoingTrip)
     {
-        TripRepository.ongoingTrips.Add(ongoingTrip);
+        TripListRepository.ongoingTrips.Add(ongoingTrip);
     }
 }

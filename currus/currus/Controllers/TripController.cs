@@ -13,14 +13,16 @@ public class TripController : Controller
     [Route("Trips")]
     public ActionResult<List<Trip>> GetAllTrips()
     {
-        return Ok(JsonSerializer.Serialize(TripRepository.Trips));
+        return Ok(JsonSerializer.Serialize(TripListRepository.Trips));
     }
 
     [HttpPost]
     [Route("Adding")]
     public string AddTrip([FromBody] Trip trip)
     {
-        TripRepository.Trips.Add(trip);
-        return TripRepository.Trips.Count.ToString();
+        int basePrice = trip.CalculateBasePrice(trip); 
+        trip.EstimatedTripPrice = trip.CalculateTripPrice(trip.Hours, trip.Minutes, trip.Distance, basePrice);
+        TripListRepository.Trips.Add(trip);
+        return TripListRepository.Trips.Count.ToString();
     }
 }
