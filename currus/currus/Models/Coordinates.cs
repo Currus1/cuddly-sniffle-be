@@ -1,8 +1,13 @@
-﻿namespace currus.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace currus.Models;
 
 public struct Coordinates
 {
-    public double lat, lng;
+    [JsonInclude]
+    public double lat;
+    [JsonInclude]
+    public double lng;
 
     public Coordinates(double lat, double lng)
     {
