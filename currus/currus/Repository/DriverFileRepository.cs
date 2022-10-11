@@ -30,7 +30,7 @@ public class DriverFileRepository : FileRepository<Driver>, IDriverFileRepositor
 
     public Driver CheckVehicleType(Driver driver, string defaultVehicleType = "Sedan")
     {
-        foreach (var type in VehicleTypes.GetValues<VehicleTypes>())
+        foreach (var type in Enum.GetValues<VehicleTypes>())
         {
             if (driver.VehicleType == type.ToString())
             {

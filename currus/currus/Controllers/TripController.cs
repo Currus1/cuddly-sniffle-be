@@ -20,6 +20,8 @@ public class TripController : Controller
     [Route("Adding")]
     public string AddTrip([FromBody] Trip trip)
     {
+        int basePrice = trip.CalculateBasePrice(trip); 
+        trip.EstimatedTripPrice = trip.CalculateTripPrice(trip.Hours, trip.Minutes, trip.Distance, basePrice);
         TripRepository.Trips.Add(trip);
         return TripRepository.Trips.Count.ToString();
     }
