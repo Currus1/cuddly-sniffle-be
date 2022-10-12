@@ -5,9 +5,9 @@ namespace currus.Models;
 public struct Coordinates
 {
     [JsonInclude]
-    public double lat;
+    public double lat { get; set; }
     [JsonInclude]
-    public double lng;
+    public double lng { get; set; }
 
     public Coordinates(double lat, double lng)
     {

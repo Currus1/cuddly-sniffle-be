@@ -1,11 +1,12 @@
 ﻿using System.Text.Json.Serialization;
+using System.Xml.Linq;
 using currus.Enums;
 using currus.Extensions;
 using Microsoft.OpenApi.Extensions;
 
 namespace currus.Models;
 
-public class Trip
+public class Trip : IComparable
 {
     public int Id { get; set; }
     public int DriverId { get; set; }
@@ -77,5 +78,15 @@ public class Trip
             default:
                 return 2;
         }
+    }
+
+    public int CompareTo(object? obj) // Sorting users by their name alhapebtically
+    {
+        var other = (Trip)obj; // narrowing type conversion
+        if (string.Compare(Destination, other.Destination, StringComparison.Ordinal) < 0)
+            return -1;
+        if (string.Compare(Destination, other.Destination, StringComparison.Ordinal) > 0)
+            return 1;
+        return 0;
     }
 }
