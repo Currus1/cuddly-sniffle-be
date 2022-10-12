@@ -13,6 +13,7 @@ public class TripController : Controller
     [Route("Trips")]
     public ActionResult<List<Trip>> GetAllTrips()
     {
+        TripListRepository.Trips.Sort();
         return Ok(JsonSerializer.Serialize(TripListRepository.Trips));
     }
 

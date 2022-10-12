@@ -4,7 +4,7 @@ namespace currus.Models;
 
 public struct OngoingTrip
 {
-    [Key] public int Id { get; set; }
+    public int Id { get; set; }
     public DateTime? TripStart { get; set; }
     public DateTime? TripEnd { get; set; }
 
