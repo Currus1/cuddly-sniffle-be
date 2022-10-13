@@ -15,7 +15,7 @@ public class Trip : IComparable
 
         set
         {
-            if (value.IsMoreThanZero(Seats))
+            if (value.IsLengthLessThanOrEqualTo(Seats))
             {
                 _userIds = value;
                 return;
@@ -34,6 +34,10 @@ public class Trip : IComparable
     public string VehicleType { get; set; }
     public decimal EstimatedTripPrice { get; set; }
 
+    public Trip()
+    {
+    }
+
     public Trip(int seats, int id, int driverId, Coordinates coords, int[] userIds, string startingPoint,
         string destination, int hours, int minutes, decimal distance)
     {
@@ -51,11 +55,13 @@ public class Trip : IComparable
 
     public decimal CalculateTripPrice(int hours, int minutes, decimal distance, int basePrice = 2)
     {
+        if (hours <= 0 && minutes <= 0) throw new ArgumentOutOfRangeException();
+        if (distance <= 0) throw new ArgumentOutOfRangeException();
+        const decimal pricePerKm = 0.2M;
+        const decimal pricePerMinute = 0.1M;
         decimal fullPrice = basePrice; // Widening type conversion
-        int fullTime = hours * 60 + minutes;
-        decimal pricePerKm = 0.2M;
-        decimal pricePerMin = 0.1M;
-        fullPrice += fullTime * pricePerMin + distance * pricePerKm;
+        var fullTime = hours * 60 + minutes;
+        fullPrice += fullTime * pricePerMinute + distance * pricePerKm;
         return fullPrice;
     }
 
@@ -63,8 +69,6 @@ public class Trip : IComparable
     {
         switch (trip.VehicleType)
         {
-            case "Sedan":
-                return 2;
             case "SUV":
                 return 3;
             case "Van":
