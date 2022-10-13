@@ -33,7 +33,7 @@ public class DriverController : Controller
     [HttpPost]
     public string AddingDriver([FromBody] Driver driverModel)
     {
-        _driverFileRepository.Add(_driverFileRepository.CheckVehicleType(driver:driverModel));
+        _driverFileRepository.Add(_driverFileRepository.CheckVehicleType(driver: driverModel));
         _driverFileRepository.Save();
         return _driverFileRepository.GetAll().Count().ToString();
     }

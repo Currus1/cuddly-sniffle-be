@@ -19,6 +19,7 @@ builder.Services.AddCors(p =>
 
 builder.Services.AddScoped<IDriverFileRepository, DriverFileRepository>();
 builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
+builder.Services.AddScoped<ITripFileRepository, TripFileRepository>();
 
 var app = builder.Build();
 

@@ -1,0 +1,21 @@
+[
+  {
+    "Id": 0,
+    "DriverId": 0,
+    "Coords": {
+      "lat": 0.0,
+      "lng": 0.0
+    },
+    "UserIds": [
+      0
+    ],
+    "StartingPoint": "string",
+    "Destination": "string",
+    "Seats": 3,
+    "Hours": 0,
+    "Minutes": 0,
+    "Distance": 0.0,
+    "VehicleType": "string",
+    "EstimatedTripPrice": 2.0
+  }
+]

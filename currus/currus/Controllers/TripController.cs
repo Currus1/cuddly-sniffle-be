@@ -9,12 +9,18 @@ namespace currus.Controllers;
 [ApiController]
 public class TripController : Controller
 {
+    private readonly ITripFileRepository _tripFileRepository;
+
+    public TripController(ITripFileRepository tripFileRepository)
+    {
+        _tripFileRepository = tripFileRepository;
+    }
+
     [HttpGet]
     [Route("Trips")]
     public ActionResult<List<Trip>> GetAllTrips()
     {
-        TripListRepository.Trips.Sort();
-        return Ok(JsonSerializer.Serialize(TripListRepository.Trips));
+        return Ok(JsonSerializer.Serialize(_tripFileRepository.GetAll()));
     }
 
     [HttpPost]
@@ -23,7 +29,8 @@ public class TripController : Controller
     {
         int basePrice = trip.CalculateBasePrice(trip); 
         trip.EstimatedTripPrice = trip.CalculateTripPrice(trip.Hours, trip.Minutes, trip.Distance, basePrice);
-        TripListRepository.Trips.Add(trip);
-        return TripListRepository.Trips.Count.ToString();
+        _tripFileRepository.Add(trip);
+        _tripFileRepository.Save();
+        return _tripFileRepository.GetAll().Count().ToString();
     }
 }

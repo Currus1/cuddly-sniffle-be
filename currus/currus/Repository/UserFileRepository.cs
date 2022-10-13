@@ -13,10 +13,10 @@ public class UserFileRepository : FileRepository<User>, IUserFileRepository
 
     public IEnumerable<User> SortedEnumerable()
     {
-        IEnumerable<User> _sortQuery = from user in _inMemoryStore
-                                       orderby user.Id ascending
+        IEnumerable<User> sortQuery = from user in _inMemoryStore
+                                       orderby user.Id
                                        select user;
-        return _sortQuery;
+        return sortQuery;
     }
 
     public IEnumerable<User> GetAll()

@@ -5,13 +5,13 @@ namespace currus.Models;
 public struct Coordinates
 {
     [JsonInclude]
-    public double lat { get; set; }
+    public double Latitude { get; set; }
     [JsonInclude]
-    public double lng { get; set; }
+    public double Longitude { get; set; }
 
-    public Coordinates(double lat, double lng)
+    public Coordinates(double latitude, double longitude)
     {
-        this.lat = lat;
-        this.lng = lng;
+        this.Latitude = latitude;
+        this.Longitude = longitude;
     }
 }
