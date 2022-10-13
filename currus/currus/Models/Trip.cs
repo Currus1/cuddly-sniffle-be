@@ -1,8 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using System.Xml.Linq;
-using currus.Enums;
-using currus.Extensions;
-using Microsoft.OpenApi.Extensions;
+﻿using currus.Extensions;
 
 namespace currus.Models;
 

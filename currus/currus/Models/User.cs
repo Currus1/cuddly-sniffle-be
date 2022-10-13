@@ -2,7 +2,7 @@
 
 namespace currus.Models;
 
-public class User : IComparable
+public class User
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -24,15 +24,5 @@ public class User : IComparable
         Birthdate = birthdate;
         Email = email;
         PhoneNumber = phoneNumber;
-    }
-
-    public int CompareTo(object? obj) // Sorting users by their name alhapebtically
-    {
-        var other = (User)obj; // narrowing type conversion
-        if (string.Compare(Name, other.Name, StringComparison.Ordinal) < 0)
-            return -1;
-        if (string.Compare(Name, other.Name, StringComparison.Ordinal) > 0)
-            return 1;
-        return 0;
     }
 }

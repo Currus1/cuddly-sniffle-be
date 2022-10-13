@@ -13,10 +13,10 @@ public class DriverFileRepository : FileRepository<Driver>, IDriverFileRepositor
 
     public IEnumerable<Driver> SortedEnumerable()
     {
-        IEnumerable<Driver> _sortQuery = from driver in _inMemoryStore
-                                         orderby driver.Id ascending
+        IEnumerable<Driver> sortQuery = from driver in _inMemoryStore
+                                         orderby driver.Id
                                          select driver;
-        return _sortQuery;
+        return sortQuery;
     }
 
     public IEnumerable<Driver> GetAll()
