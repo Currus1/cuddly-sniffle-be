@@ -12,7 +12,18 @@ public class DriverController : Controller
 
     public DriverController(IDriverFileRepository driverFileRepository)
     {
+        try
+        {
         _driverFileRepository = driverFileRepository;
+        }
+        catch (FileNotFoundException ex)
+        {
+            throw new FileNotFoundException("Could not find the requested file.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 
     [HttpGet]
@@ -33,8 +44,19 @@ public class DriverController : Controller
     [HttpPost]
     public string AddingDriver([FromBody] Driver driverModel)
     {
-        _driverFileRepository.Add(_driverFileRepository.CheckVehicleType(driver: driverModel));
-        _driverFileRepository.Save();
-        return _driverFileRepository.GetAll().Count().ToString();
+        try
+        {
+            _driverFileRepository.Add(_driverFileRepository.CheckVehicleType(driver: driverModel));
+            _driverFileRepository.Save();
+            return _driverFileRepository.GetAll().Count().ToString();
+        }
+        catch (FileNotFoundException ex)
+        {
+            throw new FileNotFoundException("Could not find the requested file.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }

@@ -13,7 +13,18 @@ public class UserController : Controller
 
     public UserController(IUserFileRepository userFileRepository)
     {
-        _userFileRepository = userFileRepository;
+        try
+        {
+            _userFileRepository = userFileRepository;
+        }
+        catch (FileNotFoundException ex)
+        {
+            throw new FileNotFoundException("Could not find the requested file.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 
     [HttpGet]
@@ -34,8 +45,19 @@ public class UserController : Controller
     [Route("Adding")]
     public string AddUser([FromBody] User user)
     {
-        _userFileRepository.Add(user);
-        _userFileRepository.Save();
-        return _userFileRepository.GetAll().Count().ToString();
+        try
+        {
+            _userFileRepository.Add(user);
+            _userFileRepository.Save();
+            return _userFileRepository.GetAll().Count().ToString();
+        }
+        catch (FileNotFoundException ex)
+        {
+            throw new FileNotFoundException("Could not find the requested file.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }

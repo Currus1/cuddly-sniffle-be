@@ -12,6 +12,10 @@ public class FileRepository<T> : IFileRepository<T> where T : class
     {
         _fileName = fileName;
         _inMemoryStore = JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(_fileName)) ?? new List<T>();
+        if(_inMemoryStore == null)
+        {
+            throw new Exception();
+        }
     }
 
     public void Add(T entity)
