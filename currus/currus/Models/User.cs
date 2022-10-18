@@ -8,6 +8,8 @@ public class User
     public string Name { get; set; }
     public string Surname { get; set; }
     public DateTime Birthdate { get; set; }
+    private Lazy<List<Trip>> _previousTrips;
+    public List<Trip> PreviousTrips { get { return _previousTrips.Value; } }
 
     [RegularExpression(
         @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$")]
@@ -24,5 +26,10 @@ public class User
         Birthdate = birthdate;
         Email = email;
         PhoneNumber = phoneNumber;
+
+        _previousTrips = new Lazy<List<Trip>>(() =>
+        {
+            return new List<Trip>();
+        });
     }
 }
