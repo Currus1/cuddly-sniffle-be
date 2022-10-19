@@ -9,28 +9,28 @@ namespace currus.Controllers;
 [ApiController]
 public class TripController : Controller
 {
-    private readonly ITripFileRepository _tripFileRepository;
+    private readonly ITripDbRepository _tripDbRepository;
 
-    public TripController(ITripFileRepository tripFileRepository)
+    public TripController(ITripDbRepository tripDbRepository)
     {
-        _tripFileRepository = tripFileRepository;
+        _tripDbRepository = tripDbRepository;
     }
 
     [HttpGet]
     [Route("Trips")]
     public ActionResult<List<Trip>> GetAllTrips()
     {
-        return Ok(JsonSerializer.Serialize(_tripFileRepository.GetAll()));
+        return Ok(JsonSerializer.Serialize(_tripDbRepository.GetAll()));
     }
 
     [HttpPost]
     [Route("Adding")]
-    public string AddTrip([FromBody] Trip trip)
+    public async Task<IActionResult> AddTrip([FromBody] Trip trip)
     {
         int basePrice = trip.CalculateBasePrice(trip); 
         trip.EstimatedTripPrice = trip.CalculateTripPrice(trip.Hours, trip.Minutes, trip.Distance, basePrice);
-        _tripFileRepository.Add(trip);
-        _tripFileRepository.Save();
-        return _tripFileRepository.GetAll().Count().ToString();
+        await _tripDbRepository.Add(trip);
+        await _tripDbRepository.SaveAsync();
+        return Ok(trip);
     }
 }

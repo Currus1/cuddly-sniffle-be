@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
+using currus.Data;
 using currus.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +19,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(p =>
     p.AddPolicy("corsapp", builder => { builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader(); }));
 
-builder.Services.AddScoped<IDriverFileRepository, DriverFileRepository>();
-builder.Services.AddScoped<IUserFileRepository, UserFileRepository>();
-builder.Services.AddScoped<ITripFileRepository, TripFileRepository>();
+builder.Services.AddScoped<IUserDbRepository, UserDbRepository>();
+builder.Services.AddScoped<ITripDbRepository, TripDbRepository>();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString)
+    );
 
 var app = builder.Build();
 
@@ -28,6 +34,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureCreated();
+    DbInitializer.Initialize(context);
 }
 
 app.UseCors("corsapp");
