@@ -16,13 +16,6 @@ public class TripController : Controller
         _tripDbRepository = tripDbRepository;
     }
 
-    [HttpGet]
-    [Route("Trips")]
-    public ActionResult<List<Trip>> GetAllTrips()
-    {
-        return Ok(JsonSerializer.Serialize(_tripDbRepository.GetAll()));
-    }
-
     [HttpPost]
     [Route("Adding")]
     public async Task<IActionResult> AddTrip([FromBody] Trip trip)
@@ -32,5 +25,40 @@ public class TripController : Controller
         await _tripDbRepository.Add(trip);
         await _tripDbRepository.SaveAsync();
         return Ok(trip);
+    }
+
+    [HttpDelete]
+    [Route("Deletion")]
+    public async Task<IActionResult> DeleteTrip([FromBody] Trip trip)
+    {
+        _tripDbRepository.Delete(trip);
+        await _tripDbRepository.SaveAsync();
+        return Ok(trip);
+    }
+
+    [HttpDelete]
+    [Route("Deletion/{id}")]
+    public async Task<IActionResult> DeleteTripById(int id)
+    {
+        _tripDbRepository.DeleteById(id);
+        await _tripDbRepository.SaveAsync();
+        return Ok(id);
+    }
+
+    [HttpPut]
+    [Route("Update")]
+    public async Task<IActionResult> UpdateTrip([FromBody] Trip trip)
+    {
+        _tripDbRepository.Update(trip);
+        await _tripDbRepository.SaveAsync();
+        return Ok(trip);
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public Trip GetTrip(int id)
+    {
+        Trip? trip = _tripDbRepository.Get(id);
+        return trip;
     }
 }

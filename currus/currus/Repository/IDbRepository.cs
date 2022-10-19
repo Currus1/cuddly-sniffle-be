@@ -4,9 +4,10 @@
     {
         Task Add(T entity);
         public IEnumerable<T> GetAll();
-        public T? Get(Func<T, bool> predicate);
+        public T? Get(int id);
         void Delete(T entity);
         public void Save();
         public Task SaveAsync();
+        public void Update(T entity);
     }
 }
