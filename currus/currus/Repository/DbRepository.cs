@@ -18,12 +18,13 @@ namespace currus.Repository
         
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Remove(entity);
         }
 
-        public T? Get(Func<T, bool> predicate)
+        public T? Get(int id)
         {
-            throw new NotImplementedException();
+            var entity = _context.Find<T>(id);
+            return entity;
         }
 
         public IEnumerable<T> GetAll()
@@ -39,6 +40,11 @@ namespace currus.Repository
         public async Task SaveAsync()
         {
            await _context.SaveChangesAsync();
+        }
+
+        public void Update(T entity)
+        {
+            _context.Set<T>().Update(entity);
         }
     }
 }
