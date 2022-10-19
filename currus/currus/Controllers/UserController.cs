@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using currus.Models;
+﻿using currus.Models;
 using currus.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,33 +8,19 @@ namespace currus.Controllers;
 [ApiController]
 public class UserController : Controller
 {
-    private readonly IUserFileRepository _userFileRepository;
+    private readonly IUserDbRepository _userDbRepository;
 
-    public UserController(IUserFileRepository userFileRepository)
+    public UserController(IUserDbRepository userDbRepository)
     {
-        _userFileRepository = userFileRepository;
-    }
-
-    [HttpGet]
-    [Route("Users/{id}")]
-    public ActionResult<Driver> GetSingleUser(int id)
-    {
-        return Ok(_userFileRepository.Get(predicate: user => user.Id == id));
-    }
-
-    [HttpGet]
-    [Route("Users")]
-    public ActionResult<List<User>> GetAllUsers()
-    {
-        return Ok(JsonSerializer.Serialize(_userFileRepository.GetAll()));
+        _userDbRepository = userDbRepository;
     }
 
     [HttpPost]
     [Route("Adding")]
-    public string AddUser([FromBody] User user)
+    public async Task<IActionResult> AddUser([FromBody] User user)
     {
-        _userFileRepository.Add(user);
-        _userFileRepository.Save();
-        return _userFileRepository.GetAll().Count().ToString();
+        await _userDbRepository.Add(user);
+        await _userDbRepository.SaveAsync();
+        return Ok(user);
     }
 }

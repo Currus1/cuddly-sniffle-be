@@ -2,7 +2,7 @@
 
 namespace currus.Repository
 {
-    public interface ITripFileRepository : IFileRepository<Trip>
+    public interface IUserDbRepository: IDbRepository<User>
     {
     }
 }

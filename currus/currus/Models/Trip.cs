@@ -1,56 +1,45 @@
-﻿using currus.Extensions;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace currus.Models;
 
 public class Trip : IComparable
 {
+    [Key]
+    [JsonIgnore]
     public int Id { get; set; }
-    public int DriverId { get; set; }
-    public Coordinates Coords { get; set; }
-    private int[]? _userIds;
-
-    public int[] UserIds
-    {
-        get => _userIds;
-
-        set
-        {
-            if (value.IsLengthLessThanOrEqualTo(Seats))
-            {
-                _userIds = value;
-                return;
-            }
-
-            _userIds = null;
-        }
-    }
-
-    public string StartingPoint { get; set; }
-    public string Destination { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public string? StartingPoint { get; set; }
+    public string? Destination { get; set; }
     public int Seats { get; set; }
     public int Hours { get; set; }
     public int Minutes { get; set; }
     public decimal Distance { get; set; }
-    public string VehicleType { get; set; }
+    public string? VehicleType { get; set; }
     public decimal EstimatedTripPrice { get; set; }
+    [JsonIgnore]
+    public virtual ICollection<User>? Users { get; set; }
 
     public Trip()
     {
     }
 
-    public Trip(int seats, int id, int driverId, Coordinates coords, int[] userIds, string startingPoint,
-        string destination, int hours, int minutes, decimal distance)
+    public Trip(int id, double latitude, double longitude, string startingPoint, string destination, 
+        int seats, int hours, int minutes, decimal distance, string vehicleType, decimal estimatedTripPrice)
     {
-        Coords = coords;
-        Seats = seats;
         Id = id;
-        DriverId = driverId;
-        UserIds = userIds;
+        Latitude = latitude;
+        Longitude = longitude;
         StartingPoint = startingPoint;
         Destination = destination;
+        Seats = seats;
         Hours = hours;
         Minutes = minutes;
         Distance = distance;
+        VehicleType = vehicleType;
+        EstimatedTripPrice = estimatedTripPrice;
     }
 
     public decimal CalculateTripPrice(int hours, int minutes, decimal distance, int basePrice = 2)
