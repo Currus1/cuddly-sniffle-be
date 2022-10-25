@@ -19,6 +19,7 @@ public class Trip : IComparable
     public decimal Distance { get; set; }
     public string? VehicleType { get; set; }
     public decimal EstimatedTripPrice { get; set; }
+    public string TripStatus { get; set; }
     [JsonIgnore]
     public virtual ICollection<User>? Users { get; set; }
 
@@ -27,7 +28,7 @@ public class Trip : IComparable
     }
 
     public Trip(int id, double latitude, double longitude, string startingPoint, string destination, 
-        int seats, int hours, int minutes, decimal distance, string vehicleType, decimal estimatedTripPrice)
+        int seats, int hours, int minutes, decimal distance, string vehicleType, decimal estimatedTripPrice, string tripStatus)
     {
         Id = id;
         Latitude = latitude;
@@ -40,6 +41,7 @@ public class Trip : IComparable
         Distance = distance;
         VehicleType = vehicleType;
         EstimatedTripPrice = estimatedTripPrice;
+        TripStatus = tripStatus;
     }
 
     public decimal CalculateTripPrice(int hours, int minutes, decimal distance, int basePrice = 2)

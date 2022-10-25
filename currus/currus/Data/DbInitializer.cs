@@ -41,7 +41,11 @@ namespace currus.Data
             var trips = new Trip[]
             {
                 new Trip {Seats = 4, StartingPoint = "Vilnius", Latitude = 54.6872, Longitude = 25.2797,
-                    Destination = "Kaunas", Hours = 1, Minutes = 2, Distance = 100, VehicleType = "EV"},
+                    Destination = "Kaunas", Hours = 1, Minutes = 2, Distance = 100, VehicleType = "EV", TripStatus = "Planned"},
+                new Trip {Seats = 2, StartingPoint = "Vilnius", Latitude = 54.6760, Longitude = 25.2738,
+                    Destination = "Klaipeda", Hours = 3, Minutes = 6, Distance = 306, VehicleType = "Sedan", TripStatus = "Planned"},
+                new Trip {Seats = 4, StartingPoint = "Vilnius", Latitude = 54.6861, Longitude = 25.2845,
+                    Destination = "Vyziniai", Hours = 1, Minutes = 3, Distance = 79.3M, VehicleType = "Van", TripStatus = "Ended"},
             };
 
             context.Trip.AddRange(trips);
