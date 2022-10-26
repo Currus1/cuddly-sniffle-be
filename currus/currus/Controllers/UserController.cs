@@ -58,4 +58,22 @@ public class UserController : Controller
         User? user = _userDbRepository.Get(id);
         return user;
     }
+
+    [HttpPut]
+    [Route("/{id}/trip/{tripId}")]
+    public async Task<IActionResult> SetRelation(int id, int tripId)
+    {
+        var user = _userDbRepository.SetRelation(id, tripId);
+        _userDbRepository.Update(user);
+        await _userDbRepository.SaveAsync();
+        return Ok();
+    }
+
+    [HttpGet]
+    [Route("/{id}/trips")]
+    public ICollection<Trip> GetAllTrips(int id)
+    {
+        return _userDbRepository.GetAllTrips(id);
+    }
+
 }
