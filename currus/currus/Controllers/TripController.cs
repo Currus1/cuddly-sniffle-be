@@ -64,9 +64,8 @@ public class TripController : Controller
 
     [HttpGet]
     [Route("Trips")]
-    public List<Trip> GetTrips(string tripStatus)
+    public IEnumerable<Trip> GetTrips(string tripStatus)
     {
-        List<Trip>? trips = _tripDbRepository.GetAllByStatus(tripStatus).ToList();
-        return trips;
+        return _tripDbRepository.GetAllByStatus(tripStatus);
     }
 }
