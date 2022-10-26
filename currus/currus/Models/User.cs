@@ -6,7 +6,6 @@ namespace currus.Models;
 public class User
 {
     [Key]
-    [JsonIgnore]
     public int Id { get; set; }
     public string? Name { get; set; }
     public string? Surname { get; set; }
@@ -26,8 +25,12 @@ public class User
     [JsonIgnore]
     public virtual ICollection<Trip>? Trips { get; set; }
 
+    public User()
+    {
+    }
 
-    public User(int id, string name, string surname, DateTime birthdate, string email, string phoneNumber)
+    public User(int id, string? name, string? surname, DateTime birthdate, string? email,
+        string? phoneNumber, string? vehicleType, string? licenseNumber)
     {
         Id = id;
         Name = name;
@@ -35,8 +38,9 @@ public class User
         Birthdate = birthdate;
         Email = email;
         PhoneNumber = phoneNumber;
-    }
-    public User()
-    {
+        VehicleType = vehicleType;
+        LicenseNumber = licenseNumber;
+        if (Trips == null)
+            Trips = new List<Trip>();
     }
 }
