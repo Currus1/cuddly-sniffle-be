@@ -60,4 +60,11 @@ public class TripController : Controller
         Trip? trip = _tripDbRepository.Get(id);
         return trip;
     }
+
+    [HttpGet]
+    [Route("Trips")]
+    public IEnumerable<Trip> GetTrips(string tripStatus)
+    {
+        return _tripDbRepository.GetAllByStatus(tripStatus);
+    }
 }
