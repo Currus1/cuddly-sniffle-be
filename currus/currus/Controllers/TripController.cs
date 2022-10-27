@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using currus.Models;
+﻿using currus.Models;
 using currus.Repository;
 using Microsoft.AspNetCore.Mvc;
 

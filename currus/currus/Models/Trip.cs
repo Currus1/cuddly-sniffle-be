@@ -7,7 +7,6 @@ namespace currus.Models;
 public class Trip : IComparable
 {
     [Key]
-    [JsonIgnore]
     public int Id { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
@@ -25,7 +24,7 @@ public class Trip : IComparable
 
     public Trip()
     {
-    }
+    }   
 
     public Trip(int id, double latitude, double longitude, string startingPoint, string destination, 
         int seats, int hours, int minutes, decimal distance, string vehicleType, decimal estimatedTripPrice, string tripStatus)
@@ -42,6 +41,8 @@ public class Trip : IComparable
         VehicleType = vehicleType;
         EstimatedTripPrice = estimatedTripPrice;
         TripStatus = tripStatus;
+        if (Users != null)
+            Users = new List<User>();
     }
 
     public decimal CalculateTripPrice(int hours, int minutes, decimal distance, int basePrice = 2)
