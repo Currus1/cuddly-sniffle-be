@@ -12,8 +12,8 @@ using currus.Data;
 namespace currus.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221025193514_MigrationWithTripStatuses")]
-    partial class MigrationWithTripStatuses
+    [Migration("20221027051015_TripStatus")]
+    partial class TripStatus
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
