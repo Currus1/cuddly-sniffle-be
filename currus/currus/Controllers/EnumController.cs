@@ -8,15 +8,15 @@ public class EnumController : Controller
 {
     [HttpGet]
     [Route("TripStatus")]
-    public TripStatuses[] GetTripStateEnum()
+    public String[] GetTripStateEnum()
     {
-        return (TripStatuses[])Enum.GetValues(typeof(TripStatuses)).Cast<TripStatuses>();
+        return (String[])Enum.GetNames(typeof(TripStatuses));
     }
 
     [HttpGet]
     [Route("VehicleType")]
-    public VehicleTypes[] GetVehicleTypeEnum()
+    public String[] GetVehicleTypeEnum()
     {
-        return (VehicleTypes[])Enum.GetValues(typeof(VehicleTypes)).Cast<VehicleTypes>();
+        return (String[])Enum.GetNames(typeof(VehicleTypes));
     }
 }
