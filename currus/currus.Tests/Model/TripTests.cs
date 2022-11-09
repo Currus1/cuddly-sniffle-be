@@ -105,8 +105,8 @@ internal class TripTests
     public void TripConstructor_Empty_ShouldCreateTrip()
     {
         Trip trip = new Trip();
-        
-        Assert.That(trip, Is.Not.Null);
+
+        Assert.IsNotNull(trip);
     }
 
     [Test]
@@ -129,6 +129,6 @@ internal class TripTests
             startingPoint, destination, seats, hours, minutes,
             distance, vehicleType, estimatedTripPrice, tripStatus);
 
-        Assert.That(trip, Is.Not.Null);
+        Assert.IsNotNull(trip);
     }
 }
