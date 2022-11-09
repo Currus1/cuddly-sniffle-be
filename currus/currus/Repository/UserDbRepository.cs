@@ -26,7 +26,7 @@ public class UserDbRepository : DbRepository<User>, IUserDbRepository
         {
             if (user.Trips != null)
             {
-                return user.Trips;
+                return user.Trips.Value;
             }
         }
         return null;

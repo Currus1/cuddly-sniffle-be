@@ -23,7 +23,11 @@ public class User
     [RegularExpression(@"^[A-Z]{3}\d{3}$")]
     public string? LicenseNumber { get; set; }
     [JsonIgnore]
-    public virtual ICollection<Trip>? Trips { get; set; }
+    
+
+    private Lazy <ICollection<Trip>>? _trips; 
+    
+    public virtual Lazy <ICollection<Trip>>? Trips { get { return _trips; } set { _trips = value; } }
 
     public User()
     {
@@ -40,7 +44,15 @@ public class User
         PhoneNumber = phoneNumber;
         VehicleType = vehicleType;
         LicenseNumber = licenseNumber;
-        if (Trips == null)
-            Trips = new List<Trip>();
+       
+
+        
+        if (Trips == null) {
+            Trips = new Lazy<ICollection<Trip>>(() =>
+            {
+                return new List<Trip>();
+            });
+        }
+
     }
 }
