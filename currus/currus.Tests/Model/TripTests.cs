@@ -1,13 +1,13 @@
 ﻿using currus.Models;
 
-namespace currus.Tests;
+namespace currus.Tests.Model;
 
 [TestFixture]
-internal class TripTest
+internal class TripTests
 {
     private Trip _trip;
-    
-    
+
+
     [SetUp]
     public void SetUp()
     {
@@ -57,4 +57,47 @@ internal class TripTest
         Assert.That(expectedValue, Is.EqualTo(_trip.CalculateTripPrice(hours, minutes, distance, basePrice)));
     }
 
+    [Test]
+    public void CalculateBasePrice_InputIsSuv_ShouldReturn3()
+    {
+        _trip.VehicleType = "SUV";
+        var expectedValue = 3;
+
+        Assert.That(expectedValue, Is.EqualTo(_trip.CalculateBasePrice(_trip)));
+    }
+    [Test]
+    public void CalculateBasePrice_InputIsVan_ShouldReturn3()
+    {
+        _trip.VehicleType = "Van";
+        var expectedValue = 3;
+
+        Assert.That(expectedValue, Is.EqualTo(_trip.CalculateBasePrice(_trip)));
+    }
+
+    [Test]
+    public void CalculateBasePrice_InputIsEV_ShouldReturn1()
+    {
+        _trip.VehicleType = "EV";
+        var expectedValue = 1;
+
+        Assert.That(expectedValue, Is.EqualTo(_trip.CalculateBasePrice(_trip)));
+    }
+
+    [Test]
+    public void CalculateBasePrice_InputIsSedan_ShouldReturn2()
+    {
+        _trip.VehicleType = "Sedan";
+        var expectedValue = 2;
+
+        Assert.That(expectedValue, Is.EqualTo(_trip.CalculateBasePrice(_trip)));
+    }
+
+    [Test]
+    public void CalculateBasePrice_InputIsOtherType_ShouldReturn2()
+    {
+        _trip.VehicleType = "Minivan";
+        var expectedValue = 2;
+
+        Assert.That(expectedValue, Is.EqualTo(_trip.CalculateBasePrice(_trip)));
+    }
 }

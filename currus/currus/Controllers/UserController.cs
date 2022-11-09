@@ -53,10 +53,12 @@ public class UserController : Controller
 
     [HttpGet]
     [Route("{id}")]
-    public User GetUser(int id)
+    public async Task<IActionResult> GetUser(int id)
     {
         User? user = _userDbRepository.Get(id);
-        return user;
+        if (user != null) 
+            return Ok(user);
+        return Ok();
     }
 
     [HttpPut]
