@@ -40,7 +40,6 @@ public class User
         PhoneNumber = phoneNumber;
         VehicleType = vehicleType;
         LicenseNumber = licenseNumber;
-        if (Trips == null)
-            Trips = new List<Trip>();
+        Trips = new List<Trip>();
     }
 }

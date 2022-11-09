@@ -1,12 +1,12 @@
 ﻿using currus.Extensions;
 
-namespace currus.Tests;
+namespace currus.Tests.ExtensionMethod;
 
 [TestFixture]
 internal class IntArrayExtensionsTests
 {
     private int[] array = { 1, 2, 3 };
-    private int[] emptyArray = {};
+    private int[] emptyArray = { };
     [Test]
     public void IsLengthLessThanOrEqualTo_InputWrong_ShouldReturnFalse()
     {
