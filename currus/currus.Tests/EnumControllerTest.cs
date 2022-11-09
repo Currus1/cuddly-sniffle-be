@@ -1,13 +1,14 @@
 using currus.Controllers;
 using currus.Enums;
+using System.Numerics;
 
 namespace currus.Tests;
 
 [TestFixture]
 public class EnumControllerTest
 {
-    public TripStatuses[] TripStates = { TripStatuses.Planned, TripStatuses.Ongoing, TripStatuses.Ended, TripStatuses.Cancelled};
-    public VehicleTypes[] VehicleTypes = { Enums.VehicleTypes.Sedan, Enums.VehicleTypes.SUV, Enums.VehicleTypes.EV, Enums.VehicleTypes.Van};
+    public String[] TripStates = {"Planned", "Ongoing", "Ended", "Cancelled"};
+    public String[] VehicleTypes = { "Sedan", "SUV", "EV", "Van"};
 
     [Test]
     public void GetTripState_ReturnsAllEnumValues()
