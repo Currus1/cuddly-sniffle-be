@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace currus.Models;
@@ -23,14 +26,23 @@ public class User
     [RegularExpression(@"^[A-Z]{3}\d{3}$")]
     public string? LicenseNumber { get; set; }
     [JsonIgnore]
-    
-
-    private Lazy <ICollection<Trip>>? _trips; 
-    
-    public virtual Lazy <ICollection<Trip>>? Trips { get { return _trips; } set { _trips = value; } }
+    private ICollection<Trip> _trips;
+    [JsonIgnore]
+    private ILazyLoader LazyLoader { get; set; }
+    [JsonIgnore]
+    public ICollection<Trip> Trips
+    {
+        get => LazyLoader.Load(this, ref _trips);
+        set => _trips = value;
+    }
 
     public User()
     {
+    }
+
+    private User(ILazyLoader lazyLoader)
+    {
+        LazyLoader = lazyLoader;
     }
 
     public User(int id, string? name, string? surname, DateTime birthdate, string? email,
@@ -44,15 +56,6 @@ public class User
         PhoneNumber = phoneNumber;
         VehicleType = vehicleType;
         LicenseNumber = licenseNumber;
-       
-
-        
-        if (Trips == null) {
-            Trips = new Lazy<ICollection<Trip>>(() =>
-            {
-                return new List<Trip>();
-            });
-        }
-
+        Trips = new List<Trip>();
     }
 }
