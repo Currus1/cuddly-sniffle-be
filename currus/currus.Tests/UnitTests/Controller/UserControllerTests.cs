@@ -36,7 +36,7 @@ public class UserControllerTests
 
     [Test]
     public void UserController_AddUser_ReturnUserOk()
-    {
+    {   
         var user = A.Fake<User>();
 
         var result = _userController.AddUser(user);
