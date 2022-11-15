@@ -66,9 +66,13 @@ public class UserController : Controller
     public async Task<IActionResult> SetRelation(int id, int tripId)
     {
         var user = _userDbRepository.SetRelation(id, tripId);
-        _userDbRepository.Update(user);
-        await _userDbRepository.SaveAsync();
-        return Ok();
+        if (user != null)
+        {
+            _userDbRepository.Update(user);
+            await _userDbRepository.SaveAsync();
+            return Ok(user);
+        }
+        return BadRequest();
     }
 
     [HttpGet]

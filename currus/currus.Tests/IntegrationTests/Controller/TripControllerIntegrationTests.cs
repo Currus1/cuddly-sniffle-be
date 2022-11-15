@@ -8,7 +8,7 @@ using Assert = NUnit.Framework.Assert;
 namespace currus.Tests.IntegrationTests.Controller
 {
     [TestFixture]
-    class UserControllerIntegrationTests
+    class TripControllerIntegrationTests
     {
         private HttpClient _client;
 
@@ -23,16 +23,16 @@ namespace currus.Tests.IntegrationTests.Controller
         [Test]
         public async Task Integration_UserController_GetUser_ReturnUserOk()
         {
-            var userId = 1;
-            var name = "Abel";
+            var tripId = 1;
+            var startingPoint = "Vilnius";
 
-            var response = await _client.GetAsync($"/user/{userId}");
-            var user = await response.Content.ReadFromJsonAsync<User>();
-            
+            var response = await _client.GetAsync($"/trip/{tripId}");
+            var trip = await response.Content.ReadFromJsonAsync<Trip>();
+
             response.EnsureSuccessStatusCode();
             Assert.IsNotNull(response);
-            Assert.That(user.Id, Is.EqualTo(userId));
-            Assert.That(user.Name, Is.EqualTo(name));
+            Assert.That(trip.Id, Is.EqualTo(tripId));
+            Assert.That(trip.StartingPoint, Is.EqualTo(startingPoint));
         }
     }
 }
