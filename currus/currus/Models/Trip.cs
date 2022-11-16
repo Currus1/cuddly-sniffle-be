@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace currus.Models;
 
-public class Trip : IComparable
+public class Trip
 {
     [Key]
     public int Id { get; set; }
@@ -41,8 +41,7 @@ public class Trip : IComparable
         VehicleType = vehicleType;
         EstimatedTripPrice = estimatedTripPrice;
         TripStatus = tripStatus;
-        if (Users != null)
-            Users = new List<User>();
+        Users = new List<User>();
     }
 
     public decimal CalculateTripPrice(int hours, int minutes, decimal distance, int basePrice = 2)
@@ -70,15 +69,5 @@ public class Trip : IComparable
             default:
                 return 2;
         }
-    }
-
-    public int CompareTo(object? obj) // Sorting users by their name alhapebtically
-    {
-        var other = (Trip)obj; // narrowing type conversion
-        if (string.Compare(Destination, other.Destination, StringComparison.Ordinal) < 0)
-            return -1;
-        if (string.Compare(Destination, other.Destination, StringComparison.Ordinal) > 0)
-            return 1;
-        return 0;
     }
 }

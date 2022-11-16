@@ -1,6 +1,8 @@
-﻿using currus.Models;
+﻿using currus.Logging.Logic;
+using currus.Models;
 using currus.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace currus.Controllers;
 
@@ -19,54 +21,104 @@ public class UserController : Controller
     [Route("Adding")]
     public async Task<IActionResult> AddUser([FromBody] User user)
     {
-        await _userDbRepository.Add(user);
-        await _userDbRepository.SaveAsync();
-        return Ok(user);
+        try
+        {
+           await _userDbRepository.Add(user);
+           await _userDbRepository.SaveAsync();
+           return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpDelete]
     [Route("Deletion")]
     public async Task<IActionResult> DeleteUser([FromBody] User user)
     {
-        _userDbRepository.Delete(user);
-        await _userDbRepository.SaveAsync();
-        return Ok(user);
+        try
+        {
+           _userDbRepository.Delete(user);
+           await _userDbRepository.SaveAsync();
+           return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpDelete]
     [Route("Deletion/{id}")]
     public async Task<IActionResult> DeleteUserById(int id)
     {
-        _userDbRepository.DeleteById(id);
-        await _userDbRepository.SaveAsync();
-        return Ok(id);
+        try
+        {
+           _userDbRepository.DeleteById(id);
+           await _userDbRepository.SaveAsync();
+           return Ok(id);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpPut]
     [Route("Update")]
     public async Task<IActionResult> UpdateUser([FromBody] User user)
     {
-        _userDbRepository.Update(user);
-        await _userDbRepository.SaveAsync();
-        return Ok(user);
+        try
+        {
+           _userDbRepository.Update(user);
+           await _userDbRepository.SaveAsync();
+           return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpGet]
     [Route("{id}")]
-    public User GetUser(int id)
+    public async Task<IActionResult> GetUser(int id)
     {
-        User? user = _userDbRepository.Get(id);
-        return user;
+        try
+        {
+            User? user = _userDbRepository.Get(id);
+            if (user != null)
+                return Ok(user);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + " " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpPut]
     [Route("/{id}/trip/{tripId}")]
     public async Task<IActionResult> SetRelation(int id, int tripId)
     {
-        var user = _userDbRepository.SetRelation(id, tripId);
-        _userDbRepository.Update(user);
-        await _userDbRepository.SaveAsync();
-        return Ok();
+        try
+        {
+           var user = _userDbRepository.SetRelation(id, tripId);
+           _userDbRepository.Update(user);
+           await _userDbRepository.SaveAsync();
+           return Ok();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + " " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpGet]

@@ -37,10 +37,13 @@ public class UserDbRepository : DbRepository<User>, IUserDbRepository
         var user = _context.User.Find(userId);
         if (user != null)
         {
-            if (user.Trips != null)
-            {
-                user.Trips.Add(new Trip { Id = tripId });
-            }
+            user = _context.User.Include("Trips").FirstOrDefault(user => userId == user.Id);
+            if (user.Trips == null)
+                user.Trips = new List<Trip>();
+
+            var trip = _context.Trip.Find(tripId);
+            if(trip != null)
+                user.Trips.Add(trip);
         }
         return user;
     }
