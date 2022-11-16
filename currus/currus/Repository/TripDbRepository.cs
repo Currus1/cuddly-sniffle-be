@@ -28,5 +28,42 @@ public class TripDbRepository : DbRepository<Trip>, ITripDbRepository
             select trip;
         return tripQuery;
     }
-}
 
+    public ICollection<User> GetAllUsers(int id)
+    {
+        var trip = _context.Trip.Include("Users").FirstOrDefault(trip => id == trip.Id);
+        if (trip != null)
+        {
+            if (trip.Users != null)
+            {
+                return trip.Users;
+            }
+        }
+        return null;
+    }
+
+    public Trip SetRelation(int tripId, int userId)
+    {
+        var trip = _context.Trip.Find(tripId);
+        var user = _context.User.Find(userId);
+
+        if (trip != null)
+        {
+            if (trip.Users != null && user != null)
+            {
+                trip.Users.Add(user);
+            }
+            else if (user != null)
+            {
+                trip.Users = new List<User>() { user };
+            }
+        }
+        return trip;
+    }
+
+    public Trip GetTripAsNotTracked(int id)
+    {
+        var trip = _context.Trip.Include("Users").AsNoTracking().FirstOrDefault(trip => id == trip.Id); //Where(trip => trip.Id == id);
+        return trip;
+    }
+}

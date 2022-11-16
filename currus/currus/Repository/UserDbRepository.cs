@@ -35,11 +35,16 @@ public class UserDbRepository : DbRepository<User>, IUserDbRepository
     public User SetRelation(int userId, int tripId)
     {
         var user = _context.User.Find(userId);
+        var trip = _context.Trip.Find(tripId);
         if (user != null)
         {
-            if (user.Trips != null)
+            if (user.Trips != null && trip != null)
             {
-                user.Trips.Add(new Trip { Id = tripId });
+                user.Trips.Add(trip);
+            }
+            else if (trip != null)
+            { 
+                user.Trips = new List<Trip>() { trip };
             }
         }
         return user;
