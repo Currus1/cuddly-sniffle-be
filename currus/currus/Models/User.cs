@@ -60,5 +60,6 @@ public class User
         {
             Trips = new List<Trip>();
         }
+        Trips = new List<Trip>();
     }
 }
