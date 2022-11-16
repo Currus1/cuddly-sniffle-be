@@ -8,7 +8,12 @@
         public static void createLogFile()
         {
             Directory.CreateDirectory(logFolderPath);
-            File.Create(logPath);
+            if (!File.Exists(logPath))
+            {
+                var file = File.Create(logPath);
+                file.Close();
+            }
+               
         }
 
         public static void LogInfo(string message)
@@ -16,7 +21,6 @@
             using (StreamWriter writer = new StreamWriter(logPath, false))
             {
                 writer.WriteLine($"{DateTime.Now} [INFO]: {message}");
-                writer.Close();
             }
         }
 
@@ -25,7 +29,6 @@
             using (StreamWriter writer = new StreamWriter(logPath, false))
             {
                 writer.WriteLine($"{DateTime.Now} [ERROR]: {error}");
-                writer.Close();
             }
         }
     }
