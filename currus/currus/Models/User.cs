@@ -56,6 +56,9 @@ public class User
         PhoneNumber = phoneNumber;
         VehicleType = vehicleType;
         LicenseNumber = licenseNumber;
-        Trips = new List<Trip>();
+        if (Trips == null)
+        {
+            Trips = new List<Trip>();
+        }
     }
 }
