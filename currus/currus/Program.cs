@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using currus.Data;
+using currus.Logging.Logic;
 using currus.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     );
 
 var app = builder.Build();
+
+// Create a LOG folder with file
+Logger.createLogFile();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
