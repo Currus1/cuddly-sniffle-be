@@ -8,7 +8,7 @@ namespace currus.Events
 
         public void ChangeEventHandler(Trip trip, bool add)
         {
-            if (trip != null)
+            if(trip != null && trip.Users != null)
             {
                 foreach (User user in trip.Users)
                 {
@@ -24,7 +24,7 @@ namespace currus.Events
                         }
                     }
                 }
-            }
+            }   
         }
 
         public void OnStatusChanged(object source, UserStatusEventArgs args)
