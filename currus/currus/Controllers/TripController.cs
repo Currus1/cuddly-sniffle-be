@@ -89,10 +89,21 @@ public class TripController : Controller
 
     [HttpGet]
     [Route("{id}")]
-    public Trip GetTrip(int id)
+    public async Task<IActionResult> GetTrip(int id)
     {
-        Trip? trip = _tripDbRepository.Get(id);
-        return trip;
+        try
+        {
+            Trip? trip = _tripDbRepository.Get(id);
+            if (trip != null)
+                return Ok(trip);
+            return Ok();
+        } 
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + " " + ex.StackTrace);
+            return NotFound();
+        }
+        
     }
 
     [HttpGet]
