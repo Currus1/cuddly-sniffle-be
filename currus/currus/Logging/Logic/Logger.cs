@@ -2,7 +2,7 @@
 {
     public static class Logger
     {
-        static string logPath = Directory.GetCurrentDirectory() + "/Logging/Logs/" + DateTime.Now.ToString("yyyy-dd-M") + "-log.txt";
+        static string logPath = Directory.GetCurrentDirectory() + "/Logging/Logs/" + DateTime.Now.ToString("yyyy-M-dd") + "-log.txt";
         static string logFolderPath = Directory.GetCurrentDirectory() + "/Logging/Logs";
 
         public static void createLogFile()
