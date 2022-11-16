@@ -18,7 +18,7 @@
 
         public static void LogInfo(string message)
         {
-            using (StreamWriter writer = new StreamWriter(logPath, false))
+            using (StreamWriter writer = new StreamWriter(logPath, true))
             {
                 writer.WriteLine($"{DateTime.Now} [INFO]: {message}");
             }
@@ -26,7 +26,7 @@
 
         public static void LogError(string error)
         {
-            using (StreamWriter writer = new StreamWriter(logPath, false))
+            using (StreamWriter writer = new StreamWriter(logPath, true))
             {
                 writer.WriteLine($"{DateTime.Now} [ERROR]: {error}");
             }
