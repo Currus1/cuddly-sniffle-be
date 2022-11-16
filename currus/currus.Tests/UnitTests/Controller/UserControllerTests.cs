@@ -11,25 +11,26 @@ namespace currus.Tests.Controller;
 [TestFixture]
 public class UserControllerTests
 {
-    private IUserDbRepository _userDbRepository;
+    private Lazy<IUserDbRepository> _userDbRepository;
     private UserController _userController;
+    private Lazy<User> _user;
+    private Lazy<int> _id;
 
     [SetUp]
     public void SetUp()
     {
-        _userDbRepository = A.Fake<IUserDbRepository>();
-
-        _userController = new UserController(_userDbRepository);
+        _user = new Lazy<User>(() => A.Fake<User>());
+        _id = new Lazy<int>(() => 0); 
+        _userDbRepository = new Lazy<IUserDbRepository>(() => A.Fake<IUserDbRepository>());
+        _userController = new UserController(_userDbRepository.Value);
     }
 
     [Test]
     public void UserController_GetUser_ReturnUserOk()
     {
-        var id = 0;
-        var user = A.Fake<User>();
-        A.CallTo(() => _userDbRepository.Get(id)).Returns(user);
+        A.CallTo(() => _userDbRepository.Value.Get(_id.Value)).Returns(_user.Value);
 
-        var result = _userController.GetUser(id);
+        var result = _userController.GetUser(_id.Value);
 
         result.Should().BeOfType<Task<IActionResult>>();
     }
@@ -37,9 +38,7 @@ public class UserControllerTests
     [Test]
     public void UserController_AddUser_ReturnUserOk()
     {   
-        var user = A.Fake<User>();
-
-        var result = _userController.AddUser(user);
+        var result = _userController.AddUser(_user.Value);
 
         result.Should().BeOfType<Task<IActionResult>>();
     }
@@ -47,9 +46,7 @@ public class UserControllerTests
     [Test]
     public void UserController_DeleteUser_ReturnUserOk()
     {
-        var user = A.Fake<User>();
-
-        var result = _userController.DeleteUser(user);
+        var result = _userController.DeleteUser(_user.Value);
 
         result.Should().BeOfType<Task<IActionResult>>();
     }
@@ -57,9 +54,7 @@ public class UserControllerTests
     [Test]
     public void UserController_UpdateUser_ReturnUserOk()
     {
-        var user = A.Fake<User>();
-
-        var result = _userController.UpdateUser(user);
+        var result = _userController.UpdateUser(_user.Value);
 
         result.Should().BeOfType<Task<IActionResult>>();
     }
@@ -67,9 +62,7 @@ public class UserControllerTests
     [Test]
     public void UserController_DeleteUserById_ReturnUserOk()
     {
-        var id = 0;
-
-        var result = _userController.DeleteUserById(id);
+        var result = _userController.DeleteUserById(_id.Value);
 
         result.Should().BeOfType<Task<IActionResult>>();
     }
@@ -77,12 +70,11 @@ public class UserControllerTests
     [Test]
     public void UserController_GetAllTrips_ReturnListOfTrips()
     {
-        var id = 0;
         var numberOfFakes = 2;
         var trips = A.CollectionOfFake<Trip>(numberOfFakes);
-        A.CallTo(() => _userDbRepository.GetAllTrips(id)).Returns(trips);
+        A.CallTo(() => _userDbRepository.Value.GetAllTrips(_id.Value)).Returns(trips);
 
-        var result = _userController.GetAllTrips(id);
+        var result = _userController.GetAllTrips(_id.Value);
 
         result.Should().BeOfType<List<Trip>>();
         result.Should().NotBeEmpty();
@@ -91,13 +83,11 @@ public class UserControllerTests
     [Test]
     public void UserController_SetRelation_ReturnOk()
     {
-        var id = 0;
         var tripId = 0;
-        var user = A.Fake<User>();
 
-        A.CallTo(() => _userDbRepository.SetRelation(id, tripId)).Returns(user);
+        A.CallTo(() => _userDbRepository.Value.SetRelation(_id.Value, tripId)).Returns(_user.Value);
 
-        var result = _userController.SetRelation(id, tripId);
+        var result = _userController.SetRelation(_id.Value, tripId);
 
         result.Should().BeOfType<Task<IActionResult>>();
     }
