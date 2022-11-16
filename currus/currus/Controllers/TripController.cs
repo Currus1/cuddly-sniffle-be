@@ -1,7 +1,9 @@
-﻿using currus.Events;
+using currus.Events;
+using currus.Logging.Logic;
 using currus.Models;
 using currus.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 
@@ -22,98 +24,141 @@ public class TripController : Controller
     [Route("Adding")]
     public async Task<IActionResult> AddTrip([FromBody] Trip trip)
     {
-        int basePrice = trip.CalculateBasePrice(trip); 
-        trip.EstimatedTripPrice = trip.CalculateTripPrice(trip.Hours, trip.Minutes, trip.Distance, basePrice);
-
-        UserStatusEventHandler.ChangeEventHandler(trip, true);
-
-        if (UserStatusEventHandler.UserStatusChanged != null)
+        try
         {
-            if (trip.TripStatus == "Planned" || trip.TripStatus == "Ongoing")
-                UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(true));
-            else
-                UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
-            UserStatusEventHandler.ChangeEventHandler(trip, false);
-        }
+            int basePrice = trip.CalculateBasePrice(trip); 
+            trip.EstimatedTripPrice = trip.CalculateTripPrice(trip.Hours, trip.Minutes, trip.Distance, basePrice);
 
-        await _tripDbRepository.Add(trip);
-        await _tripDbRepository.SaveAsync();
-        return Ok(trip);
+            UserStatusEventHandler.ChangeEventHandler(trip, true);
+
+            if (UserStatusEventHandler.UserStatusChanged != null)
+            {
+                if (trip.TripStatus == "Planned" || trip.TripStatus == "Ongoing")
+                    UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(true));
+                else
+                    UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
+                UserStatusEventHandler.ChangeEventHandler(trip, false);
+            }
+
+            await _tripDbRepository.Add(trip);
+            await _tripDbRepository.SaveAsync();
+            return Ok(trip);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpDelete]
     [Route("Deletion")]
     public async Task<IActionResult> DeleteTrip([FromBody] Trip trip)
     {
-        UserStatusEventHandler.ChangeEventHandler(trip, true);
-
-        if (UserStatusEventHandler.UserStatusChanged != null)
+        try
         {
-            UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
-            UserStatusEventHandler.ChangeEventHandler(trip, false);
-        }
+            UserStatusEventHandler.ChangeEventHandler(trip, true);
 
-        _tripDbRepository.Delete(trip);
-        await _tripDbRepository.SaveAsync();
-        return Ok(trip);
+           if (UserStatusEventHandler.UserStatusChanged != null)
+           {
+              UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
+              UserStatusEventHandler.ChangeEventHandler(trip, false);
+           }
+           
+           _tripDbRepository.Delete(trip);
+           await _tripDbRepository.SaveAsync();
+           return Ok(trip);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpDelete]
     [Route("Deletion/{id}")]
     public async Task<IActionResult> DeleteTripById(int id)
     {
-        Trip trip = _tripDbRepository.Get(id);
-        UserStatusEventHandler.ChangeEventHandler(trip, true);
-
-        if (UserStatusEventHandler.UserStatusChanged != null)
+        try
         {
-            UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
-            UserStatusEventHandler.ChangeEventHandler(trip, false);
-        }
+            Trip trip = _tripDbRepository.Get(id);
+            UserStatusEventHandler.ChangeEventHandler(trip, true);
 
-        _tripDbRepository.DeleteById(id);
-        await _tripDbRepository.SaveAsync();
-        return Ok(id);
+            if (UserStatusEventHandler.UserStatusChanged != null)
+            {
+                UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
+                UserStatusEventHandler.ChangeEventHandler(trip, false);
+            }
+
+            _tripDbRepository.DeleteById(id);
+            await _tripDbRepository.SaveAsync();
+            return Ok(id);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpPut]
     [Route("Update")]
     public async Task<IActionResult> UpdateTrip([FromBody] Trip trip)
     {
-        var oldTrip = _tripDbRepository.GetTripAsNotTracked(trip.Id); 
-        _tripDbRepository.Update(trip);
-
-        UserStatusEventHandler.ChangeEventHandler(oldTrip, true);
-        if (UserStatusEventHandler.UserStatusChanged != null)
+        try
         {
-            UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
-            UserStatusEventHandler.ChangeEventHandler(oldTrip, false);
-        }
-        UserStatusEventHandler.ChangeEventHandler(trip, true);
+            var oldTrip = _tripDbRepository.GetTripAsNotTracked(trip.Id); 
+            _tripDbRepository.Update(trip);
 
-        if (UserStatusEventHandler.UserStatusChanged != null)
-        {
-            if (trip.TripStatus == "Planned" || trip.TripStatus == "Ongoing")
-            {
-                UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(true));
-            }
-            else if (trip.TripStatus == "Ended" || trip.TripStatus == "Cancelled")
+            UserStatusEventHandler.ChangeEventHandler(oldTrip, true);
+            if (UserStatusEventHandler.UserStatusChanged != null)
             {
                 UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
+                UserStatusEventHandler.ChangeEventHandler(oldTrip, false);
             }
-            UserStatusEventHandler.ChangeEventHandler(trip, false);
-        }
+            UserStatusEventHandler.ChangeEventHandler(trip, true);
 
-        await _tripDbRepository.SaveAsync();
-        return Ok(trip);
+            if (UserStatusEventHandler.UserStatusChanged != null)
+            {
+                if (trip.TripStatus == "Planned" || trip.TripStatus == "Ongoing")
+                {
+                    UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(true));
+                }
+                else if (trip.TripStatus == "Ended" || trip.TripStatus == "Cancelled")
+                {
+                    UserStatusEventHandler.OnUserStatusChanged(this, new UserStatusEventArgs(false));
+                }
+                UserStatusEventHandler.ChangeEventHandler(trip, false);
+            }
+
+            await _tripDbRepository.SaveAsync();
+            return Ok(trip);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
     }
 
     [HttpGet]
     [Route("{id}")]
-    public Trip GetTrip(int id)
+    public async Task<IActionResult> GetTrip(int id)
     {
-        Trip? trip = _tripDbRepository.Get(id);
-        return trip;
+        try
+        {
+            Trip? trip = _tripDbRepository.Get(id);
+            if (trip != null)
+                return Ok(trip);
+            return Ok();
+        } 
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + " " + ex.StackTrace);
+            return NotFound();
+        }
+        
     }
 
     [HttpGet]
