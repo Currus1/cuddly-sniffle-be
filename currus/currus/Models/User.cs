@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using currus.Events;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace currus.Models;
@@ -17,11 +18,17 @@ public class User
 
     [RegularExpression(@"^((86|\+3706)\d{7})$")]
     public string? PhoneNumber { get; set; }
+
     [JsonIgnore]
     public string? VehicleType { get; set; }
+
     [JsonIgnore]
     [RegularExpression(@"^[A-Z]{3}\d{3}$")]
     public string? LicenseNumber { get; set; }
+
+    [JsonIgnore]
+    public bool InTrip { get; set; }
+
     [JsonIgnore]
     public virtual ICollection<Trip>? Trips { get; set; }
 
@@ -40,6 +47,12 @@ public class User
         PhoneNumber = phoneNumber;
         VehicleType = vehicleType;
         LicenseNumber = licenseNumber;
+        InTrip = false;
         Trips = new List<Trip>();
+    }
+
+    public void OnStatusChanged(object source, UserStatusEventArgs args)
+    {
+        InTrip = args.InTrip;
     }
 }

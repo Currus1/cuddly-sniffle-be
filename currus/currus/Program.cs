@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using currus.Data;
+using currus.Events;
 using currus.Logging.Logic;
 using currus.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ builder.Services.AddCors(p =>
 
 builder.Services.AddScoped<IUserDbRepository, UserDbRepository>();
 builder.Services.AddScoped<ITripDbRepository, TripDbRepository>();
+//builder.Services.AddScoped<IUserStatusEventHandler, UserStatusEventHandler>();
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
  x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
