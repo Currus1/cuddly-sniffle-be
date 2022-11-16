@@ -15,19 +15,9 @@ public class EnumController : Controller
         {
             return (String[])Enum.GetNames(typeof(TripStatuses));
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(500) when getting trip state enumerator. The following error occurred : " + ex.Message);
-            return null;
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when getting trip state enumerator. The following error occurred : " + ex.Message;
-            return null;
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when getting trip state enumerator. The following error occurred : " + ex.Message;
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return null;
         }
     }
@@ -40,19 +30,9 @@ public class EnumController : Controller
         {
            return (String[])Enum.GetNames(typeof(VehicleTypes));
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when getting vehicle type enumerator. The following error occurred : " + ex.Message);
-            return null;
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when getting vehicle type enumerator. The following error occurred : " + ex.Message;
-            return null;
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when getting vehicle type enumerator. The following error occurred : " + ex.Message;
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return null;
         }
     }

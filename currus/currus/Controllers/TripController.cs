@@ -28,20 +28,10 @@ public class TripController : Controller
             await _tripDbRepository.Add(trip);
             await _tripDbRepository.SaveAsync();
             return Ok(trip);
-        } 
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
-        {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when adding a trip. The following error occurred : " + ex.Message);
-            return NotFound();
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when adding a trip. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when adding a trip. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return NotFound();
         }
     }
@@ -56,19 +46,9 @@ public class TripController : Controller
            await _tripDbRepository.SaveAsync();
            return Ok(trip);
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when deleting a trip. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when deleting a trip. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when deleting a trip. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return NotFound();
         }
     }
@@ -83,19 +63,9 @@ public class TripController : Controller
            await _tripDbRepository.SaveAsync();
            return Ok(id);
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when deleting a trip by ID. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when deleting a trip by ID. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when deleting a trip by ID. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return NotFound();
         }
     }
@@ -110,19 +80,9 @@ public class TripController : Controller
            await _tripDbRepository.SaveAsync();
            return Ok(trip);
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when updating a trip. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when updating a trip. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when updating a trip. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return NotFound();
         }
     }

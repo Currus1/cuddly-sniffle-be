@@ -27,19 +27,9 @@ public class UserController : Controller
            await _userDbRepository.SaveAsync();
            return Ok(user);
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when adding a user. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when adding a user. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when adding a user. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return NotFound();
         }
     }
@@ -54,19 +44,9 @@ public class UserController : Controller
            await _userDbRepository.SaveAsync();
            return Ok(user);
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when deleting a user. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when deleting a user. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when deleting a user. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return NotFound();
         }
     }
@@ -81,19 +61,9 @@ public class UserController : Controller
            await _userDbRepository.SaveAsync();
            return Ok(id);
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when deleting a user by ID. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when deleting a user by ID. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when deleting a user by ID. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return NotFound();
         }
     }
@@ -108,19 +78,9 @@ public class UserController : Controller
            await _userDbRepository.SaveAsync();
            return Ok(user);
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(erro code: 500) when updating a user. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when updating a user. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when updating a user. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
             return NotFound();
         }
     }
@@ -136,19 +96,9 @@ public class UserController : Controller
                 return Ok(user);
             return Ok();
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when getting a user. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when getting a user. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when getting a user. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + " " + ex.StackTrace);
             return NotFound();
         }
     }
@@ -164,19 +114,9 @@ public class UserController : Controller
            await _userDbRepository.SaveAsync();
            return Ok();
         }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InternalServerError)
+        catch (Exception ex)
         {
-            Logger.LogError("\r\nWebException InternalServerError protocol Raised(error code: 500) when setting relation. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.InsufficientStorage)
-        {
-            Logger.LogError("\r\nWebException InsufficientStorage protocol Raised(error code: 507) when setting relation. The following error occurred : " + ex.Message);
-            return NotFound();
-        }
-        catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.ServiceUnavailable)
-        {
-            Logger.LogError("\r\nWebException ServiceUnavailable protocol Raised(error code: 503) when setting relation. The following error occurred : " + ex.Message);
+            Logger.LogError(ex.Message + " " + ex.StackTrace);
             return NotFound();
         }
     }
