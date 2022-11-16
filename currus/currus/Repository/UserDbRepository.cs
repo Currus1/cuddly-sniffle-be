@@ -34,18 +34,15 @@ public class UserDbRepository : DbRepository<User>, IUserDbRepository
 
     public User SetRelation(int userId, int tripId)
     {
-        var user = _context.User.Find(userId);
+        var user = _context.User.Include("Trips").FirstOrDefault(user => userId == user.Id);
         var trip = _context.Trip.Find(tripId);
         if (user != null)
         {
-            if (user.Trips != null && trip != null)
-            {
+            if (user.Trips == null)
+                user.Trips = new List<Trip>();
+
+            if(trip != null)
                 user.Trips.Add(trip);
-            }
-            else if (trip != null)
-            { 
-                user.Trips = new List<Trip>() { trip };
-            }
         }
         return user;
     }
