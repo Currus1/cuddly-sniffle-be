@@ -1,5 +1,4 @@
-﻿using currus.Events;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace currus.Models;
@@ -27,9 +26,6 @@ public class User
     public string? LicenseNumber { get; set; }
 
     [JsonIgnore]
-    public bool InTrip { get; set; }
-
-    [JsonIgnore]
     public virtual ICollection<Trip>? Trips { get; set; }
 
     public User()
@@ -47,12 +43,6 @@ public class User
         PhoneNumber = phoneNumber;
         VehicleType = vehicleType;
         LicenseNumber = licenseNumber;
-        InTrip = false;
         Trips = new List<Trip>();
-    }
-
-    public void OnStatusChanged(object source, UserStatusEventArgs args)
-    {
-        InTrip = args.InTrip;
     }
 }
