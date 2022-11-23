@@ -66,7 +66,7 @@ namespace currus.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Trip");
+                    b.ToTable("Trip", (string)null);
                 });
 
             modelBuilder.Entity("currus.Models.User", b =>
@@ -82,9 +82,6 @@ namespace currus.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("InTrip")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LicenseNumber")
                         .HasColumnType("nvarchar(max)");
@@ -103,7 +100,7 @@ namespace currus.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("TripUser", b =>
@@ -118,7 +115,7 @@ namespace currus.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("TripUser");
+                    b.ToTable("TripUser", (string)null);
                 });
 
             modelBuilder.Entity("TripUser", b =>
