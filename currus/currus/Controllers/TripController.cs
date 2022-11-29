@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Numerics;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace currus.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("[controller]")]
 [ApiController]
 public class TripController : Controller

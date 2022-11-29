@@ -1,19 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace currus.Models;
 
-public class User
+public class User : IdentityUser
 {
-    [Key]
     public int Id { get; set; }
-    public string? Name { get; set; }
     public string? Surname { get; set; }
     public DateTime Birthdate { get; set; }
 
     [RegularExpression(
         @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$")]
-    public string? Email { get; set; }
+    public override string? Email { get; set; }
 
     [RegularExpression(@"^((86|\+3706)\d{7})$")]
     public string? PhoneNumber { get; set; }
@@ -32,11 +32,11 @@ public class User
     {
     }
 
-    public User(int id, string? name, string? surname, DateTime birthdate, string? email,
+    public User(int id, string name, string? surname, DateTime birthdate, string? email,
         string? phoneNumber, string? vehicleType, string? licenseNumber)
     {
         Id = id;
-        Name = name;
+        UserName = name;
         Surname = surname;
         Birthdate = birthdate;
         Email = email;

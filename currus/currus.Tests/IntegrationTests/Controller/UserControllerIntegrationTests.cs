@@ -32,7 +32,7 @@ namespace currus.Tests.IntegrationTests.Controller
             response.EnsureSuccessStatusCode();
             Assert.IsNotNull(response);
             Assert.That(user.Id, Is.EqualTo(userId));
-            Assert.That(user.Name, Is.EqualTo(name));
+            Assert.That(user.UserName, Is.EqualTo(name));
         }
     }
 }

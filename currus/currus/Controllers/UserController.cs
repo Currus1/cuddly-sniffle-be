@@ -1,11 +1,14 @@
 ﻿using currus.Logging.Logic;
 using currus.Models;
 using currus.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace currus.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("[controller]")]
 [ApiController]
 public class UserController : Controller
