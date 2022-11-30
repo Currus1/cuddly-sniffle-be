@@ -1,8 +1,12 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using currus.Data;
 using currus.Logging.Logic;
 using currus.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +26,6 @@ builder.Services.AddCors(p =>
 
 builder.Services.AddScoped<IUserDbRepository, UserDbRepository>();
 builder.Services.AddScoped<ITripDbRepository, TripDbRepository>();
-//builder.Services.AddScoped<IUserStatusEventHandler, UserStatusEventHandler>();
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
  x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -31,6 +34,32 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString)
     );
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(jwt =>
+{
+    var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtConfig:Secret").Value);
+    jwt.SaveToken = true;
+    jwt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false, // for dev
+        ValidateAudience = false, // for dev
+        RequireExpirationTime = false, // for dev -- needs to be update when refresh token is added
+        ValidateLifetime = true
+    };
+});
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+}).AddEntityFrameworkStores<ApplicationDbContext>();
 
 var app = builder.Build();
 
@@ -54,10 +83,13 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseCors("corsapp");
-app.UseAuthorization();
+app.UseAuthentication();
 app.UseRouting();
-
-app.MapControllers();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();
 public partial class Program { }

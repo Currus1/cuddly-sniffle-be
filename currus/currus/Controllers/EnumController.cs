@@ -1,10 +1,14 @@
 ﻿using currus.Enums;
 using currus.Logging.Logic;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace currus.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[ApiController]
 public class EnumController : Controller
 {
     [HttpGet]

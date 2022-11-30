@@ -21,7 +21,7 @@ namespace currus.Tests.IntegrationTests.Controller
 
         [TestCategory("Integration")]
         [Test]
-        public async Task Integration_UserController_GetUser_ReturnUserOk()
+        public async Task Integration_UserController_GetUser_ReturnUserOk() // need authorization
         {
             var tripId = 1;
             var startingPoint = "Vilnius";

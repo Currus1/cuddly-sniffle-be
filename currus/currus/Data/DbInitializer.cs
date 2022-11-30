@@ -7,8 +7,8 @@ namespace currus.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
-            InitializeUser(context);
-            InitializeTrip(context);
+            //InitializeUser(context);
+            //InitializeTrip(context);
             context.SaveChanges();
         }
 
@@ -21,9 +21,9 @@ namespace currus.Data
 
             var users = new User[]
             {
-                new User { Name = "Abel", Surname = "Morton", Birthdate = new DateTime(), Email = "AbelMorton@gmail.com", PhoneNumber = "868686861"},
-                new User { Name = "Fox", Surname = "Stevens", Birthdate = new DateTime(), Email = "FoxStevens@gmail.com", PhoneNumber = "868686862"},
-                new User { Name = "Ira", Surname = "Taylor", Birthdate = new DateTime(), Email = "IraTaylort@gmail.com", PhoneNumber = "868686863"},
+                new User { UserName = "Abel", Surname = "Morton", Birthdate = new DateTime(), Email = "AbelMorton@gmail.com", PhoneNumber = "868686861"},
+                new User { UserName = "Fox", Surname = "Stevens", Birthdate = new DateTime(), Email = "FoxStevens@gmail.com", PhoneNumber = "868686862"},
+                new User { UserName = "Ira", Surname = "Taylor", Birthdate = new DateTime(), Email = "IraTaylort@gmail.com", PhoneNumber = "868686863"},
             };
 
             context.User.AddRange(users);
