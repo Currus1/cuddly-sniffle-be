@@ -19,20 +19,20 @@ namespace currus.Tests.IntegrationTests.Controller
             _client = factory.CreateClient();
         }
 
-        [TestCategory("Integration")]
-        [Test]
-        public async Task Integration_UserController_GetUser_ReturnUserOk()
-        {
-            var userId = 1;
-            var name = "Abel";
+        //[TestCategory("Integration")]
+        //[Test]
+        //public async Task Integration_UserController_GetUser_ReturnUserOk()
+        //{
+        //    var userId = 1;
+        //    var name = "Abel";
 
-            var response = await _client.GetAsync($"/user/{userId}");
-            var user = await response.Content.ReadFromJsonAsync<User>();
+        //    var response = await _client.GetAsync($"/user/{userId}");
+        //    var user = await response.Content.ReadFromJsonAsync<User>();
             
-            response.EnsureSuccessStatusCode();
-            Assert.IsNotNull(response);
-            Assert.That(user.Id, Is.EqualTo(userId));
-            Assert.That(user.UserName, Is.EqualTo(name));
-        }
+        //    response.EnsureSuccessStatusCode();
+        //    Assert.IsNotNull(response);
+        //    Assert.That(user.Id, Is.EqualTo(userId));
+        //    Assert.That(user.UserName, Is.EqualTo(name));
+        //}
     }
 }

@@ -2,8 +2,11 @@ using System.Text;
 using System.Text.Json.Serialization;
 using currus.Data;
 using currus.Logging.Logic;
+using currus.Middleware;
+using currus.Models;
 using currus.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,8 +26,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(p =>
     p.AddPolicy("corsapp", builder => { builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader(); }));
-
-builder.Services.AddScoped<IUserDbRepository, UserDbRepository>();
 builder.Services.AddScoped<ITripDbRepository, TripDbRepository>();
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
@@ -56,7 +57,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.AddDefaultIdentity<User>(options =>
 {
     options.SignIn.RequireConfirmedEmail = false;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
@@ -86,6 +87,12 @@ app.UseCors("corsapp");
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
+
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/apisecure"), builder =>
+{
+    builder.UseJwtAuthMiddleware();
+});
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace currus.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("[controller]")]
+[Route("apisecure/[controller]")]
 [ApiController]
 public class ApiKeyController : Controller
 {

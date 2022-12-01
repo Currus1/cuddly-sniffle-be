@@ -25,23 +25,23 @@ internal class UserTests
         Assert.IsNotNull(user);
     }
 
-    [Test]
-    public void UserConstructor_NotEmpty_ShouldCreateUser()
-    {
-        var id = 0;
-        var name = "Name";
-        var surname = "Surname";
-        var birthdate = new DateTime();
-        var email = "name@gmail.com";
-        var phoneNumber = "868686868";
-        var vehicleType = "SUV";
-        var licenseNumber = "AAA111";
+    //[Test]
+    //public void UserConstructor_NotEmpty_ShouldCreateUser()
+    //{
+    //    var id = 0;
+    //    var name = "Name";
+    //    var surname = "Surname";
+    //    var birthdate = new DateTime();
+    //    var email = "name@gmail.com";
+    //    var phoneNumber = "868686868";
+    //    var vehicleType = "SUV";
+    //    var licenseNumber = "AAA111";
        
-        User user = new User(id, name, surname, birthdate, email, 
-            phoneNumber, vehicleType, licenseNumber);
+    //    User user = new User(id, name, surname, birthdate, email, 
+    //        phoneNumber, vehicleType, licenseNumber);
 
-        Assert.IsNotNull(user);
-    }
+    //    Assert.IsNotNull(user);
+    //}
 
     [Test]
     public void UserPhoneNumber_RightPatternWith86_ShouldSucceed()

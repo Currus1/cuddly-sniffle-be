@@ -9,6 +9,7 @@ namespace currus.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
+[Route("apisecure/[controller]")]
 public class EnumController : Controller
 {
     [HttpGet]

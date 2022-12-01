@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace currus.Controllers
 {
@@ -20,10 +21,10 @@ namespace currus.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public AuthController(UserManager<User> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -37,6 +38,8 @@ namespace currus.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    string emailPattern = @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$";
+                    string phoneNumberPattern = @"^((86|\+3706)\d{7})$";
                     var user_exist = await _userManager.FindByEmailAsync(userDto.Email);
 
                     if (user_exist != null)
@@ -50,26 +53,38 @@ namespace currus.Controllers
                             }
                         });
                     }
-
+                    if (!Regex.IsMatch(userDto.Email, emailPattern, RegexOptions.IgnoreCase) || !Regex.IsMatch(userDto.Number.ToString(), phoneNumberPattern, RegexOptions.IgnoreCase))
+                    {
+                        return BadRequest(new AuthResult()
+                        {
+                            Result = false,
+                            Errors = new List<string>()
+                            {
+                                "Email or Phone number do not match the required format!"
+                            }
+                        });
+                    }
                     var new_user = new User()
                     {
-                        UserName = userDto.Name,
+                        Name = userDto.Name,
                         Surname = userDto.Surname,
                         Email = userDto.Email,
                         Birthdate = userDto.BirthDate,
-                        PhoneNumber = userDto.Number
+                        PhoneNumber = userDto.Number,
+                        UserName = userDto.Email
                     };
 
                     var is_created = await _userManager.CreateAsync(new_user, userDto.Password);
-                    
-                    if(is_created.Succeeded)
-                    {
-                        var token = GenerateJwtToken(new_user);
 
+                    if (is_created.Succeeded)
+                    {
                         return Ok(new AuthResult()
                         {
-                            Result = true,
-                            Token = token
+                            Errors = new List<string>()
+                            {
+                                "User Registration Success!"
+                            },
+                            Result = true
                         });
                     }
 

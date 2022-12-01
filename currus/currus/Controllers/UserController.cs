@@ -1,23 +1,30 @@
 ﻿using currus.Logging.Logic;
 using currus.Models;
+using currus.Models.DTOs;
 using currus.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
 
 namespace currus.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("[controller]")]
+[Route("apisecure/[controller]")]
 [ApiController]
 public class UserController : Controller
 {
-    private readonly IUserDbRepository _userDbRepository;
+    private readonly UserManager<User> _userManager;
+    private readonly IConfiguration _configuration;
 
-    public UserController(IUserDbRepository userDbRepository)
+    public UserController(UserManager<User> userManager, IConfiguration configuration)
     {
-        _userDbRepository = userDbRepository;
+        _userManager = userManager;
+        _configuration = configuration;
     }
 
     [HttpPost]
@@ -26,8 +33,7 @@ public class UserController : Controller
     {
         try
         {
-           await _userDbRepository.Add(user);
-           await _userDbRepository.SaveAsync();
+           
            return Ok(user);
         }
         catch (Exception ex)
@@ -43,8 +49,6 @@ public class UserController : Controller
     {
         try
         {
-           _userDbRepository.Delete(user);
-           await _userDbRepository.SaveAsync();
            return Ok(user);
         }
         catch (Exception ex)
@@ -59,9 +63,7 @@ public class UserController : Controller
     public async Task<IActionResult> DeleteUserById(int id)
     {
         try
-        {
-           _userDbRepository.DeleteById(id);
-           await _userDbRepository.SaveAsync();
+        { 
            return Ok(id);
         }
         catch (Exception ex)
@@ -77,8 +79,6 @@ public class UserController : Controller
     {
         try
         {
-           _userDbRepository.Update(user);
-           await _userDbRepository.SaveAsync();
            return Ok(user);
         }
         catch (Exception ex)
@@ -88,16 +88,36 @@ public class UserController : Controller
         }
     }
 
-    [HttpGet]
-    [Route("{id}")]
-    public async Task<IActionResult> GetUser(int id)
+    [HttpGet()]
+    [Route("")]
+    public async Task<IActionResult> GetUser()
     {
         try
         {
-            User? user = _userDbRepository.Get(id);
+            if (HttpContext == null)
+                return BadRequest();
+
+            var email = HttpContext.Items["email"];
+            if(email == null)
+            {
+                return BadRequest();
+            }
+            var user = await _userManager.FindByEmailAsync(email.ToString());
+
             if (user != null)
-                return Ok(user);
-            return Ok();
+            {
+                UserRegisterDto userDto = new UserRegisterDto
+                (
+                    user.Name,
+                    user.Surname,
+                    user.Email,
+                    user.Birthdate,
+                    user.PhoneNumber
+                );
+                return Ok(userDto);
+            }   
+  
+            return BadRequest();
         }
         catch (Exception ex)
         {
@@ -107,14 +127,11 @@ public class UserController : Controller
     }
 
     [HttpPut]
-    [Route("/{id}/trip/{tripId}")]
+    [Route("{id}/trip/{tripId}")]
     public async Task<IActionResult> SetRelation(int id, int tripId)
     {
         try
         {
-           var user = _userDbRepository.SetRelation(id, tripId);
-           _userDbRepository.Update(user);
-           await _userDbRepository.SaveAsync();
            return Ok();
         }
         catch (Exception ex)
@@ -123,12 +140,4 @@ public class UserController : Controller
             return NotFound();
         }
     }
-
-    [HttpGet]
-    [Route("/{id}/trips")]
-    public ICollection<Trip> GetAllTrips(int id)
-    {
-        return _userDbRepository.GetAllTrips(id);
-    }
-
 }

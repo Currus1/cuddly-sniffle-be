@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace currus.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         private readonly IConfiguration _iConfiguration;
         public DbSet<User>? User { get; set; }

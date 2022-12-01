@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace currus.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("[controller]")]
+[Route("apisecure/[controller]")]
 [ApiController]
 public class TripController : Controller
 {
@@ -122,7 +122,7 @@ public class TripController : Controller
     }
 
     [HttpPut]
-    [Route("/{id}/user/{userId}")]
+    [Route("{id}/user/{userId}")]
     public async Task<IActionResult> SetRelation(int id, int userId)
     {
         var trip = _tripDbRepository.SetRelation(id, userId);
@@ -132,7 +132,7 @@ public class TripController : Controller
     }
 
     [HttpGet]
-    [Route("/{id}/users")]
+    [Route("{id}/users")]
     public ICollection<User> GetAllUsers(int id)
     {
         return _tripDbRepository.GetAllUsers(id);
