@@ -8,7 +8,7 @@ namespace currus.Data
         public static void Initialize(ApplicationDbContext context)
         {
             //InitializeUser(context);
-            //InitializeTrip(context);
+            InitializeTrip(context);
             context.SaveChanges();
         }
 
