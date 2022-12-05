@@ -20,6 +20,7 @@ public class User : IdentityUser
     [RegularExpression(@"^[A-Z]{3}\d{3}$")]
     public string? LicenseNumber { get; set; }
 
+    public string? DriversLicense { get; set; }
     [JsonIgnore]
     public virtual ICollection<Trip>? Trips { get; set; }
 

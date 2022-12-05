@@ -24,7 +24,7 @@ public class Trip
 
     public Trip()
     {
-    }   
+    }
 
     public Trip(int id, double latitude, double longitude, string startingPoint, string destination, 
         int seats, int hours, int minutes, decimal distance, string vehicleType, decimal estimatedTripPrice, string tripStatus)
