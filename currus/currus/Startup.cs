@@ -79,6 +79,7 @@ namespace currus
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterType<ApplicationDbContext>().SingleInstance();
             builder.RegisterType<TripDbRepository>().As<ITripDbRepository>()
                 .EnableInterfaceInterceptors().InterceptedBy(typeof(ExceptionLogger))
                 .InstancePerDependency();
