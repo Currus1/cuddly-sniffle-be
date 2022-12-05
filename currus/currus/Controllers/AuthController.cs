@@ -153,12 +153,15 @@ namespace currus.Controllers
                     }
 
                     var jwtToken = GenerateJwtToken(user_exist);
-
-                    return Ok(new AuthResult()
+                    if (jwtToken != null)
                     {
-                        Result = true,
-                        Token = jwtToken
-                    });
+                        return Ok(new AuthResult()
+                        {
+                            Result = true,
+                            Token = jwtToken
+                        });
+                    }
+                    
 
                     return BadRequest(new AuthResult()
                     {
