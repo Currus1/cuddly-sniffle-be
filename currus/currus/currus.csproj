@@ -29,4 +29,7 @@
   <ItemGroup>
 	<InternalsVisibleTo Include="currus.Tests" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logging\Logs\" />
+  </ItemGroup>
 </Project>
