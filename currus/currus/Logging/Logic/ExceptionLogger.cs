@@ -5,7 +5,7 @@ namespace currus.Logging.Logic
 {
     public class ExceptionLogger : IInterceptor
     {
-        /public void Intercept(IInvocation invocation)
+        public void Intercept(IInvocation invocation)
         {
             try
             {
