@@ -2,8 +2,8 @@
 
 public enum VehicleTypes
 {
-    Sedan,
+    SEDAN,
     SUV,
     EV,
-    Van
+    VAN
 }
