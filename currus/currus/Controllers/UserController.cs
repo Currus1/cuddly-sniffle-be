@@ -1,4 +1,5 @@
-﻿using currus.Logging.Logic;
+﻿using currus.Enums;
+using currus.Logging.Logic;
 using currus.Models;
 using currus.Models.DTOs;
 using currus.Repository;
@@ -11,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace currus.Controllers;
 
@@ -63,10 +65,11 @@ public class UserController : Controller
 
     [HttpPut]
     [Route("Driver")]
-    public async Task<IActionResult> UpdateUserAsDriver([FromBody] DriverDto driver)
+    public async Task<IActionResult> UpdateUserAsDriver([FromBody] DriverPropsDto driver)
     {
         try
         {
+            
             if (HttpContext == null)
                 return BadRequest();
 
@@ -81,14 +84,26 @@ public class UserController : Controller
             {
                 return BadRequest();
             }
-
-            existingUser.LicenseNumber = driver.LicenseNumber;
-            existingUser.VehicleType = driver.VehicleType;
-            existingUser.DriversLicense = driver.DriversLicense;
-
-            await _userManager.UpdateAsync(existingUser);
-
-            return Ok();
+            string licenseNumberRegExp = @"^[A-Z]{3}\d{3}$";
+            string driverLicenseRegExp = @"^\d{8}$";
+            if (ModelState.IsValid)
+            {
+                if (Regex.IsMatch(driver.LicenseNumber, licenseNumberRegExp, RegexOptions.IgnoreCase) &&
+                    Regex.IsMatch(driver.DriversLicense, driverLicenseRegExp, RegexOptions.IgnoreCase) &&
+                    Enum.IsDefined(typeof(VehicleTypes), driver.VehicleType))
+                {
+                    existingUser.LicenseNumber = driver.LicenseNumber;
+                    existingUser.VehicleType = driver.VehicleType;
+                    existingUser.DriversLicense = driver.DriversLicense;
+                }
+                else
+                {
+                    return BadRequest();
+                }
+                await _userManager.UpdateAsync(existingUser);
+                return Ok();
+            }
+            return BadRequest();
         }
         catch (Exception ex)
         {
@@ -139,7 +154,7 @@ public class UserController : Controller
             }
             var user = await _userManager.FindByEmailAsync(email.ToString());
 
-            if (user != null)
+            if (user != null && user.DriversLicense == null)
             {
                 UserRegisterDto userDto = new UserRegisterDto
                 (
@@ -151,7 +166,21 @@ public class UserController : Controller
                 );
                 return Ok(userDto);
             }   
-  
+            if (user != null && user.DriversLicense != null)
+            {
+                DriverDto driverDto = new DriverDto
+                (
+                    user.Name,
+                    user.Surname,
+                    user.Email,
+                    user.Birthdate,
+                    user.PhoneNumber,
+                    user.DriversLicense,
+                    user.VehicleType,
+                    user.LicenseNumber
+                );
+                return Ok(driverDto);
+            }
             return BadRequest();
         }
         catch (Exception ex)
