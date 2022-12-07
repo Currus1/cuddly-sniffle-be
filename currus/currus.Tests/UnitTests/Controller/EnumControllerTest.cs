@@ -2,7 +2,7 @@ using currus.Controllers;
 using currus.Enums;
 using System.Numerics;
 
-namespace currus.Tests.Controller;
+namespace currus.Tests.UnitTests.Controller;
 
 [TestFixture]
 public class EnumControllerTest
@@ -11,7 +11,7 @@ public class EnumControllerTest
     public string[] VehicleTypes = { "Sedan", "SUV", "EV", "Van" };
 
     [Test]
-    public void GetTripState_ReturnsAllEnumValues()
+    public void EnumController_GetTripState_ReturnsAllEnumValues()
     {
         var controller = new EnumController();
         var result = controller.GetTripStateEnum();
@@ -23,7 +23,7 @@ public class EnumControllerTest
     }
 
     [Test]
-    public void GetVehicleType_ReturnsAllEnumValues()
+    public void EnumController_GetVehicleType_ReturnsAllEnumValues()
     {
         var controller = new EnumController();
         var result = controller.GetVehicleTypeEnum();
