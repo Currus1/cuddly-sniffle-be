@@ -1,6 +1,7 @@
 ﻿using currus.Enums;
 using currus.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace currus.Tests.Model;
@@ -49,7 +50,7 @@ internal class UserTests
         User user = new User();
         user.PhoneNumber = "868686868";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsTrue(result);
     }
@@ -60,7 +61,7 @@ internal class UserTests
         User user = new User();
         user.PhoneNumber = "8686868682";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsFalse(result);
     }
@@ -71,7 +72,7 @@ internal class UserTests
         User user = new User();
         user.PhoneNumber = "+37066868686";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsTrue(result);
     }
@@ -82,7 +83,7 @@ internal class UserTests
         User user = new User();
         user.PhoneNumber = "37066868686";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsFalse(result);
     }
@@ -92,8 +93,8 @@ internal class UserTests
     {
         User user = new User();
         user.Email = "name@gmail.com";
-
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        
+        var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$"); //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsTrue(result);
     }
@@ -104,7 +105,7 @@ internal class UserTests
         User user = new User();
         user.Email = "namegmail.com";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$"); //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsFalse(result);
     }
@@ -115,7 +116,7 @@ internal class UserTests
         User user = new User();
         user.Email = "name@gmailcom";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$"); //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsFalse(result);
     }
@@ -126,7 +127,7 @@ internal class UserTests
         User user = new User();
         user.Email = "name@gmail.something";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsFalse(result);
     }
@@ -137,7 +138,7 @@ internal class UserTests
         User user = new User();
         user.LicenseNumber = "AAA111";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.LicenseNumber, @"^[A-Z]{3}\d{3}$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsTrue(result);
     }
@@ -148,7 +149,7 @@ internal class UserTests
         User user = new User();
         user.LicenseNumber = "AAA1112";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.LicenseNumber, @"^[A-Z]{3}\d{3}$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsFalse(result);
     }
@@ -159,7 +160,7 @@ internal class UserTests
         User user = new User();
         user.LicenseNumber = "111AAA";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(user.LicenseNumber, @"^[A-Z]{3}\d{3}$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsFalse(result);
     }
