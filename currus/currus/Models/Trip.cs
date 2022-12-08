@@ -16,6 +16,7 @@ public class Trip
     public int Hours { get; set; }
     public int Minutes { get; set; }
     public decimal Distance { get; set; }
+    public string DriverId { get; set; }
     public string? VehicleType { get; set; }
     public decimal EstimatedTripPrice { get; set; }
     public string TripStatus { get; set; }

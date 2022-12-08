@@ -10,7 +10,12 @@ public class User : IdentityUser
     public string Name { get; set; }    
     public string? Surname { get; set; }
     public DateTime Birthdate { get; set; }
+    [EmailAddress]
+    [MaxLength(256)]
+    [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$")]
     public override string? Email { get; set; }
+    [Phone]
+    [RegularExpression(@"^((86|\+3706)\d{7})$")]
     public override string? PhoneNumber { get; set; }
 
     [JsonIgnore]

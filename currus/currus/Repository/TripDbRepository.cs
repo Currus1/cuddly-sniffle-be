@@ -1,5 +1,6 @@
 ﻿using currus.Data;
 using currus.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
@@ -27,6 +28,16 @@ public class TripDbRepository : DbRepository<Trip>, ITripDbRepository
             where trip.TripStatus == tripStatus
             select trip;
         return tripQuery;
+    }
+
+    public IEnumerable<Trip> GetTripsForUser(string userId)
+    {
+        var userTrips = from trip in _context.Trip
+                        .Include(t => t.Users)
+                        where trip.Users.Any(u => u.Id == userId)
+                        select trip;
+
+        return userTrips.ToList();
     }
 
     public ICollection<User> GetAllUsers(int id)
