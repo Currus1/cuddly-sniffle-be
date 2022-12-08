@@ -67,6 +67,17 @@ internal class UserTests
     }
 
     [Test]
+    public void UserPhoneNumber_WrongPatternWith370_ShouldFail()
+    {
+        User user = new User();
+        user.PhoneNumber = "37066868686";
+
+        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+
+        Assert.IsFalse(result);
+    }
+
+    [Test]
     public void UserPhoneNumber_RightPatternWith370_ShouldSucceed()
     {
         User user = new User();
@@ -78,10 +89,10 @@ internal class UserTests
     }
 
     [Test]
-    public void UserPhoneNumber_WrongPatternWith370_ShouldFail()
+    public void UserEmail_WrongPatternNotMachingLastString_ShouldFail()
     {
         User user = new User();
-        user.PhoneNumber = "37066868686";
+        user.Email = "name@gmail.something";
 
         var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
@@ -111,10 +122,10 @@ internal class UserTests
     }
 
     [Test]
-    public void UserEmail_WrongPatternNoDot_ShouldFail()
+    public void UserEmail_WrongPatternNotMachingLength_ShouldFail()
     {
         User user = new User();
-        user.Email = "name@gmailcom";
+        user.Email = new string('a', 257) + "@gmail.com";
 
         var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$"); //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
@@ -122,15 +133,16 @@ internal class UserTests
     }
 
     [Test]
-    public void UserEmail_WrongPatternNotMachingLength_ShouldFail()
+    public void UserEmail_WrongPatternNotMachingFormat_ShouldFail()
     {
         User user = new User();
-        user.Email = "name@gmail.something";
+        user.Email = "namegmail.something";
 
         var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
 
         Assert.IsFalse(result);
     }
+
 
     [Test]
     public void UserLicenseNumber_RightPattern_ShouldSucceed()

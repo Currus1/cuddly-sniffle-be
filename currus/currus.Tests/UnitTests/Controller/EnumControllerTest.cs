@@ -8,7 +8,7 @@ namespace currus.Tests.UnitTests.Controller;
 public class EnumControllerTest
 {
     public string[] TripStates = { "Planned", "Ongoing", "Ended", "Cancelled" };
-    public string[] VehicleTypes = { "Sedan", "SUV", "EV", "Van" };
+    public string[] VehicleTypes = { "SEDAN", "SUV", "EV", "VAN" };
 
     [Test]
     public void EnumController_GetTripState_ReturnsAllEnumValues()

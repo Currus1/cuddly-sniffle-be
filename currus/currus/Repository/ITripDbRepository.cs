@@ -9,4 +9,5 @@ public interface ITripDbRepository: IDbRepository<Trip>
     Trip SetRelation(int tripId, int userId);
     ICollection<User> GetAllUsers(int id);
     Trip GetTripAsNotTracked(int id);
+    IEnumerable<Trip> GetTripsForUser(string userId);
 }

@@ -29,7 +29,7 @@ namespace currus.Repository
 
         public IEnumerable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().ToList();
         }
 
         public void Save()

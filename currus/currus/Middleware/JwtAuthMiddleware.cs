@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -40,6 +41,13 @@ namespace currus.Middleware
                 var accessToken = parts[1];
                 var handler = new JwtSecurityTokenHandler();
                 var token = handler.ReadJwtToken(accessToken);
+                DateTime validTo = token.ValidTo;
+                if(DateTime.Now > validTo.AddHours(2))
+                {
+                    httpContext.Response.StatusCode = 401;
+                    await httpContext.Response.WriteAsJsonAsync("User token expired. You have to log in again.");
+                    return;
+                }
                 var payload = token.Payload;
                 string emailPattern = @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$";
                 payload.TryGetValue("email", out object email);

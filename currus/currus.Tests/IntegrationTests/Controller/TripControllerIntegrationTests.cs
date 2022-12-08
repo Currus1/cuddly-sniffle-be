@@ -1,5 +1,6 @@
 ﻿using currus.Models;
 using currus.Tests.Services;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net.Http.Json;
 
@@ -19,20 +20,25 @@ namespace currus.Tests.IntegrationTests.Controller
             _client = factory.CreateClient();
         }
 
-        [TestCategory("Integration")]
-        [Test]
-        public async Task Integration_UserController_GetUser_ReturnUserOk() // need authorization
-        {
-            var tripId = 1;
-            var startingPoint = "Vilnius";
+        //[TestCategory("Integration")]
+        //[Test]
+        //public async Task Integration_UserController_GetUser_ReturnUserOk() // need authorization
+        //{
+        //    var tripId = 1;
+        //    var startingPoint = "Vilnius";
+        //    var expectedTrip = new Trip
+        //    {
+        //        Id = tripId,
+        //        StartingPoint = startingPoint,
+        //        // Set the other properties of the expected Trip object here
+        //    };
 
-            var response = await _client.GetAsync($"/trip/{tripId}");
-            var trip = await response.Content.ReadFromJsonAsync<Trip>();
+        //    var response = await _client.GetAsync($"/trip/{tripId}");
+        //    var trip = await response.Content.ReadFromJsonAsync<Trip>();
 
-            response.EnsureSuccessStatusCode();
-            Assert.IsNotNull(response);
-            Assert.That(trip.Id, Is.EqualTo(tripId));
-            Assert.That(trip.StartingPoint, Is.EqualTo(startingPoint));
-        }
+        //    // Assert
+        //    response.EnsureSuccessStatusCode();
+        //    trip.Should().BeEquivalentTo(expectedTrip);
+        //}
     }
 }

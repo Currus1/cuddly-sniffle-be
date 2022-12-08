@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Specialized;
+using Microsoft.AspNetCore.Http;
 
 namespace currus.Controllers;
 
@@ -15,11 +18,15 @@ namespace currus.Controllers;
 [ApiController]
 public class TripController : Controller
 {
+    private readonly IHttpContextAccessor _context;
     private readonly ITripDbRepository _tripDbRepository;
+    private readonly UserManager<User> _userManager;
 
-    public TripController(ITripDbRepository tripDbRepository)
+    public TripController(ITripDbRepository tripDbRepository, UserManager<User> userManager, IHttpContextAccessor context)
     {
         _tripDbRepository = tripDbRepository;
+        _userManager = userManager;
+        _context = context;
     }
 
     [HttpPost]
@@ -69,6 +76,77 @@ public class TripController : Controller
             _tripDbRepository.DeleteById(id);
             await _tripDbRepository.SaveAsync();
             return Ok(id);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
+    }
+    
+    [HttpGet]
+    [Route("Driver")]
+    public async Task<IActionResult> GetTripDriver()
+    {
+        try
+        {
+            if (HttpContext == null)
+                return BadRequest();
+
+            var email = HttpContext.Items["email"];
+            if (email == null)
+            {
+                return BadRequest();
+            }
+
+            var existingUser = await _userManager.FindByEmailAsync(email.ToString());
+            if (existingUser == null)
+            {
+                return BadRequest();
+            }
+            var id = HttpContext.Request.Query["driverId"];
+ 
+            var driver = await _userManager.FindByIdAsync(id);
+            if (driver == null)
+            {
+                return NotFound();
+            }
+            return Ok(driver);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return NotFound();
+        }
+    }
+
+    [HttpGet]
+    [Route("GetAll")]
+    public async Task<IActionResult> GetTripsForUser()
+    {
+        try
+        {
+            if (HttpContext == null)
+                return BadRequest();
+
+            var email = HttpContext.Items["email"];
+            if (email == null)
+            {
+                return BadRequest();
+            }
+
+            var existingUser = await _userManager.FindByEmailAsync(email.ToString());
+            if (existingUser == null)
+            {
+                return BadRequest();
+            }
+
+            var trips = _tripDbRepository.GetTripsForUser(existingUser.Id);
+            if (trips != null)
+            {
+                return Ok(trips);
+            } 
+            return Ok();
         }
         catch (Exception ex)
         {
