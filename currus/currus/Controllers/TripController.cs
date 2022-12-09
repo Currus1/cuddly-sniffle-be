@@ -18,15 +18,13 @@ namespace currus.Controllers;
 [ApiController]
 public class TripController : Controller
 {
-    private readonly IHttpContextAccessor _context;
     private readonly ITripDbRepository _tripDbRepository;
     private readonly UserManager<User> _userManager;
 
-    public TripController(ITripDbRepository tripDbRepository, UserManager<User> userManager, IHttpContextAccessor context)
+    public TripController(ITripDbRepository tripDbRepository, UserManager<User> userManager)
     {
         _tripDbRepository = tripDbRepository;
         _userManager = userManager;
-        _context = context;
     }
 
     [HttpPost]

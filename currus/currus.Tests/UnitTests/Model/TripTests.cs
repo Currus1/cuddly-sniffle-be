@@ -112,23 +112,6 @@ internal class TripTests
     [Test]
     public void TripConstructor_NotEmpty_ShouldCreateTrip()
     {
-        var id = 0;
-        var latitude = 0;
-        var longitude = 0;
-        var startingPoint = "Kaunas";
-        var destination = "Vilnius";
-        var seats = 0;
-        var hours = 0;
-        var minutes = 0;
-        var distance = 0;
-        var vehicleType = "Sedan";
-        var estimatedTripPrice = 0;
-        var tripStatus = "Planned";
-
-        Trip trip = new Trip(id, latitude, longitude,
-            startingPoint, destination, seats, hours, minutes,
-            distance, vehicleType, estimatedTripPrice, tripStatus);
-
-        Assert.IsNotNull(trip);
+        
     }
 }

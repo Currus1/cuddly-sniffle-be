@@ -8,8 +8,10 @@ public class Trip
 {
     [Key]
     public int Id { get; set; }
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
+    public double SLatitude { get; set; } // S - start
+    public double SLongitude { get; set; }
+    public double DLatitude { get; set; } // D - destination
+    public double DLongitude { get; set; }
     public string? StartingPoint { get; set; }
     public string? Destination { get; set; }
     public int Seats { get; set; }
@@ -27,18 +29,23 @@ public class Trip
     {
     }
 
-    public Trip(int id, double latitude, double longitude, string startingPoint, string destination, 
-        int seats, int hours, int minutes, decimal distance, string vehicleType, decimal estimatedTripPrice, string tripStatus)
+    public Trip(int id, double sLatitude, double sLongitude, double dLatitude, 
+        double dLongitude, string? startingPoint, string? destination, 
+        int seats, int hours, int minutes, decimal distance, string driverId, 
+        string? vehicleType, decimal estimatedTripPrice, string tripStatus)
     {
         Id = id;
-        Latitude = latitude;
-        Longitude = longitude;
+        SLatitude = sLatitude;
+        SLongitude = sLongitude;
+        DLatitude = dLatitude;
+        DLongitude = dLongitude;
         StartingPoint = startingPoint;
         Destination = destination;
         Seats = seats;
         Hours = hours;
         Minutes = minutes;
         Distance = distance;
+        DriverId = driverId;
         VehicleType = vehicleType;
         EstimatedTripPrice = estimatedTripPrice;
         TripStatus = tripStatus;
