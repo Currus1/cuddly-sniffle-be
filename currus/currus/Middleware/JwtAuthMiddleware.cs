@@ -50,11 +50,16 @@ namespace currus.Middleware
                 }
                 var payload = token.Payload;
                 string emailPattern = @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$";
-                payload.TryGetValue("email", out object email);
-                if (email != null && Regex.IsMatch(email.ToString(), emailPattern, RegexOptions.IgnoreCase))
+                object? email;
+                payload.TryGetValue("email", out email);
+                if (email != null)
                 {
-                    httpContext.Items["email"] = email;
-                    await _next(httpContext);
+                    string? str = email.ToString();
+                    if (Regex.IsMatch(str ?? "", emailPattern, RegexOptions.IgnoreCase))
+                    {
+                        httpContext.Items["email"] = email;
+                        await _next(httpContext);
+                    }
                 }
                 else
                 {

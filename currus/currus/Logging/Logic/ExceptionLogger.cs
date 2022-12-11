@@ -10,7 +10,6 @@ namespace currus.Logging.Logic
             try
             {
                 Logger.LogInfo($"Method {invocation.Method.Name} called:\n");
-                    //$"  Parameters: {JsonConvert.SerializeObject(invocation.Arguments)}");
 
                 invocation.Proceed();
 

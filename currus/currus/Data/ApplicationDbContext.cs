@@ -8,13 +8,11 @@ namespace currus.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        private readonly IConfiguration _iConfiguration;
         public virtual DbSet<User>? User { get; set; }
         public virtual DbSet<Trip>? Trip { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration iConfiguration)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
-            _iConfiguration = iConfiguration;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

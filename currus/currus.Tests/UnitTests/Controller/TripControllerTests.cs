@@ -38,32 +38,10 @@ public class TripControllerTests
     }
 
     [Test]
-    public void TripController_AddTrip_ReturnTripOk()
-    {
-        var result = _tripController.AddTrip(_trip.Value);
-
-        result.Should().BeOfType<Task<OkObjectResult>>();
-        var okResult = result.Result as OkObjectResult;
-        Assert.IsTrue((bool)okResult.Value);
-    }
-
-    [Test]
     public void TripController_DeleteTrip_ReturnTripOk()
     {
         // Act
         var result = _tripController.DeleteTrip(_trip.Value);
-
-        // Assert
-        result.Result.Should().BeOfType<OkObjectResult>();
-        var okResult = result.Result as OkObjectResult;
-        Assert.IsTrue((bool)okResult.Value);
-    }
-
-    [Test]
-    public void TripController_UpdateTrip_ReturnTripOk()
-    {
-        // Act
-        var result = _tripController.UpdateTrip(_trip.Value);
 
         // Assert
         result.Result.Should().BeOfType<OkObjectResult>();
@@ -81,18 +59,5 @@ public class TripControllerTests
         result.Result.Should().BeOfType<OkObjectResult>();
         var okResult = result.Result as OkObjectResult;
         Assert.IsTrue((bool)okResult.Value);
-    }
-
-
-    [Test]
-    public void UserController_SetRelation_ReturnOk()
-    {
-        var tripId = 0;
-
-        A.CallTo(() => _tripDbRepository.Value.SetRelation(_id.Value, tripId)).Returns(_trip.Value);
-
-        var result = _tripController.SetRelation(_id.Value, tripId);
-
-        result.Should().BeOfType<Task<IActionResult>>();
     }
 }

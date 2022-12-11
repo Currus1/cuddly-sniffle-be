@@ -88,20 +88,25 @@ public class UserController : Controller
             string driverLicenseRegExp = @"^\d{8}$";
             if (ModelState.IsValid)
             {
-                if (Regex.IsMatch(driver.LicenseNumber, licenseNumberRegExp, RegexOptions.IgnoreCase) &&
-                    Regex.IsMatch(driver.DriversLicense, driverLicenseRegExp, RegexOptions.IgnoreCase) &&
-                    Enum.IsDefined(typeof(VehicleTypes), driver.VehicleType))
+                if(driver.LicenseNumber != null &&
+                   driver.DriversLicense != null &&
+                   driver.VehicleType != null)
                 {
-                    existingUser.LicenseNumber = driver.LicenseNumber;
-                    existingUser.VehicleType = driver.VehicleType;
-                    existingUser.DriversLicense = driver.DriversLicense;
-                }
-                else
-                {
-                    return BadRequest();
-                }
-                await _userManager.UpdateAsync(existingUser);
-                return Ok();
+                    if (Regex.IsMatch(driver.LicenseNumber, licenseNumberRegExp, RegexOptions.IgnoreCase) &&
+                        Regex.IsMatch(driver.DriversLicense, driverLicenseRegExp, RegexOptions.IgnoreCase) &&
+                        Enum.IsDefined(typeof(VehicleTypes), driver.VehicleType))
+                    {
+                        existingUser.LicenseNumber = driver.LicenseNumber;
+                        existingUser.VehicleType = driver.VehicleType;
+                        existingUser.DriversLicense = driver.DriversLicense;
+                        await _userManager.UpdateAsync(existingUser);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }   
             }
             return BadRequest();
         }
@@ -156,17 +161,28 @@ public class UserController : Controller
 
             if (user != null && user.DriversLicense == null)
             {
-                UserRegisterDto userDto = new UserRegisterDto
-                (
-                    user.Name,
-                    user.Surname,
-                    user.Email,
-                    user.Birthdate,
-                    user.PhoneNumber
-                );
-                return Ok(userDto);
+                if (user.Surname != null &&
+                    user.Email != null &&
+                    user.PhoneNumber != null)
+                {
+                    UserRegisterDto userDto = new UserRegisterDto
+                    (
+                        user.Name,
+                        user.Surname,
+                        user.Email,
+                        user.Birthdate,
+                        user.PhoneNumber
+                    );
+                    return Ok(userDto);
+                }
             }   
-            if (user != null && user.DriversLicense != null)
+            if (user != null && 
+                user.DriversLicense != null &&
+                user.Surname != null &&
+                user.Email != null &&
+                user.PhoneNumber != null &&
+                user.VehicleType != null &&
+                user.LicenseNumber != null)
             {
                 DriverDto driverDto = new DriverDto
                 (

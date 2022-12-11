@@ -14,11 +14,11 @@ public class EnumController : Controller
 {
     [HttpGet]
     [Route("TripStatus")]
-    public String[]? GetTripStateEnum()
+    public string[]? GetTripStateEnum()
     {
         try
         {
-            return (String[])Enum.GetNames(typeof(TripStatuses));
+            return Enum.GetNames(typeof(TripStatuses));
         }
         catch (Exception ex)
         {
@@ -29,11 +29,11 @@ public class EnumController : Controller
 
     [HttpGet]
     [Route("VehicleType")]
-    public String[]? GetVehicleTypeEnum()
+    public string[]? GetVehicleTypeEnum()
     {
         try
         {
-           return (String[])Enum.GetNames(typeof(VehicleTypes));
+           return Enum.GetNames(typeof(VehicleTypes));
         }
         catch (Exception ex)
         {

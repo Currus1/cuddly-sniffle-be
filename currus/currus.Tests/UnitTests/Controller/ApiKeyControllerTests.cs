@@ -7,8 +7,8 @@ namespace currus.Tests.UnitTests.Controller;
 [TestFixture]
 public class ApiKeyControllerTests
 {
-    private ApiKeyController _apiKeyController;
-    private IConfiguration configuration;
+    private ApiKeyController? _apiKeyController;
+    private IConfiguration? configuration;
 
     private IConfiguration BuildConfiguration(string key)
     {
