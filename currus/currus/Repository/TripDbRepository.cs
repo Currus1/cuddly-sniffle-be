@@ -16,9 +16,12 @@ public class TripDbRepository : DbRepository<Trip>, ITripDbRepository
 
     public void DeleteById(int id)
     {
-        var trip = _context.Trip.Find(id);
-        if (trip != null)
-            _context.Trip.Remove(trip);
+        if(_context.Trip != null)
+        {
+            var trip = _context.Trip.Find(id);
+            if (trip != null)
+                _context.Trip.Remove(trip);
+        }
     }
 
     public IEnumerable<Trip> GetAllByStatus(string tripStatus)
@@ -32,49 +35,59 @@ public class TripDbRepository : DbRepository<Trip>, ITripDbRepository
 
     public IEnumerable<Trip> GetTripsForUser(string userId)
     {
-        var userTrips = from trip in _context.Trip
+        if(_context.Trip != null)
+        {
+            var userTrips = from trip in _context.Trip
                         .Include(t => t.Users)
-                        where trip.Users.Any(u => u.Id == userId)
-                        select trip;
-
-        return userTrips.ToList();
+                        where trip.Users != null && trip.Users.Any(u => u.Id == userId)
+                        select trip; 
+            return userTrips.ToList();
+        }
+        return new Trip[] { };
     }
 
     public ICollection<User> GetAllUsers(int id)
     {
-        var trip = _context.Trip.Include("Users").FirstOrDefault(trip => id == trip.Id);
-        if (trip != null)
+        if(_context.Trip != null)
         {
-            if (trip.Users != null)
+            var trip = _context.Trip.Include("Users").FirstOrDefault(trip => id == trip.Id);
+            if (trip != null)
             {
-                return trip.Users;
+                if (trip.Users != null)
+                {
+                    return trip.Users;
+                }
             }
         }
-        return null;
+        return new User[] { };
     }
-
-    public Trip SetRelation(int tripId, int userId)
+    
+    public bool AddUserToTrip(User user, int id)
     {
-        var trip = _context.Trip.Find(tripId);
-        var user = _context.User.Find(userId);
-
-        if (trip != null)
+        if(_context.Trip != null)
         {
-            if (trip.Users != null && user != null)
+            var trip = _context.Trip.Include("Users").FirstOrDefault(trip => id == trip.Id);
+            if(trip != null && trip.Users != null)
             {
                 trip.Users.Add(user);
+                return true;
             }
-            else if (user != null)
-            {
-                trip.Users = new List<User>() { user };
-            }
+            return false;
         }
-        return trip;
+        return false;
     }
 
     public Trip GetTripAsNotTracked(int id)
     {
-        var trip = _context.Trip.Include("Users").AsNoTracking().FirstOrDefault(trip => id == trip.Id); //Where(trip => trip.Id == id);
-        return trip;
+        if(_context.Trip != null && _context.Trip.Any())
+        {
+            var trip = _context.Trip.Include("Users").AsNoTracking().FirstOrDefault(trip => id == trip.Id);
+            if(trip == null)
+            {
+                return new Trip();
+            }
+            return trip;
+        }
+        return new Trip();
     }
 }

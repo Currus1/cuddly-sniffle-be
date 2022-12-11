@@ -1,6 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace currus.Models;
 
@@ -12,16 +11,17 @@ public class Trip
     public double SLongitude { get; set; }
     public double DLatitude { get; set; } // D - destination
     public double DLongitude { get; set; }
-    public string? StartingPoint { get; set; }
-    public string? Destination { get; set; }
+    public string StartingPoint { get; set; } = "";
+    public string Destination { get; set; } = "";
     public int Seats { get; set; }
-    public int Hours { get; set; }
-    public int Minutes { get; set; }
-    public decimal Distance { get; set; }
-    public string DriverId { get; set; }
-    public string? VehicleType { get; set; }
+    public int? Hours { get; set; }
+    public int? Minutes { get; set; }
+    public decimal? Distance { get; set; }
+    public string DriverId { get; set; } = "";
+    public string VehicleType { get; set; } = "";
     public decimal EstimatedTripPrice { get; set; }
-    public string TripStatus { get; set; }
+    public string TripStatus { get; set; } = "";
+    public DateTime TripDate { get; set; }
     [JsonIgnore]
     public virtual ICollection<User>? Users { get; set; }
 
@@ -29,53 +29,19 @@ public class Trip
     {
     }
 
-    public Trip(int id, double sLatitude, double sLongitude, double dLatitude, 
-        double dLongitude, string? startingPoint, string? destination, 
-        int seats, int hours, int minutes, decimal distance, string driverId, 
-        string? vehicleType, decimal estimatedTripPrice, string tripStatus)
+    public Trip(double sLatitude, double sLongitude, 
+        double dLatitude, double dLongitude, 
+        string startingPoint, string destination, 
+        decimal estimatedTripPrice, int seats, DateTime tripDate)
     {
-        Id = id;
         SLatitude = sLatitude;
         SLongitude = sLongitude;
         DLatitude = dLatitude;
         DLongitude = dLongitude;
         StartingPoint = startingPoint;
         Destination = destination;
-        Seats = seats;
-        Hours = hours;
-        Minutes = minutes;
-        Distance = distance;
-        DriverId = driverId;
-        VehicleType = vehicleType;
         EstimatedTripPrice = estimatedTripPrice;
-        TripStatus = tripStatus;
-        Users = new List<User>();
-    }
-
-    public decimal CalculateTripPrice(int hours, int minutes, decimal distance, int basePrice = 2)
-    {
-        if (hours <= 0 && minutes <= 0) throw new ArgumentOutOfRangeException();
-        if (distance <= 0) throw new ArgumentOutOfRangeException();
-        const decimal pricePerKm = 0.2M;
-        const decimal pricePerMinute = 0.1M;
-        decimal fullPrice = basePrice; // Widening type conversion
-        var fullTime = hours * 60 + minutes;
-        fullPrice += fullTime * pricePerMinute + distance * pricePerKm;
-        return fullPrice;
-    }
-
-    public int CalculateBasePrice(Trip trip)
-    {
-        switch (trip.VehicleType)
-        {
-            case "SUV":
-                return 3;
-            case "Van":
-                return 3;
-            case "EV":
-                return 1;
-            default:
-                return 2;
-        }
+        Seats = seats;
+        TripDate = tripDate;
     }
 }
