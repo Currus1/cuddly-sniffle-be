@@ -32,19 +32,9 @@ namespace currus.Repository
             return _context.Set<T>().ToList();
         }
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
-
         public async Task SaveAsync()
         {
            await _context.SaveChangesAsync();
-        }
-
-        public void Update(T entity)
-        {
-            _context.Set<T>().Update(entity);
         }
     }
 }

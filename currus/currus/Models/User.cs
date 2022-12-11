@@ -7,16 +7,16 @@ namespace currus.Models;
 
 public class User : IdentityUser
 {
-    public string Name { get; set; }    
-    public string? Surname { get; set; }
+    public string Name { get; set; } = "";
+    public string Surname { get; set; } = "";
     public DateTime Birthdate { get; set; }
     [EmailAddress]
     [MaxLength(256)]
     [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$")]
-    public override string? Email { get; set; }
+    public override string Email { get; set; } = "";
     [Phone]
     [RegularExpression(@"^((86|\+3706)\d{7})$")]
-    public override string? PhoneNumber { get; set; }
+    public override string PhoneNumber { get; set; } = "";
 
     [JsonIgnore]
     public string? VehicleType { get; set; }
@@ -31,18 +31,5 @@ public class User : IdentityUser
 
     public User()
     {
-    }
-
-    public User(string name, string? surname, DateTime birthdate, string? email,
-        string? phoneNumber, string? vehicleType, string? licenseNumber)
-    {
-        Name = name;
-        Surname = surname;
-        Birthdate = birthdate;
-        Email = email;
-        PhoneNumber = phoneNumber;
-        VehicleType = vehicleType;
-        LicenseNumber = licenseNumber;
-        Trips = new List<Trip>();
     }
 }

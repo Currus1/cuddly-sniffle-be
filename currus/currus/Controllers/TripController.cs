@@ -2,14 +2,10 @@ using currus.Logging.Logic;
 using currus.Models;
 using currus.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Specialized;
-using Microsoft.AspNetCore.Http;
+using currus.Models.DTOs;
 
 namespace currus.Controllers;
 
@@ -28,13 +24,93 @@ public class TripController : Controller
     }
 
     [HttpPost]
-    [Route("Adding")]
-    public async Task<IActionResult> AddTrip([FromBody] Trip trip)
+    [Route("UserAdd")]
+    public async Task<IActionResult> AddUserToTrip()
     {
         try
         {
-            int basePrice = trip.CalculateBasePrice(trip); 
-            trip.EstimatedTripPrice = trip.CalculateTripPrice(trip.Hours, trip.Minutes, trip.Distance, basePrice);
+            if (HttpContext == null)
+                return BadRequest();
+
+            var email = HttpContext.Items["email"];
+            if (email == null)
+            {
+                return BadRequest();
+            }
+
+            var existingUser = await _userManager.FindByEmailAsync(email.ToString());
+            if (existingUser == null)
+            {
+                return BadRequest();
+            }
+
+            var tripId = HttpContext.Request.Query["tripId"];
+            var trip = _tripDbRepository.GetTripAsNotTracked(Int32.Parse(tripId));
+
+            if(trip.Users == null)
+            {
+                trip.Users = new List<User>();
+            }
+            if(!ValidateTripAvailability(trip))
+            {
+                return Forbid();
+            }
+            if (trip.Users.Any(u => u.Email == existingUser.Email))
+            {
+                return BadRequest(trip.Users.Count);
+            }
+
+            bool isAdded = _tripDbRepository.AddUserToTrip(existingUser, trip.Id);
+            if (isAdded)
+            {
+                await _tripDbRepository.SaveAsync();
+                return Ok(trip.Users.Count);
+            }
+            return BadRequest();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex.Message + ": " + ex.StackTrace);
+            return BadRequest();
+        }
+    }
+
+    [HttpPost]
+    [Route("Adding")]
+    public async Task<IActionResult> AddTrip([FromBody] TripAddDto tripDto)
+    {
+        try
+        {
+            if (HttpContext == null)
+                return BadRequest();
+
+            var email = HttpContext.Items["email"];
+            if (email == null)
+            {
+                return BadRequest();
+            }
+
+            var existingUser = await _userManager.FindByEmailAsync(email.ToString());
+            if (existingUser == null)
+            {
+                return BadRequest();
+            }
+            Trip trip = new Trip(tripDto.SLatitude, tripDto.SLongitude,
+                                 tripDto.DLatitude, tripDto.DLongitude,
+                                 tripDto.StartingPoint, tripDto.Destination,
+                                 tripDto.EstimatedTripPrice,
+                                 tripDto.Seats, tripDto.TripDate);
+
+            trip.Distance = 10; // Fixed
+            trip.Hours = 1; // Fixed
+            trip.Minutes = 1; // Fixed
+            trip.TripStatus = "Planned";
+            if(existingUser.VehicleType != null)
+            {
+                trip.VehicleType = existingUser.VehicleType;
+            }
+            trip.DriverId = existingUser.Id;
+            trip.Users = new List<User>();
 
             await _tripDbRepository.Add(trip);
             await _tripDbRepository.SaveAsync();
@@ -70,10 +146,15 @@ public class TripController : Controller
     {
         try
         {
-            Trip trip = _tripDbRepository.Get(id);
-            _tripDbRepository.DeleteById(id);
-            await _tripDbRepository.SaveAsync();
-            return Ok(id);
+            var value = _tripDbRepository.Get(id);
+            if (value != null)
+            {
+                Trip trip = value;
+                _tripDbRepository.DeleteById(id);
+                await _tripDbRepository.SaveAsync();
+                return Ok(id);
+            }
+            return NotFound();
         }
         catch (Exception ex)
         {
@@ -153,34 +234,16 @@ public class TripController : Controller
         }
     }
 
-    [HttpPut]
-    [Route("Update")]
-    public async Task<IActionResult> UpdateTrip([FromBody] Trip trip)
-    {
-        try
-        {
-            var oldTrip = _tripDbRepository.GetTripAsNotTracked(trip.Id); 
-            _tripDbRepository.Update(trip);
-            await _tripDbRepository.SaveAsync();
-            return Ok(trip);
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex.Message + ": " + ex.StackTrace);
-            return NotFound();
-        }
-    }
-
     [HttpGet]
     [Route("{id}")]
-    public async Task<IActionResult> GetTrip(int id)
+    public IActionResult GetTrip(int id)
     {
         try
         {
-            Trip? trip = _tripDbRepository.Get(id);
+            var trip = _tripDbRepository.Get(id);
             if (trip != null)
                 return Ok(trip);
-            return Ok();
+            return BadRequest();
         } 
         catch (Exception ex)
         {
@@ -197,20 +260,23 @@ public class TripController : Controller
         return _tripDbRepository.GetAllByStatus(tripStatus);
     }
 
-    [HttpPut]
-    [Route("{id}/user/{userId}")]
-    public async Task<IActionResult> SetRelation(int id, int userId)
-    {
-        var trip = _tripDbRepository.SetRelation(id, userId);
-        _tripDbRepository.Update(trip);
-        await _tripDbRepository.SaveAsync();
-        return Ok();
-    }
-
     [HttpGet]
     [Route("{id}/users")]
     public ICollection<User> GetAllUsers(int id)
     {
         return _tripDbRepository.GetAllUsers(id);
+    }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public bool ValidateTripAvailability(Trip trip)
+    {
+        if (trip.Users != null)
+        {
+            if (trip.Users.Count < trip.Seats)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
