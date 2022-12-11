@@ -23,7 +23,7 @@ using NUnit.Framework.Internal;
 namespace currus.Tests.UnitTests.Controller;
 
 [TestFixture]
-public class UserControllerTest
+public class UserControllerTests
 {
     private UserController _userController;
     private Mock<UserManager<User>> _userManager;

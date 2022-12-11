@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace currus.Tests.UnitTests.Controller;
     
 [TestFixture]
-public class AuthControllerTest
+public class AuthControllerTests
 {
     private AuthController _authController;
     private Mock<UserManager<User>> _userManager;
@@ -77,13 +77,16 @@ public class AuthControllerTest
 
         var auth = new AuthResult()
         {
+            Token = null,
             Errors = new List<string>()
             {
                 "User already exists! Please log in"
             },
-            Result = true
+            Result = false
         };
 
+        Assert.That(result.Token, Is.EqualTo(auth.Token));
         Assert.That(result.Errors, Is.EqualTo(auth.Errors));
+        Assert.That(result.Result, Is.EqualTo(auth.Result));
     }
 }

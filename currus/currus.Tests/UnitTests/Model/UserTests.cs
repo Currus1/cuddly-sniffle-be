@@ -1,8 +1,10 @@
 ﻿using currus.Enums;
 using currus.Models;
+using FluentAssertions;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc;
 
 namespace currus.Tests.Model;
 
@@ -10,12 +12,17 @@ namespace currus.Tests.Model;
 internal class UserTests
 {
     private User _user;
-
+    private string _phoneNumberPattern;
+    private string _emailPattern;
+    private string _licenseNumberPattern;
 
     [SetUp]
     public void SetUp()
     {
         _user = new User();
+        _phoneNumberPattern = @"^((86|\+3706)\d{7})$";
+        _emailPattern = @"^([a-zA-Z0-9_\-\.]{1,64})@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$";
+        _licenseNumberPattern = @"^[A-Z]{3}\d{3}$";
     }
 
     [Test]
@@ -26,31 +33,56 @@ internal class UserTests
         Assert.IsNotNull(user);
     }
 
-    //[Test]
-    //public void UserConstructor_NotEmpty_ShouldCreateUser()
-    //{
-    //    var id = 0;
-    //    var name = "Name";
-    //    var surname = "Surname";
-    //    var birthdate = new DateTime();
-    //    var email = "name@gmail.com";
-    //    var phoneNumber = "868686868";
-    //    var vehicleType = "SUV";
-    //    var licenseNumber = "AAA111";
+    [Test]
+    public void UserConstructor_NotEmpty_ShouldCreateUser()
+    {
+        var name = "Name";
+        var surname = "Surname";
+        var birthdate = new DateTime();
+        var email = "name@gmail.com";
+        var phoneNumber = "868686868";
+        var vehicleType = "SUV";
+        var licenseNumber = "AAA111";
        
-    //    User user = new User(id, name, surname, birthdate, email, 
-    //        phoneNumber, vehicleType, licenseNumber);
+        User user = new User(name, surname, birthdate, email, 
+            phoneNumber, vehicleType, licenseNumber);
 
-    //    Assert.IsNotNull(user);
-    //}
+        Assert.IsNotNull(user);
+    }
+
+    [Test]
+    public void UserConstructor_NotEmpty_UserContentEqual()
+    {
+        User testUser = new User
+        {
+            Name = "Name",
+            Surname = "Surname",
+            Birthdate = new DateTime(),
+            Email = "name@gmail.com",
+            PhoneNumber = "868686868",
+            VehicleType = "SUV",
+            LicenseNumber = "AAA111",
+            Trips = new List<Trip>()
+        };
+
+        var result = new User(testUser.Name, testUser.Surname, testUser.Birthdate, testUser.Email,
+            testUser.PhoneNumber, testUser.VehicleType, testUser.LicenseNumber);
+
+        Assert.That(result.Name, Is.EqualTo(testUser.Name));
+        Assert.That(result.Surname, Is.EqualTo(testUser.Surname));
+        Assert.That(result.Birthdate, Is.EqualTo(testUser.Birthdate));
+        Assert.That(result.Email, Is.EqualTo(testUser.Email));
+        Assert.That(result.PhoneNumber, Is.EqualTo(testUser.PhoneNumber));
+        Assert.That(result.LicenseNumber, Is.EqualTo(testUser.LicenseNumber));
+        Assert.That(result.Trips, Is.EqualTo(testUser.Trips));
+    }
 
     [Test]
     public void UserPhoneNumber_RightPatternWith86_ShouldSucceed()
     {
-        User user = new User();
-        user.PhoneNumber = "868686868";
+        _user.PhoneNumber = "868686868";
 
-        var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.PhoneNumber, _phoneNumberPattern);
 
         Assert.IsTrue(result);
     }
@@ -58,10 +90,9 @@ internal class UserTests
     [Test]
     public void UserPhoneNumber_WrongPatternWith86_ShouldFail()
     {
-        User user = new User();
-        user.PhoneNumber = "8686868682";
+        _user.PhoneNumber = "8686868682";
 
-        var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.PhoneNumber, _phoneNumberPattern);
 
         Assert.IsFalse(result);
     }
@@ -69,10 +100,9 @@ internal class UserTests
     [Test]
     public void UserPhoneNumber_WrongPatternWith370_ShouldFail()
     {
-        User user = new User();
-        user.PhoneNumber = "37066868686";
+        _user.PhoneNumber = "37066868686";
 
-        var result = Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.PhoneNumber, _phoneNumberPattern);
 
         Assert.IsFalse(result);
     }
@@ -80,10 +110,9 @@ internal class UserTests
     [Test]
     public void UserPhoneNumber_RightPatternWith370_ShouldSucceed()
     {
-        User user = new User();
-        user.PhoneNumber = "+37066868686";
+        _user.PhoneNumber = "+37066868686";
 
-        var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.PhoneNumber, _phoneNumberPattern);
 
         Assert.IsTrue(result);
     }
@@ -91,10 +120,9 @@ internal class UserTests
     [Test]
     public void UserEmail_WrongPatternNotMachingLastString_ShouldFail()
     {
-        User user = new User();
-        user.Email = "name@gmail.something";
+        _user.Email = "name@gmail.something";
 
-        var result = Regex.IsMatch(user.PhoneNumber, @"^((86|\+3706)\d{7})$");//Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.Email, _emailPattern);
 
         Assert.IsFalse(result);
     }
@@ -102,10 +130,9 @@ internal class UserTests
     [Test]
     public void UserEmail_RightPattern_ShouldSucceed()
     {
-        User user = new User();
-        user.Email = "name@gmail.com";
+        _user.Email = "name@gmail.com";
         
-        var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$"); //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.Email, _emailPattern);
 
         Assert.IsTrue(result);
     }
@@ -113,10 +140,9 @@ internal class UserTests
     [Test]
     public void UserEmail_WrongPatternNoAtSign_ShouldFail()
     {
-        User user = new User();
-        user.Email = "namegmail.com";
+        _user.Email = "namegmail.com";
 
-        var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$"); //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.Email, _emailPattern);
 
         Assert.IsFalse(result);
     }
@@ -124,10 +150,9 @@ internal class UserTests
     [Test]
     public void UserEmail_WrongPatternNotMachingLength_ShouldFail()
     {
-        User user = new User();
-        user.Email = new string('a', 257) + "@gmail.com";
+        _user.Email = new string('a', 257) + "@gmail.com";
 
-        var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$"); //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.Email, _emailPattern);
 
         Assert.IsFalse(result);
     }
@@ -135,10 +160,9 @@ internal class UserTests
     [Test]
     public void UserEmail_WrongPatternNotMachingFormat_ShouldFail()
     {
-        User user = new User();
-        user.Email = "namegmail.something";
+        _user.Email = "namegmail.something";
 
-        var result = Regex.IsMatch(user.Email, @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.Email, _emailPattern);
 
         Assert.IsFalse(result);
     }
@@ -147,10 +171,9 @@ internal class UserTests
     [Test]
     public void UserLicenseNumber_RightPattern_ShouldSucceed()
     {
-        User user = new User();
-        user.LicenseNumber = "AAA111";
+        _user.LicenseNumber = "AAA111";
 
-        var result = Regex.IsMatch(user.LicenseNumber, @"^[A-Z]{3}\d{3}$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.LicenseNumber, _licenseNumberPattern);
 
         Assert.IsTrue(result);
     }
@@ -158,10 +181,9 @@ internal class UserTests
     [Test]
     public void UserLicenseNumber_WrongPatternNotMatchingLength_ShouldSucceed()
     {
-        User user = new User();
-        user.LicenseNumber = "AAA1112";
+        _user.LicenseNumber = "AAA1112";
 
-        var result = Regex.IsMatch(user.LicenseNumber, @"^[A-Z]{3}\d{3}$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.LicenseNumber, _licenseNumberPattern);
 
         Assert.IsFalse(result);
     }
@@ -169,10 +191,9 @@ internal class UserTests
     [Test]
     public void UserLicenseNumber_WrongPatternLetterAndNumbersSwitched_ShouldSucceed()
     {
-        User user = new User();
-        user.LicenseNumber = "111AAA";
+        _user.LicenseNumber = "111AAA";
 
-        var result = Regex.IsMatch(user.LicenseNumber, @"^[A-Z]{3}\d{3}$");  //Validator.TryValidateObject(user, new ValidationContext(user, null, null), null, true);
+        var result = Regex.IsMatch(_user.LicenseNumber, _licenseNumberPattern);
 
         Assert.IsFalse(result);
     }

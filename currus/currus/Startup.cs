@@ -11,9 +11,11 @@ using System.Text;
 using Autofac.Extras.DynamicProxy;
 using Microsoft.EntityFrameworkCore;
 using currus.Middleware;
+using System.Diagnostics.CodeAnalysis;
 
 namespace currus
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)

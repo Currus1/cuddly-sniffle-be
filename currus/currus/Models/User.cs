@@ -12,7 +12,7 @@ public class User : IdentityUser
     public DateTime Birthdate { get; set; }
     [EmailAddress]
     [MaxLength(256)]
-    [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$")]
+    [RegularExpression(@"^([a-zA-Z0-9_\-\.]{1,64})@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$")]
     public override string? Email { get; set; }
     [Phone]
     [RegularExpression(@"^((86|\+3706)\d{7})$")]
