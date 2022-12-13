@@ -45,7 +45,7 @@ public class AuthControllerTests
         _authController = new AuthController(_userManager.Object, _configuration);
     }
 
-    private User GetUserTestData()
+    private static User GetUserTestData()
     {
         var user = new User()
         {
@@ -68,7 +68,7 @@ public class AuthControllerTests
     {
         var user = GetUserTestData();
 
-        UserRegisterDto userDto = new UserRegisterDto(user.Name, user.Surname, user.Email, user.Birthdate, user.PhoneNumber);
+        UserRegisterDto userDto = new (user.Name, user.Surname, user.Email, user.Birthdate, user.PhoneNumber);
 
         var actionResult = await _authController.Register(userDto);
 
@@ -85,8 +85,12 @@ public class AuthControllerTests
             Result = false
         };
 
-        Assert.That(result.Token, Is.EqualTo(auth.Token));
-        Assert.That(result.Errors, Is.EqualTo(auth.Errors));
-        Assert.That(result.Result, Is.EqualTo(auth.Result));
+        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Token, Is.EqualTo(auth.Token));
+            Assert.That(result.Errors, Is.EqualTo(auth.Errors));
+            Assert.That(result.Result, Is.EqualTo(auth.Result));
+        });
     }
 }

@@ -21,7 +21,6 @@ namespace currus.Tests.IntegrationTests.Controller
     class UserControllerIntegrationTests
     {
         private HttpClient _client;
-        private string _token;
 
         [SetUp]
         public void SetUp()
@@ -30,7 +29,7 @@ namespace currus.Tests.IntegrationTests.Controller
             _client = factory.CreateClient();
         }
 
-        private User GetUserTestData()
+        private static User GetUserTestData()
         {
             var user = new User()
             {
@@ -48,7 +47,7 @@ namespace currus.Tests.IntegrationTests.Controller
             return user;
         }
 
-        private User GetDriverTestData()
+        private static User GetDriverTestData()
         {
             var user = new User()
             {
@@ -66,7 +65,7 @@ namespace currus.Tests.IntegrationTests.Controller
             return user;
         }
 
-        private JsonContent GetRegisterTestData()
+        private static JsonContent GetRegisterTestData()
         {
             var testUser = GetUserTestData();
 
@@ -83,7 +82,7 @@ namespace currus.Tests.IntegrationTests.Controller
             return content;
         }
 
-        private JsonContent GetLoginTestData()
+        private static JsonContent GetLoginTestData()
         {
             var testUser = GetUserTestData();
 
@@ -98,7 +97,6 @@ namespace currus.Tests.IntegrationTests.Controller
 
         private async Task Authorize()
         {
-            var testUser = GetUserTestData();
             var registerContent = GetRegisterTestData();
             var loginContent = GetLoginTestData();
 
@@ -110,9 +108,13 @@ namespace currus.Tests.IntegrationTests.Controller
                 login.EnsureSuccessStatusCode();
                 var log = await login.Content.ReadAsStringAsync();
 
-                var token = JObject.Parse(log)["token"].ToString();
+                
+                var token = JObject.Parse(log)["token"];
 
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                if(token != null)
+                {
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.ToString());
+                }
             }
         }
 
@@ -128,12 +130,16 @@ namespace currus.Tests.IntegrationTests.Controller
             var user = await response.Content.ReadFromJsonAsync<User>();
 
             response.EnsureSuccessStatusCode();
-            Assert.IsNotNull(response);
-            Assert.That(user.Name, Is.EqualTo(testUser.Name));
-            Assert.That(user.Surname, Is.EqualTo(testUser.Surname));
-            Assert.That(user.Email, Is.EqualTo(testUser.Email));
-            Assert.That(user.Birthdate, Is.EqualTo(testUser.Birthdate));
-            Assert.That(user.PhoneNumber, Is.EqualTo(testUser.PhoneNumber));
+            Assert.That(response, Is.Not.Null);
+            Assert.That(user, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(user.Name, Is.EqualTo(testUser.Name));
+                Assert.That(user.Surname, Is.EqualTo(testUser.Surname));
+                Assert.That(user.Email, Is.EqualTo(testUser.Email));
+                Assert.That(user.Birthdate, Is.EqualTo(testUser.Birthdate));
+                Assert.That(user.PhoneNumber, Is.EqualTo(testUser.PhoneNumber));
+            });
         }
 
         [TestCategory("Integration")]
@@ -158,15 +164,20 @@ namespace currus.Tests.IntegrationTests.Controller
             var driver = await response2.Content.ReadFromJsonAsync<User>();
 
             response2.EnsureSuccessStatusCode();
-            Assert.IsNotNull(response2);
-            Assert.That(driver.Name, Is.EqualTo(testDriver.Name));
-            Assert.That(driver.Surname, Is.EqualTo(testDriver.Surname));
-            Assert.That(driver.Email, Is.EqualTo(testDriver.Email));
-            Assert.That(driver.Birthdate, Is.EqualTo(testDriver.Birthdate));
-            Assert.That(driver.PhoneNumber, Is.EqualTo(testDriver.PhoneNumber));
-            Assert.That(driver.DriversLicense, Is.EqualTo(testDriver.DriversLicense));
-            Assert.That(driver.VehicleType, Is.EqualTo(testDriver.VehicleType));
-            Assert.That(driver.LicenseNumber, Is.EqualTo(testDriver.LicenseNumber));
+            Assert.That(response2, Is.Not.Null);
+            Assert.That(driver, Is.Not.Null);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(driver.Name, Is.EqualTo(testDriver.Name));
+                Assert.That(driver.Surname, Is.EqualTo(testDriver.Surname));
+                Assert.That(driver.Email, Is.EqualTo(testDriver.Email));
+                Assert.That(driver.Birthdate, Is.EqualTo(testDriver.Birthdate));
+                Assert.That(driver.PhoneNumber, Is.EqualTo(testDriver.PhoneNumber));
+                Assert.That(driver.DriversLicense, Is.EqualTo(testDriver.DriversLicense));
+                Assert.That(driver.VehicleType, Is.EqualTo(testDriver.VehicleType));
+                Assert.That(driver.LicenseNumber, Is.EqualTo(testDriver.LicenseNumber));
+            });
         }
 
         [TestCategory("Integration")]
@@ -178,6 +189,8 @@ namespace currus.Tests.IntegrationTests.Controller
             var testResponse = await _client.GetAsync($"apisecure/User/");
             var newUser = await testResponse.Content.ReadFromJsonAsync<User>();
             testResponse.EnsureSuccessStatusCode();
+
+            Assert.That(newUser, Is.Not.Null);
 
             newUser.Name = "Teste";
             newUser.Surname = "Testaviciute";
@@ -209,15 +222,20 @@ namespace currus.Tests.IntegrationTests.Controller
             var user = await response2.Content.ReadFromJsonAsync<User>();
 
             response2.EnsureSuccessStatusCode();
-            Assert.IsNotNull(response2);
-            Assert.That(user.Name, Is.EqualTo(newUser.Name));
-            Assert.That(user.Surname, Is.EqualTo(newUser.Surname));
-            Assert.That(user.Email, Is.EqualTo(newUser.Email));
-            Assert.That(user.Birthdate, Is.EqualTo(newUser.Birthdate));
-            Assert.That(user.PhoneNumber, Is.EqualTo(newUser.PhoneNumber));
-            Assert.That(user.DriversLicense, Is.EqualTo(newUser.DriversLicense));
-            Assert.That(user.VehicleType, Is.EqualTo(newUser.VehicleType));
-            Assert.That(user.LicenseNumber, Is.EqualTo(newUser.LicenseNumber));
+            Assert.That(response2, Is.Not.Null);
+            Assert.That(user, Is.Not.Null);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(user.Name, Is.EqualTo(newUser.Name));
+                Assert.That(user.Surname, Is.EqualTo(newUser.Surname));
+                Assert.That(user.Email, Is.EqualTo(newUser.Email));
+                Assert.That(user.Birthdate, Is.EqualTo(newUser.Birthdate));
+                Assert.That(user.PhoneNumber, Is.EqualTo(newUser.PhoneNumber));
+                Assert.That(user.DriversLicense, Is.EqualTo(newUser.DriversLicense));
+                Assert.That(user.VehicleType, Is.EqualTo(newUser.VehicleType));
+                Assert.That(user.LicenseNumber, Is.EqualTo(newUser.LicenseNumber));
+            });
         }
     }
 }

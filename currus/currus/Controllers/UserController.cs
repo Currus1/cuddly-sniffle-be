@@ -119,7 +119,7 @@ public class UserController : Controller
 
     [HttpPut]
     [Route("Update")]
-    public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDto user)
+    public async Task<IActionResult> UpdateUser([FromBody] User user) //UserUpdateDto
     {
         try
         {

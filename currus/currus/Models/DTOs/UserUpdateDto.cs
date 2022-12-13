@@ -18,7 +18,7 @@ namespace currus.Models.DTOs
         public string VehicleType { get; set; }
         public string LicenseNumber { get; set; }
 
-        public DriverDto(string name, string surname, string email,
+        public UserUpdateDto(string name, string surname, string email,
             DateTime birthDate, string phoneNumber, string driversLicense, string vehicleType, string licenseNumber)
         {
             Name = name;
