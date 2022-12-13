@@ -11,7 +11,7 @@ namespace currus.Models.DTOs
         [Required]
         public string Email { get; set; }
         [Required]
-        public DateTime BirthDate { get; set; }
+        public DateTime Birthdate { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
         [Required]
@@ -22,12 +22,12 @@ namespace currus.Models.DTOs
         public string LicenseNumber { get; set; }
 
         public DriverDto(string name, string surname, string email, 
-            DateTime birthDate, string phoneNumber, string driversLicense, string vehicleType, string licenseNumber)
+            DateTime birthdate, string phoneNumber, string driversLicense, string vehicleType, string licenseNumber)
         {
             Name = name;
             Surname = surname;
             Email = email;
-            BirthDate = birthDate;
+            Birthdate = birthdate;
             PhoneNumber = phoneNumber;
             DriversLicense = driversLicense;
             VehicleType = vehicleType;

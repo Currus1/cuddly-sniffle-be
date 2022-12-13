@@ -69,7 +69,7 @@ namespace currus.Controllers
                         Name = userDto.Name,
                         Surname = userDto.Surname,
                         Email = userDto.Email,
-                        Birthdate = userDto.BirthDate,
+                        Birthdate = userDto.Birthdate,
                         PhoneNumber = userDto.PhoneNumber,
                         UserName = userDto.Email
                     };

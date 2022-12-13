@@ -75,7 +75,7 @@ namespace currus.Tests.IntegrationTests.Controller
                 surname = testUser.Surname,
                 email = testUser.Email,
                 password = "Password1!",
-                birthDate = testUser.Birthdate.ToShortDateString(),
+                birthdate = testUser.Birthdate.ToShortDateString(),
                 number = testUser.PhoneNumber
             });
 
@@ -102,7 +102,7 @@ namespace currus.Tests.IntegrationTests.Controller
 
             await _client.PostAsync($"api/Auth/register", registerContent);
 
-            //if(_client.DefaultRequestHeaders.Authorization == null)
+            if(_client.DefaultRequestHeaders.Authorization == null)
             {
                 var login = await _client.PostAsync($"api/Auth/login", loginContent);
                 login.EnsureSuccessStatusCode();
@@ -195,7 +195,7 @@ namespace currus.Tests.IntegrationTests.Controller
             newUser.Name = "Teste";
             newUser.Surname = "Testaviciute";
             newUser.Email = "nottest@gmail.com";
-            newUser.PhoneNumber = "+37067750755";
+            newUser.PhoneNumber = "867750755";
             newUser.Birthdate = new DateTime(2021, 12, 19);
             newUser.DriversLicense = "88884444";
             newUser.VehicleType = "Van";
@@ -203,7 +203,6 @@ namespace currus.Tests.IntegrationTests.Controller
 
             var content = JsonContent.Create(new
             {
-                id = newUser.Id,
                 name = newUser.Name,
                 surname = newUser.Surname,
                 email = newUser.Email,
@@ -211,8 +210,7 @@ namespace currus.Tests.IntegrationTests.Controller
                 birthdate = newUser.Birthdate.ToShortDateString(),
                 driversLicense = newUser.DriversLicense,
                 vehicleType = newUser.VehicleType,
-                licenseNumber = newUser.LicenseNumber,
-                trips = newUser.Trips
+                licenseNumber = newUser.LicenseNumber
             });
 
             var response1 = await _client.PutAsync($"apisecure/User/Update", content);
