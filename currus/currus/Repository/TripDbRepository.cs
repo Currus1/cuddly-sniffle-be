@@ -37,11 +37,12 @@ public class TripDbRepository : DbRepository<Trip>, ITripDbRepository
     {
         if(_context.Trip != null)
         {
-            var userTrips = from trip in _context.Trip
-                        .Include(t => t.Users)
-                        where trip.Users != null && trip.Users.Any(u => u.Id == userId)
-                        select trip; 
-            return userTrips.ToList();
+            var userTrips = _context.Trip
+            .Where(trip => trip.Users.Any(u => u.Id == userId))
+            .Select(trip => trip)
+            .ToList();
+
+            return userTrips;
         }
         return new Trip[] { };
     }
