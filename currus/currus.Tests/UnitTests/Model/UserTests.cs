@@ -19,7 +19,19 @@ internal class UserTests
     [SetUp]
     public void SetUp()
     {
-        _user = new User();
+        _user = new User
+        {
+            Name = "Testas",
+            Surname = "Testavicius",
+            Birthdate = new DateTime(),
+            Email = "test@email.com",
+            PhoneNumber = "+37060355589",
+            VehicleType = "Van",
+            LicenseNumber = "TTT777",
+            DriversLicense = "",
+            Trips = new List<Trip>()
+        };
+
         _phoneNumberPattern = @"^((86|\+3706)\d{7})$";
         _emailPattern = @"^([a-zA-Z0-9_\-\.]{1,64})@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$";
         _licenseNumberPattern = @"^[A-Z]{3}\d{3}$";
@@ -30,51 +42,7 @@ internal class UserTests
     {
         User user = new User();
 
-        Assert.IsNotNull(user);
-    }
-
-    [Test]
-    public void UserConstructor_NotEmpty_ShouldCreateUser()
-    {
-        var name = "Name";
-        var surname = "Surname";
-        var birthdate = new DateTime();
-        var email = "name@gmail.com";
-        var phoneNumber = "868686868";
-        var vehicleType = "SUV";
-        var licenseNumber = "AAA111";
-       
-        User user = new User(name, surname, birthdate, email, 
-            phoneNumber, vehicleType, licenseNumber);
-
-        Assert.IsNotNull(user);
-    }
-
-    [Test]
-    public void UserConstructor_NotEmpty_UserContentEqual()
-    {
-        User testUser = new User
-        {
-            Name = "Name",
-            Surname = "Surname",
-            Birthdate = new DateTime(),
-            Email = "name@gmail.com",
-            PhoneNumber = "868686868",
-            VehicleType = "SUV",
-            LicenseNumber = "AAA111",
-            Trips = new List<Trip>()
-        };
-
-        var result = new User(testUser.Name, testUser.Surname, testUser.Birthdate, testUser.Email,
-            testUser.PhoneNumber, testUser.VehicleType, testUser.LicenseNumber);
-
-        Assert.That(result.Name, Is.EqualTo(testUser.Name));
-        Assert.That(result.Surname, Is.EqualTo(testUser.Surname));
-        Assert.That(result.Birthdate, Is.EqualTo(testUser.Birthdate));
-        Assert.That(result.Email, Is.EqualTo(testUser.Email));
-        Assert.That(result.PhoneNumber, Is.EqualTo(testUser.PhoneNumber));
-        Assert.That(result.LicenseNumber, Is.EqualTo(testUser.LicenseNumber));
-        Assert.That(result.Trips, Is.EqualTo(testUser.Trips));
+        Assert.That(user, Is.Not.Null);
     }
 
     [Test]
@@ -84,7 +52,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.PhoneNumber, _phoneNumberPattern);
 
-        Assert.IsTrue(result);
+        Assert.That(result, Is.True);
     }
 
     [Test]
@@ -94,7 +62,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.PhoneNumber, _phoneNumberPattern);
 
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -104,7 +72,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.PhoneNumber, _phoneNumberPattern);
 
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -114,7 +82,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.PhoneNumber, _phoneNumberPattern);
 
-        Assert.IsTrue(result);
+        Assert.That(result, Is.True);
     }
 
     [Test]
@@ -124,7 +92,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.Email, _emailPattern);
 
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -134,7 +102,7 @@ internal class UserTests
         
         var result = Regex.IsMatch(_user.Email, _emailPattern);
 
-        Assert.IsTrue(result);
+        Assert.That(result, Is.True);
     }
 
     [Test]
@@ -144,7 +112,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.Email, _emailPattern);
 
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -154,7 +122,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.Email, _emailPattern);
 
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -164,7 +132,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.Email, _emailPattern);
 
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 
 
@@ -175,7 +143,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.LicenseNumber, _licenseNumberPattern);
 
-        Assert.IsTrue(result);
+        Assert.That(result, Is.True);
     }
 
     [Test]
@@ -185,7 +153,7 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.LicenseNumber, _licenseNumberPattern);
 
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -195,6 +163,6 @@ internal class UserTests
 
         var result = Regex.IsMatch(_user.LicenseNumber, _licenseNumberPattern);
 
-        Assert.IsFalse(result);
+        Assert.That(result, Is.False);
     }
 }

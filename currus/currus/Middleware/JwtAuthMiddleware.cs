@@ -30,6 +30,7 @@ namespace currus.Middleware
                     httpContext.Response.StatusCode = 401;
                     await httpContext.Response.WriteAsJsonAsync("Invalid User Key");
                     return;
+                   
                 }
                 var parts = authHeader.Split(' ');
                 if (parts.Length < 2)
@@ -59,6 +60,7 @@ namespace currus.Middleware
                     {
                         httpContext.Items["email"] = email;
                         await _next(httpContext);
+                        return;
                     }
                 }
                 else

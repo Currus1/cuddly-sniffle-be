@@ -119,7 +119,7 @@ public class UserController : Controller
 
     [HttpPut]
     [Route("Update")]
-    public async Task<IActionResult> UpdateUser([FromBody] User user)
+    public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDto user)
     {
         try
         {
@@ -132,6 +132,76 @@ public class UserController : Controller
                 return BadRequest();
             }
 
+            /*var existingUser = await _userManager.FindByEmailAsync(email.ToString());
+            if (existingUser == null)
+            {
+                return BadRequest();
+            }
+
+            if (user != null && user.DriversLicense == null)
+            {
+                if (user.Surname != null &&
+                    user.Email != null &&
+                    user.PhoneNumber != null)
+                {
+                    UserUpdateDto userDto = new UserRegisterDto
+                    (
+                        user.Name,
+                        user.Surname,
+                        user.Email,
+                        user.Birthdate,
+                        user.PhoneNumber
+                    );
+
+                    return Ok(userDto);
+                }
+            }
+            if (user != null &&
+                user.DriversLicense != null &&
+                user.Surname != null &&
+                user.Email != null &&
+                user.PhoneNumber != null &&
+                user.VehicleType != null &&
+                user.LicenseNumber != null)
+            {
+                DriverDto driverDto = new DriverDto
+                (
+                    user.Name,
+                    user.Surname,
+                    user.Email,
+                    user.Birthdate,
+                    user.PhoneNumber,
+                    user.DriversLicense,
+                    user.VehicleType,
+                    user.LicenseNumber
+                );
+                return Ok(driverDto);
+
+                string licenseNumberRegExp = @"^[A-Z]{3}\d{3}$";
+            string driverLicenseRegExp = @"^\d{8}$";
+            if (ModelState.IsValid)
+            {
+                if (user.LicenseNumber != null &&
+                   user.DriversLicense != null &&
+                   user.VehicleType != null)
+                {
+                    if (Regex.IsMatch(user.LicenseNumber, licenseNumberRegExp, RegexOptions.IgnoreCase) &&
+                        Regex.IsMatch(user.DriversLicense, driverLicenseRegExp, RegexOptions.IgnoreCase) &&
+                        Enum.IsDefined(typeof(VehicleTypes), user.VehicleType))
+                    {
+                        existingUser.LicenseNumber = user.LicenseNumber;
+                        existingUser.VehicleType = user.VehicleType;
+                        existingUser.DriversLicense = user.DriversLicense;
+                        await _userManager.UpdateAsync(existingUser);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+                }
+            }
+            return BadRequest();*/
             await _userManager.UpdateAsync(user);
 
             return BadRequest();

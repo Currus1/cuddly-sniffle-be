@@ -53,7 +53,7 @@ namespace currus.Controllers
                             }
                         });
                     }
-                    if (!Regex.IsMatch(userDto.Email, emailPattern, RegexOptions.IgnoreCase) || !Regex.IsMatch(userDto.Number.ToString(), phoneNumberPattern, RegexOptions.IgnoreCase))
+                    if (!Regex.IsMatch(userDto.Email, emailPattern, RegexOptions.IgnoreCase) || !Regex.IsMatch(userDto.PhoneNumber.ToString(), phoneNumberPattern, RegexOptions.IgnoreCase))
                     {
                         return BadRequest(new AuthResult()
                         {
@@ -70,7 +70,7 @@ namespace currus.Controllers
                         Surname = userDto.Surname,
                         Email = userDto.Email,
                         Birthdate = userDto.BirthDate,
-                        PhoneNumber = userDto.Number,
+                        PhoneNumber = userDto.PhoneNumber,
                         UserName = userDto.Email
                     };
 

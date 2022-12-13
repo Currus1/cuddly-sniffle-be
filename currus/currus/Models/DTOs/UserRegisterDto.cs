@@ -16,16 +16,16 @@ namespace currus.Models.DTOs
         [Required]
         public DateTime BirthDate { get; set; }
         [Required]
-        public string Number { get; set; }
+        public string PhoneNumber { get; set; }
 
         public UserRegisterDto(string name, string surname, string email,
-            DateTime birthDate, string number)
+            DateTime birthDate, string phoneNumber)
         {
             Name = name;
             Surname = surname;
             Email = email;
             BirthDate = birthDate;
-            Number = number;
+            PhoneNumber = phoneNumber;
         }
     }
 }
