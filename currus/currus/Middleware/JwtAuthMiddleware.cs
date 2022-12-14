@@ -34,7 +34,7 @@ namespace currus.Middleware
                    
                 }
                 var parts = authHeader.Split(' ');
-                if (parts.Length < 2)
+                if (parts.Length != 2)
                 {
                     httpContext.Response.StatusCode = 401;
                     await httpContext.Response.WriteAsJsonAsync("Invalid User Key");
@@ -74,6 +74,8 @@ namespace currus.Middleware
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message + ": " + ex.StackTrace);
+                httpContext.Response.StatusCode = 401;
+                await httpContext.Response.WriteAsJsonAsync("Invalid User Key");
                 return;
             }
         }

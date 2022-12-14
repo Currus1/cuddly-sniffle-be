@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
@@ -35,116 +36,35 @@ namespace currus.Tests.UnitTests.Middleware
             _httpContext.Request.Path = "/apisecure";
         }
 
-        private string CreateTokenString()
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
-
-            var credentials = new SigningCredentials(securityKey, "HS256");
-
-            var header = new JwtHeader(credentials);
-
-            JwtPayload payload = new JwtPayload();
-
-            payload.AddClaim(new Claim("context", "{'user': { 'email': 'test@email.com' }}", JsonClaimValueTypes.Json));
-            payload.AddClaim(new Claim("exp", DateTime.Now.AddHours(2).ToLongDateString()));
-            var securityToken = new JwtSecurityToken(header, payload);
-            var handler = new JwtSecurityTokenHandler();
-
-            return handler.WriteToken(securityToken);
-        }
-
         [Test]
-        public async Task JwtAuthMiddleware_Invoke_Success()
+        public async Task JwtAuthMiddleware_TestEmptyAuthHeader_ReturnStatusCodeUnauthorized()
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
-
-            var credentials = new SigningCredentials(securityKey, "HS256");
-
-            var header = new JwtHeader(credentials);
-
-            JwtPayload payload = new JwtPayload();
-
-            payload.AddClaim(new Claim("context", "{'user': { 'email': 'test@email.com' }}", JsonClaimValueTypes.Json));
-            payload.AddClaim(new Claim("exp", DateTime.Now.AddHours(2).ToLongDateString()));
-            var securityToken = new JwtSecurityToken(header, payload);
-            var handler = new JwtSecurityTokenHandler();
-
-            var tokenString = handler.WriteToken(securityToken);
-
-            _httpContext.Request.Headers.Add("Authorization", $"Bearer {tokenString}");
-
-            _middleWare = new JwtAuthMiddleware(next: (innerHttpContext) =>
-            {
-                return Task.CompletedTask;
-            });
+            _httpContext.Request.Headers.Authorization = "";
 
             await _middleWare.Invoke(_httpContext);
 
-            Assert.That(_httpContext.Response.StatusCode, Is.EqualTo(200));
+            Assert.That(_httpContext.Response.StatusCode, Is.EqualTo((int)HttpStatusCode.Unauthorized));
         }
 
         [Test]
-        public async Task JwtAuthMiddleware_Invoke_EmptyHeader()
+        public async Task JwtAuthMiddleware_TestInvalidAuthHeader_ReturnStatusCodeUnauthorized()
         {
-            _httpContext.Request.Headers.Remove("Authorization");
-
-            _middleWare = new JwtAuthMiddleware(next: (innerHttpContext) =>
-            {
-                return Task.CompletedTask;
-            });
+            _httpContext.Request.Headers.Authorization = "Bearer token ABC";
 
             await _middleWare.Invoke(_httpContext);
 
-            Assert.That(_httpContext.Response.StatusCode, Is.EqualTo(401));
+            Assert.That(_httpContext.Response.StatusCode, Is.EqualTo((int)HttpStatusCode.Unauthorized));
+
         }
 
         [Test]
-        public async Task JwtAuthMiddleware_Invoke_InvalidHeader()
+        public async Task JwtAuthMiddleware_NotValidAuthHeader_ReturnStatusCodeUnauthorized()
         {
-            _httpContext.Request.Headers.Remove("Authorization");
-            _httpContext.Request.Headers.Add("Authorization", $"Bearer");
-
-            _middleWare = new JwtAuthMiddleware(next: (innerHttpContext) =>
-            {
-                return Task.CompletedTask;
-            });
+            _httpContext.Request.Headers.Authorization = "Bearer abc.123.abc";
 
             await _middleWare.Invoke(_httpContext);
 
-            Assert.That(_httpContext.Response.StatusCode, Is.EqualTo(401));
-        }
-
-        [Test]
-        public async Task JwtAuthMiddleware_Invoke_TimeExpired()
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
-
-            var credentials = new SigningCredentials(securityKey, "HS256");
-
-            var header = new JwtHeader(credentials);
-
-            JwtPayload payload = new JwtPayload();
-
-            var expirationTime = DateTime.Now.Subtract(new DateTime(2020, 10, 10));
-
-            payload.AddClaim(new Claim("context", "{'user': { 'email': 'test@email.com' }}", JsonClaimValueTypes.Json));
-            payload.AddClaim(new Claim("exp", expirationTime.Seconds.ToString()));
-            var securityToken = new JwtSecurityToken(header, payload);
-            var handler = new JwtSecurityTokenHandler();
-
-            var tokenString = handler.WriteToken(securityToken);
-
-            _httpContext.Request.Headers.Remove("Authorization");
-            _httpContext.Request.Headers.Add("Authorization", $"Bearer {tokenString}");
-
-            _middleWare = new JwtAuthMiddleware(next: (innerHttpContext) =>
-            {
-                return Task.CompletedTask;
-            });
-
-            await _middleWare.Invoke(_httpContext);
-
-            Assert.That(_httpContext.Response.StatusCode, Is.EqualTo(401));
+            Assert.That(_httpContext.Response.StatusCode, Is.EqualTo((int)HttpStatusCode.Unauthorized));
         }
     }
 }
