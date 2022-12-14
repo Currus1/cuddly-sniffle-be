@@ -1,10 +1,12 @@
 ﻿using Castle.DynamicProxy;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 
 namespace currus.Logging.Logic
 {
     public class ExceptionLogger : IInterceptor
     {
+        [ExcludeFromCodeCoverage]
         public void Intercept(IInvocation invocation)
         {
             try
