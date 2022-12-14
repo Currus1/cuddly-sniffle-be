@@ -10,5 +10,12 @@ namespace currus.Models.DTOs
         public string VehicleType { get; set; } = "";
         [Required]
         public string LicenseNumber { get; set; } = "";
+
+        public DriverPropsDto(string driversLicense, string vehicleType, string licenseNumber)
+        {
+            DriversLicense = driversLicense;
+            VehicleType = vehicleType;
+            LicenseNumber = licenseNumber;
+        }
     }
 }
