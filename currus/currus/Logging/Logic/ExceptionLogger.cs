@@ -13,7 +13,7 @@ namespace currus.Logging.Logic
 
                 invocation.Proceed();
 
-                Logger.LogInfo($"Method {invocation.Method.Name} response: {JsonConvert.SerializeObject(invocation.ReturnValue)}");
+                Logger.LogInfo($"Method {invocation.Method.Name} response: {invocation.ReturnValue}");
             }
             catch (Exception ex)
             {

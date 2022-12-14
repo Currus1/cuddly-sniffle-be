@@ -48,6 +48,7 @@ namespace currus.Tests.Services
                 {
                     var scopedServices = scope.ServiceProvider;
                     var context = scopedServices.GetRequiredService<ApplicationDbContext>();
+                    context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
                 }
 

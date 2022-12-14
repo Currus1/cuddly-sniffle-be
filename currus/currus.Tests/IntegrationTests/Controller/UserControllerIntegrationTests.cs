@@ -47,7 +47,7 @@ namespace currus.Tests.IntegrationTests.Controller
             return user;
         }
 
-        private static User GetDriverTestData()
+        private User GetDriverTestData()
         {
             var user = new User()
             {
@@ -65,7 +65,7 @@ namespace currus.Tests.IntegrationTests.Controller
             return user;
         }
 
-        private static JsonContent GetRegisterTestData()
+        private JsonContent GetRegisterTestData()
         {
             var testUser = GetUserTestData();
 
@@ -76,13 +76,13 @@ namespace currus.Tests.IntegrationTests.Controller
                 email = testUser.Email,
                 password = "Password1!",
                 birthdate = testUser.Birthdate.ToShortDateString(),
-                number = testUser.PhoneNumber
+                phoneNumber = testUser.PhoneNumber
             });
 
             return content;
         }
 
-        private static JsonContent GetLoginTestData()
+        private JsonContent GetLoginTestData()
         {
             var testUser = GetUserTestData();
 
@@ -100,11 +100,13 @@ namespace currus.Tests.IntegrationTests.Controller
             var registerContent = GetRegisterTestData();
             var loginContent = GetLoginTestData();
 
-            await _client.PostAsync($"api/Auth/register", registerContent);
+            var register = await _client.PostAsync($"api/Auth/register", registerContent);
 
             if(_client.DefaultRequestHeaders.Authorization == null)
             {
-                var login = await _client.PostAsync($"api/Auth/login", loginContent);
+            var login = await _client.PostAsync($"api/Auth/login", loginContent);
+                var lof = await login.Content.ReadAsStringAsync();
+
                 login.EnsureSuccessStatusCode();
                 var log = await login.Content.ReadAsStringAsync();
 
@@ -198,7 +200,7 @@ namespace currus.Tests.IntegrationTests.Controller
             newUser.PhoneNumber = "867750755";
             newUser.Birthdate = new DateTime(2021, 12, 19);
             newUser.DriversLicense = "88884444";
-            newUser.VehicleType = "Van";
+            newUser.VehicleType = "SEDAN";
             newUser.LicenseNumber = "BBB555";
 
             var content = JsonContent.Create(new
@@ -210,18 +212,12 @@ namespace currus.Tests.IntegrationTests.Controller
                 birthdate = newUser.Birthdate.ToShortDateString(),
                 driversLicense = newUser.DriversLicense,
                 vehicleType = newUser.VehicleType,
-                licenseNumber = newUser.LicenseNumber
+                licenseNumber = newUser.LicenseNumber,
             });
 
-            var response1 = await _client.PutAsync($"apisecure/User/Update", content);
-            response1.EnsureSuccessStatusCode();
-
-            var response2 = await _client.GetAsync($"apisecure/User/");
-            var user = await response2.Content.ReadFromJsonAsync<User>();
-
-            response2.EnsureSuccessStatusCode();
-            Assert.That(response2, Is.Not.Null);
-            Assert.That(user, Is.Not.Null);
+            var update = await _client.PutAsync($"apisecure/User/Update", content);
+            var user = await update.Content.ReadFromJsonAsync<User>();
+            update.EnsureSuccessStatusCode();
 
             Assert.Multiple(() =>
             {

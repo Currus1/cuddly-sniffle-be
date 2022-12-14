@@ -143,7 +143,7 @@ public class UserController : Controller
                 string emailRegPattern = @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})$";
                 string phoneNumberRegPattern = @"^((86|\+3706)\d{7})$";
 
-                //if (ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
 
                     if (user.Name != null &&
@@ -182,7 +182,7 @@ public class UserController : Controller
                         string licenseNumberRegExp = @"^[A-Z]{3}\d{3}$";
                         string driverLicenseRegExp = @"^\d{8}$";
 
-                        //if (ModelState.IsValid)
+                        if (ModelState.IsValid)
                         {
 
                             if (Regex.IsMatch(user.Email, emailRegPattern, RegexOptions.IgnoreCase) &&
@@ -190,6 +190,7 @@ public class UserController : Controller
                                 Regex.IsMatch(user.LicenseNumber, licenseNumberRegExp, RegexOptions.IgnoreCase) &&
                                 Regex.IsMatch(user.DriversLicense, driverLicenseRegExp, RegexOptions.IgnoreCase) &&
                                 Enum.IsDefined(typeof(VehicleTypes), user.VehicleType))
+                                //)
                             {
                                 existingUser.Name = user.Name;
                                 existingUser.Surname = user.Surname;
@@ -201,7 +202,7 @@ public class UserController : Controller
                                 existingUser.LicenseNumber = user.LicenseNumber;
 
                                 await _userManager.UpdateAsync(existingUser);
-                                return Ok();
+                                return Ok(existingUser);
                             }
                             else
                             {
@@ -211,7 +212,6 @@ public class UserController : Controller
                     }
                 }
             }
-
             return BadRequest();
         }
         catch (Exception ex)
