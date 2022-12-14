@@ -5,7 +5,7 @@ using System.Numerics;
 namespace currus.Tests.UnitTests.Controller;
 
 [TestFixture]
-public class EnumControllerTest
+public class EnumControllerTests
 {
     public string[] TripStates = { "Planned", "Ongoing", "Ended", "Cancelled" };
     public string[] VehicleTypes = { "SEDAN", "SUV", "EV", "VAN" };

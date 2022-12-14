@@ -5,7 +5,7 @@ using NUnit.Framework.Internal;
 namespace currus.Tests.UnitTests.Controller;
 
 [TestFixture]
-public class ApiKEyControllerTest
+public class ApiKeyControllerTests
 {
     private ApiKeyController? _apiKeyController;
     private IConfiguration? configuration;

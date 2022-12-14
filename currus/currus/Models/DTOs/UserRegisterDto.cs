@@ -14,18 +14,18 @@ namespace currus.Models.DTOs
         [Required]
         public string? Password { get; set; }
         [Required]
-        public DateTime BirthDate { get; set; }
+        public DateTime Birthdate { get; set; }
         [Required]
-        public string Number { get; set; }
+        public string PhoneNumber { get; set; }
 
         public UserRegisterDto(string name, string surname, string email,
-            DateTime birthDate, string number)
+            DateTime birthdate, string phoneNumber)
         {
             Name = name;
             Surname = surname;
             Email = email;
-            BirthDate = birthDate;
-            Number = number;
+            Birthdate = birthdate;
+            PhoneNumber = phoneNumber;
         }
     }
 }

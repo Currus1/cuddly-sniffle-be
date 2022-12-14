@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -30,9 +31,10 @@ namespace currus.Middleware
                     httpContext.Response.StatusCode = 401;
                     await httpContext.Response.WriteAsJsonAsync("Invalid User Key");
                     return;
+                   
                 }
                 var parts = authHeader.Split(' ');
-                if (parts.Length < 2)
+                if (parts.Length != 2)
                 {
                     httpContext.Response.StatusCode = 401;
                     await httpContext.Response.WriteAsJsonAsync("Invalid User Key");
@@ -59,10 +61,12 @@ namespace currus.Middleware
                     {
                         httpContext.Items["email"] = email;
                         await _next(httpContext);
+                        return;
                     }
                 }
                 else
                 {
+                    httpContext.Response.StatusCode = 401;
                     await httpContext.Response.WriteAsync("Invalid User Key");
                     return;
                 }
@@ -70,12 +74,15 @@ namespace currus.Middleware
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message + ": " + ex.StackTrace);
+                httpContext.Response.StatusCode = 401;
+                await httpContext.Response.WriteAsJsonAsync("Invalid User Key");
                 return;
             }
         }
     }
 
     // Extension method used to add the middleware to the HTTP request pipeline.
+    [ExcludeFromCodeCoverage]
     public static class MiddlewareExtensions
     {
         public static IApplicationBuilder UseJwtAuthMiddleware(this IApplicationBuilder builder)

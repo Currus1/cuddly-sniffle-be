@@ -8,13 +8,31 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.AspNetCore.Hosting;
 using FluentAssertions.Common;
 using Microsoft.AspNetCore.TestHost;
+using Autofac.Extensions.DependencyInjection;
+using System.Reflection.Metadata.Ecma335;
+using currus.Models;
+using currus.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace currus.Tests.Services
 {
-    class MemoryFactory : WebApplicationFactory<Program>
+    class MemoryFactory : WebApplicationFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            IConfiguration configuration;
+
+            var inMemorySettings = new Dictionary<string, string> {
+            {"JwtConfig:Secret", "AAAAAAAAAAAAAAAAAAAA"},
+            };
+
+            configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+
             builder.ConfigureTestServices(services =>
             {
                 var descriptor = services.SingleOrDefault(
@@ -30,8 +48,11 @@ namespace currus.Tests.Services
                 {
                     var scopedServices = scope.ServiceProvider;
                     var context = scopedServices.GetRequiredService<ApplicationDbContext>();
+                    context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
                 }
+
+                services.AddScoped<ITripDbRepository, TripDbRepository>();
             });
         }
     }

@@ -23,7 +23,7 @@ using NUnit.Framework.Internal;
 namespace currus.Tests.UnitTests.Controller;
 
 [TestFixture]
-public class UserControllerTest
+public class UserControllerTests
 {
     private UserController _userController;
     private Mock<UserManager<User>> _userManager;
@@ -32,14 +32,6 @@ public class UserControllerTest
     [SetUp]
     public void SetUp()
     {
-
-        //_httpContextAccessor = A.Fake<HttpContextAccessor>();
-        //new Lazy<UserManager<User>>(() => A.Fake<UserManager<User>>());
-        //var store = new Mock<IUserStore<User>> ();
-        //store.Setup(x => x.FindByIdAsync("123", CancellationToken.None)).ReturnsAsync(GetUserTestData());
-        //storet.Setup(x => x.FindByEmailAsync("test@email.com")).ReturnsAsync(GetUserTestData());
-
-
         var store = new Mock<IUserStore<User>>();
         store.Setup(x => x.FindByIdAsync("123", CancellationToken.None))
             .ReturnsAsync(GetUserTestData());
