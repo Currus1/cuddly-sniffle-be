@@ -104,13 +104,10 @@ namespace currus.Tests.IntegrationTests.Controller
 
             if(_client.DefaultRequestHeaders.Authorization == null)
             {
-            var login = await _client.PostAsync($"api/Auth/login", loginContent);
-                var lof = await login.Content.ReadAsStringAsync();
-
-                login.EnsureSuccessStatusCode();
+                var login = await _client.PostAsync($"api/Auth/login", loginContent);
                 var log = await login.Content.ReadAsStringAsync();
+                login.EnsureSuccessStatusCode();
 
-                
                 var token = JObject.Parse(log)["token"];
 
                 if(token != null)
@@ -189,47 +186,84 @@ namespace currus.Tests.IntegrationTests.Controller
             await Authorize();
 
             var testResponse = await _client.GetAsync($"apisecure/User/");
-            var newUser = await testResponse.Content.ReadFromJsonAsync<User>();
+            var user = await testResponse.Content.ReadFromJsonAsync<User>();
             testResponse.EnsureSuccessStatusCode();
 
-            Assert.That(newUser, Is.Not.Null);
+            Assert.That(user, Is.Not.Null);
 
-            newUser.Name = "Teste";
-            newUser.Surname = "Testaviciute";
-            newUser.Email = "nottest@gmail.com";
-            newUser.PhoneNumber = "867750755";
-            newUser.Birthdate = new DateTime(2021, 12, 19);
-            newUser.DriversLicense = "88884444";
-            newUser.VehicleType = "SEDAN";
-            newUser.LicenseNumber = "BBB555";
+            user.Name = "Teste";
+            user.Surname = "Testaviciute";
+            user.Email = "nottest@gmail.com";
+            user.PhoneNumber = "867750755";
+            user.Birthdate = new DateTime(2021, 12, 19);
+            user.DriversLicense = "88884444";
+            user.VehicleType = "SEDAN";
+            user.LicenseNumber = "BBB555";
 
             var content = JsonContent.Create(new
             {
-                name = newUser.Name,
-                surname = newUser.Surname,
-                email = newUser.Email,
-                phoneNumber = newUser.PhoneNumber,
-                birthdate = newUser.Birthdate.ToShortDateString(),
-                driversLicense = newUser.DriversLicense,
-                vehicleType = newUser.VehicleType,
-                licenseNumber = newUser.LicenseNumber,
+                name = user.Name,
+                surname = user.Surname,
+                email = user.Email,
+                phoneNumber = user.PhoneNumber,
+                birthdate = user.Birthdate.ToShortDateString(),
+                driversLicense = user.DriversLicense,
+                vehicleType = user.VehicleType,
+                licenseNumber = user.LicenseNumber,
             });
 
             var update = await _client.PutAsync($"apisecure/User/Update", content);
-            var user = await update.Content.ReadFromJsonAsync<User>();
             update.EnsureSuccessStatusCode();
 
+            var loginContent = JsonContent.Create(new
+            {
+                email = user.Email,
+                password = "Password1!"
+            });
+
+            var login = await _client.PostAsync($"api/Auth/login", loginContent);
+            var log = await login.Content.ReadAsStringAsync();
+            login.EnsureSuccessStatusCode();
+
+            var token = JObject.Parse(log)["token"];
+
+            if (token != null)
+            {
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.ToString());
+            }
+
+            var newUserResponse = await _client.GetAsync($"apisecure/User/");
+            var newUser = await newUserResponse.Content.ReadFromJsonAsync<User>();
+            newUserResponse.EnsureSuccessStatusCode();
+        
+
+
+            Assert.That(newUser, Is.Not.Null);
             Assert.Multiple(() =>
             {
-                Assert.That(user.Name, Is.EqualTo(newUser.Name));
-                Assert.That(user.Surname, Is.EqualTo(newUser.Surname));
-                Assert.That(user.Email, Is.EqualTo(newUser.Email));
-                Assert.That(user.Birthdate, Is.EqualTo(newUser.Birthdate));
-                Assert.That(user.PhoneNumber, Is.EqualTo(newUser.PhoneNumber));
-                Assert.That(user.DriversLicense, Is.EqualTo(newUser.DriversLicense));
-                Assert.That(user.VehicleType, Is.EqualTo(newUser.VehicleType));
-                Assert.That(user.LicenseNumber, Is.EqualTo(newUser.LicenseNumber));
+                Assert.That(newUser.Name, Is.EqualTo(user.Name));
+                Assert.That(newUser.Surname, Is.EqualTo(user.Surname));
+                Assert.That(newUser.Email, Is.EqualTo(user.Email));
+                Assert.That(newUser.Birthdate, Is.EqualTo(user.Birthdate));
+                Assert.That(newUser.PhoneNumber, Is.EqualTo(user.PhoneNumber));
+                Assert.That(newUser.DriversLicense, Is.EqualTo(user.DriversLicense));
+                Assert.That(newUser.VehicleType, Is.EqualTo(user.VehicleType));
+                Assert.That(newUser.LicenseNumber, Is.EqualTo(user.LicenseNumber));
             });
+        }
+
+        [TestCategory("Integration")]
+        [Test]
+        public async Task Integration_UserController_DeleteUser_UserDeletedSuccess()
+        {
+            await Authorize();
+
+            var delete = await _client.DeleteAsync($"apisecure/User/Deletion");
+            delete.EnsureSuccessStatusCode();
+
+            var get = await _client.GetAsync($"apisecure/User/");
+
+            Assert.That(get.IsSuccessStatusCode, Is.False);
         }
     }
 }

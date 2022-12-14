@@ -164,7 +164,7 @@ public class UserController : Controller
                             existingUser.PhoneNumber = user.PhoneNumber;
 
                             await _userManager.UpdateAsync(existingUser);
-                            return Ok(existingUser);
+                            return Ok();
                         }
                         else
                         {
@@ -190,7 +190,6 @@ public class UserController : Controller
                                 Regex.IsMatch(user.LicenseNumber, licenseNumberRegExp, RegexOptions.IgnoreCase) &&
                                 Regex.IsMatch(user.DriversLicense, driverLicenseRegExp, RegexOptions.IgnoreCase) &&
                                 Enum.IsDefined(typeof(VehicleTypes), user.VehicleType))
-                                //)
                             {
                                 existingUser.Name = user.Name;
                                 existingUser.Surname = user.Surname;
@@ -202,7 +201,7 @@ public class UserController : Controller
                                 existingUser.LicenseNumber = user.LicenseNumber;
 
                                 await _userManager.UpdateAsync(existingUser);
-                                return Ok(existingUser);
+                                return Ok();
                             }
                             else
                             {
