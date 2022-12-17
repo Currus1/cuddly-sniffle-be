@@ -255,9 +255,35 @@ public class TripController : Controller
 
     [HttpGet]
     [Route("Trips")]
-    public IEnumerable<Trip> GetTrips(string tripStatus)
+    public async Task<List<TripExportDto>> GetTrips(string tripStatus)
     {
-        return _tripDbRepository.GetAllByStatus(tripStatus);
+        List<Trip> list = _tripDbRepository.GetAllByStatus(tripStatus).ToList();
+        List<TripExportDto> returnList = new List<TripExportDto>();
+        foreach (Trip trip in list)
+        {
+            var occupied = _tripDbRepository.GetAllUsers(trip.Id);
+            User user = await _userManager.FindByIdAsync(trip.DriverId);
+            if (user != null)
+            {
+                TripExportDto tripDto =
+                    new TripExportDto(
+                    trip.Id, trip.SLatitude,
+                    trip.SLongitude, trip.DLatitude,
+                    trip.DLongitude, trip.StartingPoint,
+                    trip.Destination, occupied.Count,
+                    trip.Seats, trip.DriverId,
+                    user.Name, user.Surname,
+                    trip.VehicleType, trip.EstimatedTripPrice,
+                    trip.TripStatus, trip.TripDate);
+                if (tripDto != null)
+                {
+                    returnList.Add(tripDto);
+                }
+            }
+            
+        }
+
+        return returnList;
     }
 
     [HttpGet]
