@@ -51,12 +51,15 @@ public class TripController : Controller
             }
 
             var trip = _tripDbRepository.GetTripAsNotTracked(result);
-
-            if(trip.Users == null)
+            if (trip.DriverId == existingUser.Id)
+            {
+                return Forbid();
+            }
+            if (trip.Users == null)
             {
                 trip.Users = new List<User>();
             }
-            if(!ValidateTripAvailability(trip))
+            if (!ValidateTripAvailability(trip))
             {
                 return Forbid();
             }
