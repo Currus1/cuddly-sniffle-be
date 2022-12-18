@@ -45,7 +45,12 @@ public class TripController : Controller
             }
 
             var tripId = HttpContext.Request.Query["tripId"];
-            var trip = _tripDbRepository.GetTripAsNotTracked(Int32.Parse(tripId));
+            if (!Int32.TryParse(tripId, out int result))
+            {
+                return BadRequest();
+            }
+
+            var trip = _tripDbRepository.GetTripAsNotTracked(result);
 
             if(trip.Users == null)
             {
