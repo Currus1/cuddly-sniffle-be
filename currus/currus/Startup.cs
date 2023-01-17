@@ -28,6 +28,7 @@ namespace currus
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //need to change logging
             Logger.createLogFile();
 
             services.AddControllers().AddJsonOptions(o =>
@@ -35,7 +36,6 @@ namespace currus
                 o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
             services.AddCors();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
@@ -50,6 +50,7 @@ namespace currus
                 options.UseSqlServer(connectionString)
                 );
 
+            //security needs refactoring
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -75,6 +76,8 @@ namespace currus
             {
                 options.SignIn.RequireConfirmedEmail = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //add identity password requirements here
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

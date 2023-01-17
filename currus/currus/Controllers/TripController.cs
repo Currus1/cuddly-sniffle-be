@@ -55,14 +55,17 @@ public class TripController : Controller
             {
                 return Forbid();
             }
+
             if (trip.Users == null)
             {
                 trip.Users = new List<User>();
             }
+
             if (!ValidateTripAvailability(trip))
             {
                 return Forbid();
             }
+
             if (trip.Users.Any(u => u.Email == existingUser.Email))
             {
                 return BadRequest(trip.Users.Count);
