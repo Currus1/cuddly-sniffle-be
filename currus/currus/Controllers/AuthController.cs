@@ -207,7 +207,7 @@ namespace currus.Controllers
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToUniversalTime().ToString())
                 }),
 
-                Expires = DateTime.Now.AddHours(1),
+                Expires = DateTime.Now.AddHours(5),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512)
             };
 
